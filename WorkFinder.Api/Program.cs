@@ -1,0 +1,29 @@
+using WorkFinder.Api;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.ConfigureAppServices();
+
+var app = builder.Build();
+
+
+if(app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(swg =>
+    {
+        swg.SwaggerEndpoint("/swagger/v1/swagger.json", "Wrok Finder API V1");
+    });
+}
+
+app.UseHttpsRedirection();  //for strict https redirection
+app.UseStaticFiles();      // for serving static files
+app.UseRouting();         // for routing
+
+app.UseAuthentication(); // for authentication
+app.UseAuthorization(); // for authorization
+
+
+app.MapControllers();  // for execution of endpoints
+
+app.Run();

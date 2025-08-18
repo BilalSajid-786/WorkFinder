@@ -1,0 +1,38 @@
+﻿using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WorkFinder.Entities.Entities;
+using WorkFinder.Repositories.DbContext;
+using WorkFinder.RepositoryContracts;
+
+namespace WorkFinder.Repositories.Repositories
+{
+    /// <summary>
+    /// Repository implementation for managing User entity data operations
+    /// Provides methods to register and retrieve users from database
+    /// </summary>
+    public class UserRepository : IUserRepository
+    {
+        private readonly DapperDbContext _dapperDbContext;
+        public UserRepository(DapperDbContext dapperDbContext)
+        {
+            _dapperDbContext = dapperDbContext;
+        }
+
+        /// <summary>
+        /// Inserts a new user in the database
+        /// </summary>
+        /// <param name="user">User to be inserted</param>
+        /// <returns>Newly inserted User</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<User> RegisterUserAsync(User user)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var userList = await connection.QueryAsync<User>("Select * FROM Users");
+            return userList.FirstOrDefault();
+        }
+    }
+}
