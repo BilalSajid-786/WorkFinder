@@ -23,6 +23,18 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
+        /// Gets a user from database based on the given email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>User</returns>
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var user = await connection.QueryFirstAsync<User>("SELECT * FROM Users WHERE Email = @Email", new {Email = email});
+            return user;
+        }
+
+        /// <summary>
         /// Inserts a new user in the database
         /// </summary>
         /// <param name="user">User to be inserted</param>

@@ -1,12 +1,18 @@
-﻿using WorkFinder.Repositories.DbContext;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using WorkFinder.Repositories.DbContext;
 using WorkFinder.Repositories.Repositories;
 using WorkFinder.RepositoryContracts;
+using WorkFinder.ServiceContracts;
+using WorkFinder.Services;
 
 namespace WorkFinder.Api
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection ConfigureAppServices(this IServiceCollection services)
+        public static IServiceCollection ConfigureAppServices(this IServiceCollection services, IConfiguration configuration)
         {
             //Add Api Controllers
             services.AddControllers();
@@ -18,8 +24,30 @@ namespace WorkFinder.Api
             //Add Dapper DbContext
             services.AddScoped<DapperDbContext>();
 
+            //Add Authentication Scheme with Jwt
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ValidIssuer = configuration["Jwt:Issuer"],
+                        ValidAudience = configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                    };
+                });
+
             //Repositories
             services.AddTransient<IUserRepository, UserRepository>();
+
+            //Services
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IAuthService, AuthService>();
 
             return services;
         }

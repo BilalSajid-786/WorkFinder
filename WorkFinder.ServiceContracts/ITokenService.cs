@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WorkFinder.Entities.Entities;
+
+namespace WorkFinder.ServiceContracts
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface ITokenService
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        string GenerateToken(User user);
+    }
+}

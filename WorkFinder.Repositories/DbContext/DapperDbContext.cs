@@ -12,8 +12,7 @@ namespace WorkFinder.Repositories.DbContext
         public DapperDbContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            var c = _configuration.GetConnectionString("WorkFinderDb");
-            _connectionString = c;
+            _connectionString = _configuration.GetConnectionString("WorkFinderDb");
         }
 
         public IDbConnection CreateConnection() => 

@@ -2,7 +2,7 @@ using WorkFinder.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.ConfigureAppServices();
+builder.Services.ConfigureAppServices(builder.Configuration);
 
 var app = builder.Build();
 

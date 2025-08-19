@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace WorkFinder.Entities.Entities
 {
-    public class User : BaseEntity
+    public class Industry
     {
-        public Guid UserId { get; set; }
+        public Guid IndustryId { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
     }
 }
