@@ -22,5 +22,11 @@ namespace WorkFinder.ServiceContracts
         /// <param name="email"></param>
         /// <returns>User</returns>
         Task<User?> GetUserByEmailAsync(string email);
+
+        /// <summary>
+        /// Gets all existing users.
+        /// </summary>
+        /// <returns>All Users</returns>
+        Task<IEnumerable<User>> GetAllUsers();
     }
 }

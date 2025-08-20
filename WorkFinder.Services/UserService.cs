@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,12 @@ namespace WorkFinder.Services
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            var users = await _userRepository.GetAllUsers();
+            return users;
         }
 
         public async Task<User?> GetUserByEmailAsync(string email)

@@ -6,6 +6,7 @@ using WorkFinder.Repositories.DbContext;
 using WorkFinder.Repositories.Repositories;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
+using WorkFinder.ServiceContracts.DTOs;
 using WorkFinder.Services;
 
 namespace WorkFinder.Api
@@ -44,11 +45,13 @@ namespace WorkFinder.Api
 
             //Repositories
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleService, RoleService>();
 
             return services;
         }

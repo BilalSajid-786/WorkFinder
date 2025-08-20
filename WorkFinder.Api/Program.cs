@@ -1,4 +1,6 @@
 using WorkFinder.Api;
+using WorkFinder.ServiceContracts.DTOs;
+using WorkFinder.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,12 @@ builder.Services.ConfigureAppServices(builder.Configuration);
 
 var app = builder.Build();
 
+//Seeding roles
+using (var scope = app.Services.CreateScope())
+{
+    var roleService = scope.ServiceProvider.GetRequiredService<IRoleService>();
+    await roleService.SeedRolesAsync();
+}
 
 if(app.Environment.IsDevelopment())
 {

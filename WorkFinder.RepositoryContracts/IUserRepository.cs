@@ -25,5 +25,11 @@ namespace WorkFinder.RepositoryContracts
         /// <param name="email"></param>
         /// <returns>User</returns>
         Task<User?> GetUserByEmailAsync(string email);
+
+        /// <summary>
+        /// Gets all users from database
+        /// </summary>
+        /// <returns>List of Users</returns>
+        Task<IEnumerable<User>> GetAllUsers();
     }
 }

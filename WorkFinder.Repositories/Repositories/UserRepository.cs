@@ -23,6 +23,18 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
+        /// Gets all users from the database
+        /// </summary>
+        /// <returns>List of Users</returns>
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            using var context = _dapperDbContext.CreateConnection();
+            var sql = "[GetAllUsers]";
+            var users = await context.QueryAsync<User>(sql);
+            return users;
+        }
+
+        /// <summary>
         /// Gets a user from database based on the given email
         /// </summary>
         /// <param name="email"></param>
