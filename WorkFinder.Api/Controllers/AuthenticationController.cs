@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Entities.Entities;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
+using WorkFinder.ServiceContracts.DTOs;
 
 namespace WorkFinder.Api.Controllers
 {
@@ -23,10 +25,21 @@ namespace WorkFinder.Api.Controllers
         /// <param name="email">email of the user attempting to login</param>
         /// <returns>Jwt token, if valid</returns>
         [HttpPost]
-        public async Task<ActionResult<string>> Login(string email)
+        public async Task<ActionResult<string>> Login(LoginRequestDto loginRequestDto)
         {
-            var token = await _authService.AuthenticateAsync(email,null);
+            var token = await _authService.AuthenticateAsync(loginRequestDto.Email,loginRequestDto.Password);
             return Ok(new {token = token});
+        }
+
+        /// <summary>
+        /// Registers a given User in the system, if details are valid
+        /// </summary>
+        /// <param name="loginRequest"></param>
+        /// <returns>Id of the registered user</returns>
+        [HttpPost]
+        public async Task<ActionResult<Guid>> Register(RegisterRequestDto registerRequest)
+        {
+            return await _authService.RegisterUserAsync(registerRequest);
         }
     }
 }

@@ -40,11 +40,17 @@ namespace WorkFinder.Repositories.Repositories
         /// <param name="user">User to be inserted</param>
         /// <returns>Newly inserted User</returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<User> RegisterUserAsync(User user)
+        public async Task<Guid> RegisterUserAsync(User user)
         {
             using var connection = _dapperDbContext.CreateConnection();
-            var userList = await connection.QueryAsync<User>("Select * FROM Users");
-            return userList.FirstOrDefault();
+
+            //Parameters
+            var parameters = new DynamicParameters();
+            parameters.Add("@Name", user.Name);
+            parameters.Add("@Email", user.Email);
+            parameters.Add("@PasswordHash", user.PasswordHash);
+
+            return await connection.ExecuteScalarAsync<Guid>("InsertUser",parameters);
         }
     }
 }

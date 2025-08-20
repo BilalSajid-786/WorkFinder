@@ -17,7 +17,7 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<User> RegisterUserAsync(User user);
+        Task<Guid> RegisterUserAsync(User user);
 
         /// <summary>
         /// Gets a user by email

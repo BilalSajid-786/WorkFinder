@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkFinder.ServiceContracts.DTOs;
 
 namespace WorkFinder.ServiceContracts
 {
@@ -18,5 +19,12 @@ namespace WorkFinder.ServiceContracts
         /// <param name="password"></param>
         /// <returns>Jwt token</returns>
         Task<string?> AuthenticateAsync(string email, string password);
+
+        /// <summary>
+        /// Registers a user.
+        /// </summary>
+        /// <param name="loginRequestDto"></param>
+        /// <returns></returns>
+        Task<Guid> RegisterUserAsync(RegisterRequestDto registerRequestDto);
     }
 }
