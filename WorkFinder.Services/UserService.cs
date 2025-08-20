@@ -17,6 +17,12 @@ namespace WorkFinder.Services
         {
             _userRepository = userRepository;
         }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _userRepository.GetUserByEmailAsync(email);
+        }
+
         public async Task<Guid> RegisterUserAsync(RegisterRequestDto registerRequestDto,string passwordHash)
         {
             if (string.IsNullOrWhiteSpace(registerRequestDto.Email) || !registerRequestDto.Email.Contains("@"))

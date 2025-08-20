@@ -13,22 +13,19 @@ namespace WorkFinder.Services
     public class AuthService : IAuthService
     {
         private readonly ITokenService _tokenService;
-        private readonly IUserRepository _userRepository;
         private readonly IUserService _userService;
         private readonly PasswordHasher<object> _passwordHasher;
-        public AuthService(ITokenService tokenService, IUserRepository userRepository,
-            IUserService userService)
+        public AuthService(ITokenService tokenService, IUserService userService)
         {
 
             _tokenService = tokenService;
-            _userRepository = userRepository;
             _userService = userService;
             _passwordHasher = new PasswordHasher<object>();
         }
         public async Task<string?> AuthenticateAsync(string email, string password)
         {
             //Get User by email
-            var user = await _userRepository.GetUserByEmailAsync(email);
+            var user = await _userService.GetUserByEmailAsync(email);
 
             //return null if user doesn't exist
             if (user is null)
