@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkFinder.ServiceContracts.DTOs;
 
-namespace WorkFinder.ServiceContracts.DTOs
+namespace WorkFinder.ServiceContracts
 {
     /// <summary>
     /// Service Contract for Role
@@ -16,5 +17,11 @@ namespace WorkFinder.ServiceContracts.DTOs
         /// </summary>
         /// <returns></returns>
         Task SeedRolesAsync();
+
+        /// <summary>
+        /// Gets all roles
+        /// </summary>
+        /// <returns>Roles</returns>
+        Task<IEnumerable<RoleResponseDto>> GetRolesAsync();
     }
 }

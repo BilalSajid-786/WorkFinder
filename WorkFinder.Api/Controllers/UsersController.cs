@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Entities.Entities;
 using WorkFinder.ServiceContracts;
+using WorkFinder.ServiceContracts.DTOs;
 
 namespace WorkFinder.Api.Controllers
 {
@@ -16,7 +17,7 @@ namespace WorkFinder.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetAllUsers()
         {
             var users = await _userService.GetAllUsers();
             return Ok(users);

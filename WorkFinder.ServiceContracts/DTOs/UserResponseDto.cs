@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkFinder.Entities.Entities
+namespace WorkFinder.ServiceContracts.DTOs
 {
-    public class User : BaseEntity
+    public class UserResponseDto
     {
         public Guid UserId { get; set; }
         public string UserName { get; set; } = string.Empty;
+        public string RoleName { get; set; } = string.Empty;
+        public Guid RoleId { get; set; }
         public string Email { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
-        public Guid RoleId { get; set; } //foreign key to role table
-        public Role? Role { get; set; }
     }
 }

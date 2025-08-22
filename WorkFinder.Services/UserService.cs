@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,20 +15,35 @@ namespace WorkFinder.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IRoleService _roleService;
+        private readonly IMapper _mapper;
+        public UserService(IUserRepository userRepository,IRoleService roleService, IMapper mapper)
         {
             _userRepository = userRepository;
+            _roleService = roleService;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<User>> GetAllUsers()
+        public async Task<IEnumerable<UserResponseDto>> GetAllUsers()
         {
             var users = await _userRepository.GetAllUsers();
-            return users;
+            return _mapper.Map<IEnumerable<UserResponseDto>>(users);
         }
 
-        public async Task<User?> GetUserByEmailAsync(string email)
+        public async Task<UserResponseDto?> GetUserByEmailAsync(string email)
         {
-            return await _userRepository.GetUserByEmailAsync(email);
+            var user = await _userRepository.GetUserByEmailAsync(email);
+            return _mapper.Map<UserResponseDto>(user);
+        }
+
+        /// <summary>
+        /// Gets password hash of a user for given Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>Password Hash</returns>
+        public async Task<string?> GetUserPasswordHashById(Guid userId)
+        {
+            return await _userRepository.GetUserPasswordHashById(userId);
         }
 
         public async Task<Guid> RegisterUserAsync(RegisterRequestDto registerRequestDto,string passwordHash)
@@ -41,11 +57,17 @@ namespace WorkFinder.Services
             if (string.IsNullOrEmpty(registerRequestDto.Email))
                 throw new Exception($"Name {registerRequestDto.Name} should not be empty");
 
+            var roles = await _roleService.GetRolesAsync();
+
+            if (!roles.Any(r => r.RoleId == registerRequestDto.RoleId))
+                throw new Exception($"RoleId {registerRequestDto.RoleId} doesn't exist in the system");
+
             var user = new User()
             {
-                Name = registerRequestDto.Name,
+                UserName = registerRequestDto.Name,
                 Email = registerRequestDto.Email,
                 PasswordHash = passwordHash,
+                RoleId = registerRequestDto.RoleId
             };
             return await _userRepository.RegisterUserAsync(user);
         }

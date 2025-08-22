@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WorkFinder.Entities.Entities;
-using WorkFinder.ServiceContracts.DTOs;
+﻿using WorkFinder.ServiceContracts.DTOs;
 
 namespace WorkFinder.ServiceContracts
 {
@@ -21,12 +15,19 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <param name="email"></param>
         /// <returns>User</returns>
-        Task<User?> GetUserByEmailAsync(string email);
+        Task<UserResponseDto?> GetUserByEmailAsync(string email);
 
         /// <summary>
         /// Gets all existing users.
         /// </summary>
         /// <returns>All Users</returns>
-        Task<IEnumerable<User>> GetAllUsers();
+        Task<IEnumerable<UserResponseDto>> GetAllUsers();
+
+        /// <summary>
+        /// Gets the password hash of a user for the given Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>Password Hash of a User</returns>
+        Task<string?> GetUserPasswordHashById(Guid userId);
     }
 }

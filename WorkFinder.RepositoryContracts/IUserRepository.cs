@@ -31,5 +31,12 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <returns>List of Users</returns>
         Task<IEnumerable<User>> GetAllUsers();
+
+        /// <summary>
+        /// Gets a password hash of a user for the given Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>Password Hash</returns>
+        Task<string?> GetUserPasswordHashById(Guid userId);
     }
 }

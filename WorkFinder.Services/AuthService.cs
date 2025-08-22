@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkFinder.Entities.Entities;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs;
@@ -15,12 +17,14 @@ namespace WorkFinder.Services
         private readonly ITokenService _tokenService;
         private readonly IUserService _userService;
         private readonly PasswordHasher<object> _passwordHasher;
-        public AuthService(ITokenService tokenService, IUserService userService)
+        private readonly IMapper _mapper;
+        public AuthService(ITokenService tokenService, IUserService userService, IMapper mapper)
         {
 
             _tokenService = tokenService;
             _userService = userService;
             _passwordHasher = new PasswordHasher<object>();
+            _mapper = mapper;
         }
         public async Task<string?> AuthenticateAsync(string email, string password)
         {
@@ -30,9 +34,14 @@ namespace WorkFinder.Services
             //return null if user doesn't exist
             if (user is null)
                 return null;
+
+            var passwordHash = await _userService.GetUserPasswordHashById(user.UserId);
+
+            if(passwordHash is null) 
+                return null;
             
             //check passwordHash
-            var isValidPassword = _passwordHasher.VerifyHashedPassword(null, user.PasswordHash, password);
+            var isValidPassword = _passwordHasher.VerifyHashedPassword(null, passwordHash, password);
 
             //return token if valid email and password
             if (isValidPassword == PasswordVerificationResult.Success)

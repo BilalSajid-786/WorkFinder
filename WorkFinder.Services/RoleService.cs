@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkFinder.RepositoryContracts;
+using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs;
 
 namespace WorkFinder.Services
@@ -19,6 +20,20 @@ namespace WorkFinder.Services
         public RoleService(IRoleRepository roleRepository)
         {
             _roleRepository = roleRepository;
+        }
+
+        /// <summary>
+        /// Gets all roles.
+        /// </summary>
+        /// <returns>Roles</returns>
+        public async Task<IEnumerable<RoleResponseDto>> GetRolesAsync()
+        {
+            var roles = await _roleRepository.GetRolesAsync();
+            return roles.Select(r => new RoleResponseDto()
+            {
+                RoleId = r.RoleId,
+                Name = r.RoleName,
+            });
         }
 
         /// <summary>

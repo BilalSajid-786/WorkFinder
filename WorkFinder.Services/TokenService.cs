@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkFinder.Entities.Entities;
 using WorkFinder.ServiceContracts;
+using WorkFinder.ServiceContracts.DTOs;
 
 namespace WorkFinder.Services
 {
@@ -29,7 +30,7 @@ namespace WorkFinder.Services
         /// <param name="user"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public string GenerateToken(User user)
+        public string GenerateToken(UserResponseDto user)
         {
             //security key
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

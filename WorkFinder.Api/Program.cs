@@ -1,5 +1,5 @@
 using WorkFinder.Api;
-using WorkFinder.ServiceContracts.DTOs;
+using WorkFinder.ServiceContracts;
 using WorkFinder.Services;
 
 var builder = WebApplication.CreateBuilder(args);

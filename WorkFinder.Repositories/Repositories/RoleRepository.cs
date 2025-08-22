@@ -22,14 +22,24 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
+        /// Get roles from the database
+        /// </summary>
+        /// <returns>All roles</returns>
+        public async Task<IEnumerable<Role>> GetRolesAsync()
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetAllRoles]";
+            return await connection.QueryAsync<Role>(sql);
+        }
+
+        /// <summary>
         /// Seed roles in the db, if roles doesn't exist
         /// </summary>
         /// <returns></returns>
         public async Task SeedRolesAsync()
         {
             using var connection = _dapperDbContext.CreateConnection();
-            var sql = "[GetAllRoles]";
-            var roles = await connection.QueryAsync<Role>(sql);
+            var roles = await GetRolesAsync();
             if (!roles.Any())
             {
                 var insertionSql = "[InsertRole]";
@@ -42,7 +52,7 @@ namespace WorkFinder.Repositories.Repositories
                 {
                     var parameters = new DynamicParameters();
                     parameters.Add("@RoleId", role.Key);
-                    parameters.Add("@Name", role.Value);
+                    parameters.Add("@RoleName", role.Value);
                     await connection.ExecuteScalarAsync<Guid>(insertionSql, parameters);
                 }
             }

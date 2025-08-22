@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.Repositories.Repositories;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
-using WorkFinder.ServiceContracts.DTOs;
 using WorkFinder.Services;
+using WorkFinder.Services.Mappers;
 
 namespace WorkFinder.Api
 {
@@ -24,6 +23,9 @@ namespace WorkFinder.Api
 
             //Add Dapper DbContext
             services.AddScoped<DapperDbContext>();
+
+            //Add AutoMapper for entities to dto and dto to entities
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
             //Add Authentication Scheme with Jwt
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

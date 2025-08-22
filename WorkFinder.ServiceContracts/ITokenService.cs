@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WorkFinder.Entities.Entities;
+using WorkFinder.ServiceContracts.DTOs;
 
 namespace WorkFinder.ServiceContracts
 {
@@ -17,6 +17,6 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        string GenerateToken(User user);
+        string GenerateToken(UserResponseDto user);
     }
 }

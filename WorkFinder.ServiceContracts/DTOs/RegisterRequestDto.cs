@@ -17,5 +17,8 @@ namespace WorkFinder.ServiceContracts.DTOs
         [Required]
         [MinLength(8)]
         public string Password { get; set; } = string.Empty;
+
+        [Required]
+        public Guid RoleId { get; set; }
     }
 }
