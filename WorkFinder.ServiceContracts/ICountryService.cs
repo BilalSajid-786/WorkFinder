@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkFinder.ServiceContracts.DTOs
+namespace WorkFinder.ServiceContracts
 {
-    public class UserRequestDto
+    public interface ICountryService
     {
+
     }
 }

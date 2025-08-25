@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Entities.Entities;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
-using WorkFinder.ServiceContracts.DTOs;
+using WorkFinder.ServiceContracts.DTOs.Authentication;
 
 namespace WorkFinder.Api.Controllers
 {

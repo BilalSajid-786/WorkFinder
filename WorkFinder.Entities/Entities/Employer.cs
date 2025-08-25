@@ -13,5 +13,8 @@ namespace WorkFinder.Entities.Entities
         public string? CompanyWebsite { get; set; }
         public Guid IndustryId { get; set; }
         public string Location { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
     }
 }

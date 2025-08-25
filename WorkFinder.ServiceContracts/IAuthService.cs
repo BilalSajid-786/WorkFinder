@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WorkFinder.ServiceContracts.DTOs;
+using WorkFinder.ServiceContracts.DTOs.Authentication;
 
 namespace WorkFinder.ServiceContracts
 {

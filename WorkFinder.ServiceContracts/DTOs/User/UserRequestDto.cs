@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkFinder.ServiceContracts.DTOs
+namespace WorkFinder.ServiceContracts.DTOs.User
 {
-    public class LoginResponseDto
+    public class UserRequestDto
     {
-        public string Token { get; set; } = string.Empty;
     }
 }

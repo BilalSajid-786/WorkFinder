@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Entities.Entities;
 using WorkFinder.ServiceContracts;
-using WorkFinder.ServiceContracts.DTOs;
+using WorkFinder.ServiceContracts.DTOs.User;
 
 namespace WorkFinder.Api.Controllers
 {

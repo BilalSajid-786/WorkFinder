@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkFinder.Entities.Entities;
 using WorkFinder.ServiceContracts;
-using WorkFinder.ServiceContracts.DTOs;
+using WorkFinder.ServiceContracts.DTOs.User;
 
 namespace WorkFinder.Services
 {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
-using WorkFinder.ServiceContracts.DTOs;
+using WorkFinder.ServiceContracts.DTOs.Role;
 
 namespace WorkFinder.Services
 {

@@ -1,4 +1,5 @@
-﻿using WorkFinder.ServiceContracts.DTOs;
+﻿using WorkFinder.ServiceContracts.DTOs.Authentication;
+using WorkFinder.ServiceContracts.DTOs.User;
 
 namespace WorkFinder.ServiceContracts
 {

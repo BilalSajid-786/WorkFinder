@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkFinder.ServiceContracts.DTOs
+namespace WorkFinder.ServiceContracts.DTOs.Role
 {
     public class RoleResponseDto
     {

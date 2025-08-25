@@ -13,6 +13,9 @@ using (var scope = app.Services.CreateScope())
 {
     var roleService = scope.ServiceProvider.GetRequiredService<IRoleService>();
     await roleService.SeedRolesAsync();
+
+    var skillService = scope.ServiceProvider.GetRequiredService<ISkillService>();
+    await skillService.SeedSkillsAsync();
 }
 
 if(app.Environment.IsDevelopment())
