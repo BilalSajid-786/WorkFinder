@@ -1,7 +1,7 @@
 USE [WorkFinderDb]
 GO
 
-/****** Object:  Table [dbo].[Users]    Script Date: 8/27/2025 5:49:35 AM ******/
+/****** Object:  Table [dbo].[Users]    Script Date: 8/27/2025 9:34:13 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -19,7 +19,7 @@ CREATE TABLE [dbo].[Users](
 	[Phone] [nvarchar](20) NOT NULL,
 	[CreatedAt] [datetime2](7) NOT NULL,
 	[UpdatedAt] [datetime2](7) NULL,
-	[CreatedBy] [uniqueidentifier] NOT NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
 	[UpdatedBy] [uniqueidentifier] NULL,
 	[IsActive] [bit] NOT NULL,
 	[IsDeleted] [bit] NOT NULL,
@@ -149,7 +149,7 @@ GO
 
 
 
-/****** Object:  StoredProcedure [dbo].[InsertUser]    Script Date: 8/27/2025 5:53:33 AM ******/
+/****** Object:  StoredProcedure [dbo].[InsertUser]    Script Date: 8/27/2025 9:36:47 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -175,16 +175,16 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 	
-	--DECLARE @InsertedIds TABLE (UserId UNIQUEIDENTIFIER);
-	DECLARE @NewUserId UNIQUEIDENTIFIER = NEWID();
+	DECLARE @InsertedIds TABLE (UserId UNIQUEIDENTIFIER);
+	--DECLARE @NewUserId UNIQUEIDENTIFIER = NEWID();
 
     -- Insert statements for procedure here
-	INSERT INTO Users (UserId,UserName,Email,PasswordHash,RoleId, City, Country, Phone, CreatedAt, CreatedBy) 
-	--OUTPUT Inserted.UserId INTO @InsertedIds
-	VALUES(@NewUserID,@UserName,@Email,@PasswordHash,@RoleId,@City,@Country,@Phone,@CreatedAt, @NewUserId);
+	INSERT INTO Users (UserName,Email,PasswordHash,RoleId, City, Country, Phone, CreatedAt) 
+	OUTPUT Inserted.UserId INTO @InsertedIds
+	VALUES(@UserName,@Email,@PasswordHash,@RoleId,@City,@Country,@Phone,@CreatedAt);
 
-	--SELECT UserId FROM @InsertedIds;
-	SELECT @NewUserId AS UserId;
+	SELECT UserId FROM @InsertedIds;
+	--SELECT @NewUserId AS UserId;
 END
 
 
