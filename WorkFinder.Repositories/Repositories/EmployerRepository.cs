@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,25 @@ namespace WorkFinder.Repositories.Repositories
             _dapperDbContext = dapperDbContext;
         }
 
+        public async Task<IEnumerable<Employer>> GetAllemployers()
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetAllEmployers]";
+            var employers = await connection.QueryAsync<Employer, Role, Industry, Employer>(
+                sql,
+                (employer, role, industry) =>
+                {
+                    employer.Role = role;
+                    employer.Industry = industry;
+                    return employer;
+                },
+                splitOn: "RoleId,IndustryId",
+                commandType: CommandType.StoredProcedure
+            );
+
+            return employers;
+        }
+
         /// <summary>
         /// Inserts a new employer in the database
         /// </summary>
@@ -32,7 +52,7 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@UserId", employer.UserId);
             parameters.Add("@IndustryId", employer.IndustryId);
             parameters.Add("@CompanyName", employer.CompanyName);
-            parameters.Add("@WebsiteUrl", employer.CompanyWebsite);
+            parameters.Add("@WebsiteUrl", employer.WebsiteUrl);
             parameters.Add("@CompanySize", employer.CompanySize);
             parameters.Add("@ContactPerson", employer.ContactPerson);
             parameters.Add("@RegistrationNumber", employer.RegistrationNumber);

@@ -9,6 +9,6 @@ namespace WorkFinder.Entities.Entities
     public class Industry
     {
         public Guid IndustryId { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string IndustryName { get; set; } = string.Empty;
     }
 }

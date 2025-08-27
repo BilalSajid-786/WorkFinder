@@ -15,5 +15,11 @@ namespace WorkFinder.RepositoryContracts
         /// <param name="user"></param>
         /// <returns></returns>
         Task<Guid> RegisterEmployerAsync(Employer employer);
+
+        /// <summary>
+        /// Gets all employers from database
+        /// </summary>
+        /// <returns>List of employers</returns>
+        Task<IEnumerable<Employer>> GetAllemployers();
     }
 }

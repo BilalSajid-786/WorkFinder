@@ -21,7 +21,7 @@ namespace WorkFinder.ServiceContracts.DTOs.Employer
         public string City {  get; set; } = string.Empty;
         [Required]
         public string Country {  get; set; } = string.Empty;
-        public string? CompanyWebsite { get; set; }
+        public string? WebsiteUrl { get; set; }
         [Required]
         public Guid IndustryId { get; set; }
         [Required]

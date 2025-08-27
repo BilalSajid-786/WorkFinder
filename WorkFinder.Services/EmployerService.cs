@@ -8,6 +8,7 @@ using WorkFinder.Entities.Entities;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Employer;
+using WorkFinder.ServiceContracts.DTOs.User;
 
 namespace WorkFinder.Services
 {
@@ -19,6 +20,12 @@ namespace WorkFinder.Services
         {
             _mapper = mapper;
             _employerRepository = employerRepository;
+        }
+
+        public async Task<IEnumerable<EmployerResponseDto>> GetAllEmployers()
+        {
+            var employers = await _employerRepository.GetAllemployers();
+            return _mapper.Map<IEnumerable<EmployerResponseDto>>(employers);
         }
 
         public async Task<Guid> RegisterEmployerAsync(EmployerRequestDto employerRequest, Guid userId)

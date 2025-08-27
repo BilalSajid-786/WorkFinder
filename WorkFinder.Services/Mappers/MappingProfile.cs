@@ -21,6 +21,9 @@ namespace WorkFinder.Services.Mappers
             CreateMap<User, UserResponseDto>()
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role.RoleId))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
+            CreateMap<Employer, EmployerResponseDto>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
+                .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName));
 
             //Employers
             CreateMap<EmployerRequestDto, Employer>();

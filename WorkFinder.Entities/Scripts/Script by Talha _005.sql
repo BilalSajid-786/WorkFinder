@@ -238,3 +238,43 @@ BEGIN
     -- Return the new EmployerId
     SELECT @NewEmployerId;
 END
+
+
+/****** Object:  StoredProcedure [dbo].[GetAllEmployers]    Script Date: 8/28/2025 2:54:32 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GetAllEmployers]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        usr.UserId,
+        usr.UserName,
+        usr.Email,
+        usr.City,
+        usr.Country,
+        usr.Phone,
+        usr.IsActive,
+
+        emp.EmployerId,
+        emp.CompanyName,
+        emp.WebsiteUrl,
+        emp.CompanySize,
+        emp.ContactPerson,
+        emp.RegistrationNumber,
+
+        rl.RoleId,
+        rl.RoleName,
+
+        ind.IndustryId,
+        ind.IndustryName
+    FROM [dbo].[Users] usr
+    INNER JOIN [dbo].[Employers] emp ON usr.UserId = emp.UserId
+    INNER JOIN [dbo].[Roles] rl ON usr.RoleId = rl.RoleId
+    INNER JOIN [dbo].[Industries] ind ON emp.IndustryId = ind.IndustryId;
+END
+
