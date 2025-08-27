@@ -49,6 +49,7 @@ namespace WorkFinder.Api
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<ISkillRepository,SkillRepository>();
+            services.AddTransient<IEmployerRepository, EmployerRepository>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();
@@ -56,6 +57,7 @@ namespace WorkFinder.Api
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<ISkillService,SkillService>();
+            services.AddTransient<IEmployerService, EmployerService>();
 
             return services;
         }

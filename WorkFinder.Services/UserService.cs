@@ -68,7 +68,11 @@ namespace WorkFinder.Services
                 UserName = registerRequestDto.Name,
                 Email = registerRequestDto.Email,
                 PasswordHash = passwordHash,
-                RoleId = registerRequestDto.RoleId
+                RoleId = registerRequestDto.RoleId,
+                City = registerRequestDto.City,
+                Country = registerRequestDto.Country,
+                Phone = registerRequestDto.Phone,
+                CreatedAt = DateTime.UtcNow
             };
             return await _userRepository.RegisterUserAsync(user);
         }

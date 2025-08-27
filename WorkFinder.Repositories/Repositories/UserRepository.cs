@@ -82,6 +82,10 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@Email", user.Email);
             parameters.Add("@PasswordHash", user.PasswordHash);
             parameters.Add("@RoleId", user.RoleId);
+            parameters.Add("@City", user.City);
+            parameters.Add("@Country", user.Country);
+            parameters.Add("@Phone", user.Phone);
+            parameters.Add("@CreatedAt", user.CreatedAt);
 
             return await connection.ExecuteScalarAsync<Guid>("InsertUser",parameters,
                 commandType:System.Data.CommandType.StoredProcedure);

@@ -5,6 +5,7 @@ using WorkFinder.Entities.Entities;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
+using WorkFinder.ServiceContracts.DTOs.Employer;
 
 namespace WorkFinder.Api.Controllers
 {
@@ -40,6 +41,11 @@ namespace WorkFinder.Api.Controllers
         public async Task<ActionResult<Guid>> Register(RegisterRequestDto registerRequest)
         {
             return await _authService.RegisterUserAsync(registerRequest);
+        }
+        [HttpPost]
+        public async Task<ActionResult<EmployerResponseDto>> RegisterEmployer(EmployerRequestDto employerRequest)
+        {
+            return await _authService.RegisterEmployerAsync(employerRequest);
         }
     }
 }

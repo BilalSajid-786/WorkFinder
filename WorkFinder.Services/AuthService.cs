@@ -9,6 +9,7 @@ using WorkFinder.Entities.Entities;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
+using WorkFinder.ServiceContracts.DTOs.Employer;
 
 namespace WorkFinder.Services
 {
@@ -18,13 +19,15 @@ namespace WorkFinder.Services
         private readonly IUserService _userService;
         private readonly PasswordHasher<object> _passwordHasher;
         private readonly IMapper _mapper;
-        public AuthService(ITokenService tokenService, IUserService userService, IMapper mapper)
+        private readonly IEmployerService _employerService;
+        public AuthService(ITokenService tokenService, IUserService userService, IMapper mapper, IEmployerService employerService)
         {
 
             _tokenService = tokenService;
             _userService = userService;
             _passwordHasher = new PasswordHasher<object>();
             _mapper = mapper;
+            _employerService = employerService;
         }
         public async Task<string?> AuthenticateAsync(string email, string password)
         {
@@ -48,6 +51,26 @@ namespace WorkFinder.Services
                 return _tokenService.GenerateToken(user);
 
             return null;
+        }
+
+        public async Task<EmployerResponseDto> RegisterEmployerAsync(EmployerRequestDto employerRequest)
+        {
+            var registerRequestDto = _mapper.Map<RegisterRequestDto>(employerRequest);
+            var passwordHash = _passwordHasher.HashPassword(null, registerRequestDto.Password);
+            //return await _userService.RegisterUserAsync(registerRequestDto, passwordHash);
+            var userId = await _userService.RegisterUserAsync(registerRequestDto, passwordHash);
+            if (userId == Guid.Empty)
+                throw new InvalidOperationException("Failed to register user.");
+
+            var employerId = await _employerService.RegisterEmployerAsync(employerRequest, userId);
+            if (employerId == Guid.Empty)
+                throw new InvalidOperationException("Failed to register employer.");
+
+            return new EmployerResponseDto
+            {
+                UserId = userId,
+                EmployerId = employerId
+            };
         }
 
         public async Task<Guid> RegisterUserAsync(RegisterRequestDto registerRequestDto)

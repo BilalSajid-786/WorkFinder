@@ -20,5 +20,11 @@ namespace WorkFinder.ServiceContracts.DTOs.Authentication
 
         [Required]
         public Guid RoleId { get; set; }
+        [Required]
+        public string City { get; set; } = string.Empty;
+        [Required]
+        public string Country { get; set; } = string.Empty;
+        [Required]
+        public string Phone { get; set; } = string.Empty;
     }
 }

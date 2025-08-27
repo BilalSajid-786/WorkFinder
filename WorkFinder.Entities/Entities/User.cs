@@ -14,5 +14,8 @@ namespace WorkFinder.Entities.Entities
         public string PasswordHash { get; set; } = string.Empty;
         public Guid RoleId { get; set; } //foreign key to role table
         public Role? Role { get; set; }
+        public string City {get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
     }
 }

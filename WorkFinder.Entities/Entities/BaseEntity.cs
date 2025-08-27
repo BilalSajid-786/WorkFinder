@@ -12,5 +12,8 @@ namespace WorkFinder.Entities.Entities
         public DateTime UpdatedAt { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted {  get; set; }
+
     }
 }
