@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Entities.Entities;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
+using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
 using WorkFinder.ServiceContracts.DTOs.Employer;
 
@@ -28,8 +29,8 @@ namespace WorkFinder.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> Login(LoginRequestDto loginRequestDto)
         {
-            var token = await _authService.AuthenticateAsync(loginRequestDto.Email,loginRequestDto.Password);
-            return Ok(new {token = token});
+            var token = await _authService.AuthenticateAsync(loginRequestDto.Email, loginRequestDto.Password);
+            return Ok(new { token = token });
         }
 
         /// <summary>
@@ -46,6 +47,17 @@ namespace WorkFinder.Api.Controllers
         public async Task<ActionResult<EmployerResponseDto>> RegisterEmployer(EmployerRequestDto employerRequest)
         {
             return await _authService.RegisterEmployerAsync(employerRequest);
+        }
+
+        /// <summary>
+        /// Registers an Applicant
+        /// </summary>
+        /// <param name="applicantRequestDto"></param>
+        /// <returns>Applicant Id</returns>
+        [HttpPost]
+        public async Task<ActionResult<ApplicantResponseDto>> RegisterApplicant(ApplicantRequestDto applicantRequestDto)
+        {
+            return await _authService.RegisterApplicantAsync(applicantRequestDto);
         }
     }
 }

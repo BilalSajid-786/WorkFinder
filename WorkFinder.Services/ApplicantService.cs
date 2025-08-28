@@ -1,0 +1,37 @@
+﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WorkFinder.Entities.Entities;
+using WorkFinder.RepositoryContracts;
+using WorkFinder.ServiceContracts;
+using WorkFinder.ServiceContracts.DTOs.Applicant;
+
+namespace WorkFinder.Services
+{
+    /// <summary>
+    /// Service Implementation for Applicant
+    /// </summary>
+    public class ApplicantService : IApplicantService
+    {
+        private readonly IApplicantRepository _applicantRepository;
+        private readonly IMapper _mapper;
+        public ApplicantService(IApplicantRepository applicantRepository,IMapper mapper)
+        {
+            _applicantRepository = applicantRepository;
+            _mapper = mapper;
+        }
+        /// <summary>
+        /// Insert an applicant into the system
+        /// </summary>
+        /// <param name="applicantRequestDto"></param>
+        /// <returns>ApplicantId</returns>
+        public async Task<Guid> InsertApplicantAsync(ApplicantRequestDto applicantRequestDto)
+        {
+
+            return await _applicantRepository.InsertApplicantAsync(_mapper.Map<Applicant>(applicantRequestDto));
+        }
+    }
+}

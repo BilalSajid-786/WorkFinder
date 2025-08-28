@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkFinder.ServiceContracts.DTOs.Authentication;
 
-namespace WorkFinder.Entities.Entities
+namespace WorkFinder.ServiceContracts.DTOs.Applicant
 {
-    public class Applicant
+    public class ApplicantResponseDto
     {
         public Guid ApplicantId { get; set; }
         public Guid UserId { get; set; }
-        public string? Resume { get; set; }
-        public User? User { get; set; }
-
     }
 }
