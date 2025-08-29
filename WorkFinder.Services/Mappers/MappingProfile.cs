@@ -21,15 +21,17 @@ namespace WorkFinder.Services.Mappers
             CreateMap<User, UserResponseDto>()
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role.RoleId))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
-            CreateMap<Employer, EmployerResponseDto>()
-                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
-                .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName));
-
+            
             //Employers
             CreateMap<EmployerRequestDto, Employer>();
             CreateMap<EmployerRequestDto, RegisterRequestDto>()
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.CompanyName));
+            CreateMap<Employer, EmployerResponseDto>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
+                .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName))
+                .ForMember(dest => dest.IndustryId, opt => opt.MapFrom(src => src.Industry.IndustryId))
+                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role.RoleId));
 
             //Skills
             CreateMap<SkillRequestDto, Skill>();
