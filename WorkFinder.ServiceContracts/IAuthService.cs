@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
 using WorkFinder.ServiceContracts.DTOs.Employer;
 
@@ -34,5 +35,12 @@ namespace WorkFinder.ServiceContracts
         /// <param name="EmployerRequestDto"></param>
         /// <returns></returns>
         Task<EmployerResponseDto> RegisterEmployerAsync(EmployerRequestDto employerRequest);
+
+        /// <summary>
+        /// Register an applicant.
+        /// </summary>
+        /// <param name="applicantRequestDto"></param>
+        /// <returns>Applicant Id</returns>
+        Task<ApplicantResponseDto> RegisterApplicantAsync(ApplicantRequestDto? applicantRequestDto);
     }
 }

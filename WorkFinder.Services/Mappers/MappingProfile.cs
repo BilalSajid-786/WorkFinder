@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkFinder.Entities.Entities;
+using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
 using WorkFinder.ServiceContracts.DTOs.Employer;
 using WorkFinder.ServiceContracts.DTOs.Skill;
@@ -32,6 +33,10 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName))
                 .ForMember(dest => dest.IndustryId, opt => opt.MapFrom(src => src.Industry.IndustryId))
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role.RoleId));
+
+            //Applicants
+            CreateMap<ApplicantRequestDto, Applicant>();
+            CreateMap<ApplicantRequestDto, RegisterRequestDto>();
 
             //Skills
             CreateMap<SkillRequestDto, Skill>();
