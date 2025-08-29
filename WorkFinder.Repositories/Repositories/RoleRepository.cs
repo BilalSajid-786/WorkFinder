@@ -33,6 +33,28 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
+        /// Get role permissions for given role
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<RolePermission>> GetRolePermissionsByRoleIdAsync(Guid roleId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetRolePermissionsByRoleId]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@RoleId", roleId);
+            return await connection.QueryAsync<RolePermission,Permission,RolePermission>(sql,
+                (rolePermission,permission) =>
+                {
+                    rolePermission.Permission = permission;
+                    return rolePermission;
+                },
+                parameters,
+                splitOn: "PermissionId",
+                commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
         /// Get roles from the database
         /// </summary>
         /// <returns>All roles</returns>

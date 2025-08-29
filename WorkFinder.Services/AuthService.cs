@@ -52,17 +52,18 @@ namespace WorkFinder.Services
 
             //return token if valid email and password
             if (isValidPassword == PasswordVerificationResult.Success)
-                return _tokenService.GenerateToken(user);
+                return await _tokenService.GenerateToken(user);
+
 
             return null;
         }
 
         public async Task<ApplicantResponseDto> RegisterApplicantAsync(ApplicantRequestDto applicantRequestDto)
-        {    
+        {
             //map from applicant dto to register dto
             RegisterRequestDto registerRequestDto = _mapper.Map<RegisterRequestDto>(applicantRequestDto);
             registerRequestDto.RoleId = SystemRoles.ApplicantId;
-            
+
             //insert user
             var userId = await RegisterUserAsync(registerRequestDto);
             if (userId == Guid.Empty)

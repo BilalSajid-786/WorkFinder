@@ -17,6 +17,6 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        string GenerateToken(UserResponseDto user);
+        Task<string> GenerateToken(UserResponseDto user);
     }
 }

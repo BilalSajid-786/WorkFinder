@@ -29,5 +29,12 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <returns>Roles</returns>
         Task<IEnumerable<RoleResponseDto>> GetRolesAsync();
+
+        /// <summary>
+        /// Get rolePermissions for given roleId
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<RolePermissionResponseDto>> GetRolePermissionsByRoleIdAsync(Guid roleId);
     }
 }

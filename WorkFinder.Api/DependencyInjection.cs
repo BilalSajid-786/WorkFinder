@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WorkFinder.Entities.Entities;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.Repositories.Repositories;
 using WorkFinder.RepositoryContracts;
@@ -44,6 +45,18 @@ namespace WorkFinder.Api
                             Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
                     };
                 });
+
+            //Add Authorization with policies
+            services.AddAuthorization(options =>
+            {
+                foreach (var permission in SystemPermissions.GetAllPermissions())
+                {
+                    options.AddPolicy(permission.Action, policy =>
+                    {
+                        policy.RequireClaim("Permission", permission.Action);
+                    });
+                }
+            });
 
             //Repositories
             services.AddTransient<IUserRepository, UserRepository>();
