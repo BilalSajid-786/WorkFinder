@@ -36,7 +36,7 @@ if(app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(swg =>
     {
-        swg.SwaggerEndpoint("/swagger/v1/swagger.json", "Wrok Finder API V1");
+        swg.SwaggerEndpoint("/swagger/v1/swagger.json", "Work Finder API V1");
     });
 }
 
