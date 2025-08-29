@@ -19,6 +19,12 @@ namespace WorkFinder.ServiceContracts
         Task SeedRolesAsync();
 
         /// <summary>
+        /// Seed the Permissions for every role, if permissions doesn't exist
+        /// </summary>
+        /// <returns></returns>
+        Task SeedRolePermissionsAsync();
+
+        /// <summary>
         /// Gets all roles
         /// </summary>
         /// <returns>Roles</returns>

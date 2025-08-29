@@ -19,9 +19,21 @@ namespace WorkFinder.RepositoryContracts
         Task SeedRolesAsync();
 
         /// <summary>
+        /// Seed the Permissions for every role, if permissions doesn't exist
+        /// </summary>
+        /// <returns></returns>
+        Task SeedRolePermissionsAsync();
+
+        /// <summary>
         /// Gets all roles from the database
         /// </summary>
         /// <returns>All rows</returns>
         Task<IEnumerable<Role>> GetRolesAsync();
+
+        /// <summary>
+        /// Get all permissions for every role from the database
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<RolePermission>> GetRolePermissionsAsync();
     }
 }

@@ -11,9 +11,22 @@ var app = builder.Build();
 //Seeding roles
 using (var scope = app.Services.CreateScope())
 {
+    //roles
     var roleService = scope.ServiceProvider.GetRequiredService<IRoleService>();
     await roleService.SeedRolesAsync();
 
+    //modules
+    var moduleService = scope.ServiceProvider.GetRequiredService<IModuleService>();
+    await moduleService.SeedModulesAsync();
+
+    //permissions
+    var permissionService = scope.ServiceProvider.GetRequiredService<IPermissionService>();
+    await permissionService.SeedPermissionsAsync();
+
+    //rolePermissions
+    await roleService.SeedRolePermissionsAsync();
+
+    //skills
     var skillService = scope.ServiceProvider.GetRequiredService<ISkillService>();
     await skillService.SeedSkillsAsync();
 }

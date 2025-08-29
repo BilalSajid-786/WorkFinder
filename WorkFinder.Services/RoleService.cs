@@ -37,6 +37,15 @@ namespace WorkFinder.Services
         }
 
         /// <summary>
+        /// Seed role permissions, if permissions doesn't exist
+        /// </summary>
+        /// <returns></returns>
+        public async Task SeedRolePermissionsAsync()
+        {
+            await _roleRepository.SeedRolePermissionsAsync();
+        }
+
+        /// <summary>
         /// Seed roles, if roles doesn't exist
         /// </summary>
         /// <returns></returns>
