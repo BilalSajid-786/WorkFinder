@@ -12,17 +12,20 @@ namespace WorkFinder.Entities.Entities
         public static readonly Module Employer = new()
         {
             ModuleId = 1,
-            ModuleName = "Employer"
+            ModuleName = "Employer",
+            Route = "/employer"
         };
         public static readonly Module Applicant = new()
         {
             ModuleId = 2,
-            ModuleName = "Applicant"
+            ModuleName = "Applicant",
+            Route = "/applicant"
         };
         public static Module Job = new()
         {
             ModuleId = 3,
-            ModuleName = "Job"
+            ModuleName = "Job",
+            Route = "/job"
         };
 
         public static IEnumerable<Module> GetAllModules() => new List<Module>()

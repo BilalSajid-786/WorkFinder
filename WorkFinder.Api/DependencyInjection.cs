@@ -53,9 +53,15 @@ namespace WorkFinder.Api
                 {
                     options.AddPolicy(permission.Action, policy =>
                     {
-                        policy.RequireClaim("Permission", permission.Action);
+                        policy.RequireClaim("Permissions", permission.Action);
                     });
                 }
+            });
+
+            //CORS policy
+            services.AddCors(options =>
+            {
+
             });
 
             //Repositories

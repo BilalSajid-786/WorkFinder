@@ -44,11 +44,12 @@ namespace WorkFinder.Services
             {
                 new Claim("UserId",user.UserId.ToString()),
                 new Claim("RoleId",user.RoleId.ToString()),
+                new Claim("UserRole",user.RoleName)
             };
 
             foreach (var permission in permissions) 
             {
-                claims.Add(new Claim("Permission", permission.Action));
+                claims.Add(new Claim("Permissions", permission.Action));
             }
 
             //token
