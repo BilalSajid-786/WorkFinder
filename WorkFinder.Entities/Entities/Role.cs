@@ -11,5 +11,6 @@ namespace WorkFinder.Entities.Entities
         public Guid RoleId { get; set; }
         public string RoleName { get; set; } = string.Empty;
         public List<User?> Users { get; set; } = new List<User?>();
+        public IEnumerable<RolePermission>? Permissions { get; set; }
     }
 }

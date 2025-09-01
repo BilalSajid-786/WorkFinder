@@ -1,9 +1,4 @@
 ﻿using Dapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WorkFinder.Entities.Entities;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.RepositoryContracts;
@@ -49,8 +44,19 @@ namespace WorkFinder.Repositories.Repositories
         public async Task<User?> GetUserByEmailAsync(string email)
         {
             using var connection = _dapperDbContext.CreateConnection();
-            var user = await connection.QuerySingleOrDefaultAsync<User>("SELECT * FROM Users WHERE Email = @Email", new {Email = email});
-            return user;
+            var sql = "[GetUserByEmail]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@Email", email);
+            var user = await connection.QueryAsync<User,Role,User>(sql,
+                (user, role) =>
+                {
+                    user.Role = role;
+                    return user;
+                },
+                parameters,
+                splitOn: "RoleId",
+                commandType: System.Data.CommandType.StoredProcedure);
+            return user.SingleOrDefault();
         }
 
         /// <summary>

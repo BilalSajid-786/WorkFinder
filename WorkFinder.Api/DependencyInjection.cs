@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WorkFinder.Entities.Entities;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.Repositories.Repositories;
 using WorkFinder.RepositoryContracts;
@@ -45,6 +46,18 @@ namespace WorkFinder.Api
                     };
                 });
 
+            //Add Authorization with policies
+            services.AddAuthorization(options =>
+            {
+                foreach (var permission in SystemPermissions.GetAllPermissions())
+                {
+                    options.AddPolicy(permission.Action, policy =>
+                    {
+                        policy.RequireClaim("Permission", permission.Action);
+                    });
+                }
+            });
+
             //Repositories
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
@@ -52,6 +65,8 @@ namespace WorkFinder.Api
             services.AddTransient<IEmployerRepository, EmployerRepository>();
             services.AddTransient<IApplicantRepository,ApplicantRepository>();
             services.AddTransient<IIndustryRepository,IndustryRepository>();
+            services.AddTransient<IPermissionRepository, PermissionRepository>();
+            services.AddTransient<IModuleRepository, ModuleRepository>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();
@@ -62,6 +77,8 @@ namespace WorkFinder.Api
             services.AddTransient<IEmployerService, EmployerService>();
             services.AddTransient<IApplicantService,ApplicantService>();
             services.AddTransient<IIndustryService,IndustryService>();
+            services.AddTransient<IPermissionService, PermissionService>();
+            services.AddTransient<IModuleService,ModuleService>();
 
             return services;
         }

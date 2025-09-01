@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Entities.Entities;
@@ -38,11 +39,15 @@ namespace WorkFinder.Api.Controllers
         /// </summary>
         /// <param name="loginRequest"></param>
         /// <returns>Id of the registered user</returns>
+        [Authorize(Policy = "Job.Apply")]
         [HttpPost]
         public async Task<ActionResult<Guid>> Register(RegisterRequestDto registerRequest)
         {
+            var user = HttpContext.User;
             return await _authService.RegisterUserAsync(registerRequest);
         }
+
+
         [HttpPost]
         public async Task<ActionResult<EmployerResponseDto>> RegisterEmployer(EmployerRequestDto employerRequest)
         {

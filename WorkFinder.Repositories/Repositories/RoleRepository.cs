@@ -22,6 +22,39 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
+        /// Get permissions for every role from the database
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<RolePermission>> GetRolePermissionsAsync()
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetAllRolePermissions]";
+            return await connection.QueryAsync<RolePermission>(sql);
+        }
+
+        /// <summary>
+        /// Get role permissions for given role
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<RolePermission>> GetRolePermissionsByRoleIdAsync(Guid roleId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetRolePermissionsByRoleId]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@RoleId", roleId);
+            return await connection.QueryAsync<RolePermission,Permission,RolePermission>(sql,
+                (rolePermission,permission) =>
+                {
+                    rolePermission.Permission = permission;
+                    return rolePermission;
+                },
+                parameters,
+                splitOn: "PermissionId",
+                commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
         /// Get roles from the database
         /// </summary>
         /// <returns>All roles</returns>
@@ -30,6 +63,31 @@ namespace WorkFinder.Repositories.Repositories
             using var connection = _dapperDbContext.CreateConnection();
             var sql = "[GetAllRoles]";
             return await connection.QueryAsync<Role>(sql);
+        }
+
+        /// <summary>
+        /// Seed permissions for every role, if doesn't exist
+        /// </summary>
+        /// <returns></returns>
+        public async Task SeedRolePermissionsAsync()
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var rolePermissions = await GetRolePermissionsAsync();
+            if(!rolePermissions.Any())
+            {
+                var insertionSql = "[InsertRolePermission]";
+                foreach (var rolePermission in SystemDefaultRolePermissions.RolePermissions)
+                {
+                    foreach (var action in rolePermission.Value)
+                    {
+                        var parameters = new DynamicParameters();
+                        parameters.Add("@RoleId", rolePermission.Key);
+                        parameters.Add("@PermissionId", action.PermissionId);
+                        await connection.ExecuteScalarAsync<int>(insertionSql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                    }
+
+                }
+            }
         }
 
         /// <summary>

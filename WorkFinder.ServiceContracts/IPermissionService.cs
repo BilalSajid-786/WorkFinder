@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
-using WorkFinder.ServiceContracts.DTOs.User;
 
 namespace WorkFinder.ServiceContracts
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface ITokenService
+    public interface IPermissionService
     {
         /// <summary>
-        /// 
+        /// Seeds permissions to the system
         /// </summary>
-        /// <param name="user"></param>
         /// <returns></returns>
-        Task<string> GenerateToken(UserResponseDto user);
+        Task SeedPermissionsAsync();
     }
 }

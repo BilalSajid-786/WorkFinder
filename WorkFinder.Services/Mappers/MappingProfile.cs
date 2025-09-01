@@ -9,6 +9,7 @@ using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
 using WorkFinder.ServiceContracts.DTOs.Employer;
 using WorkFinder.ServiceContracts.DTOs.Industry;
+using WorkFinder.ServiceContracts.DTOs.Role;
 using WorkFinder.ServiceContracts.DTOs.Skill;
 using WorkFinder.ServiceContracts.DTOs.User;
 
@@ -24,6 +25,15 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role.RoleId))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
             
+            CreateMap<Employer, EmployerResponseDto>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
+                .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName));
+
+            //Roles
+            CreateMap<RolePermission, RolePermissionResponseDto>()
+                .ForMember(dest => dest.PermissionId, opt => opt.MapFrom(src => src.Permission.PermissionId))
+                .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.Permission.Action));
+
             //Employers
             CreateMap<EmployerRequestDto, Employer>();
             CreateMap<EmployerRequestDto, RegisterRequestDto>()

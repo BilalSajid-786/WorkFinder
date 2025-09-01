@@ -19,9 +19,11 @@ namespace WorkFinder.Services
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
-        public TokenService(IConfiguration configuration)
+        private readonly IRoleService _roleService;
+        public TokenService(IConfiguration configuration, IRoleService roleService)
         {
             _configuration = configuration;
+            _roleService = roleService;
         }
 
         /// <summary>
@@ -29,19 +31,25 @@ namespace WorkFinder.Services
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public string GenerateToken(UserResponseDto user)
+        public async Task<string> GenerateToken(UserResponseDto user)
         {
             //security key
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            var permissions = await _roleService.GetRolePermissionsByRoleIdAsync(user.RoleId);
+
             //claims
-            var claims = new[]
+            var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.Sub,user.UserId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email,user.Email),
+                new Claim("UserId",user.UserId.ToString()),
+                new Claim("RoleId",user.RoleId.ToString()),
             };
+
+            foreach (var permission in permissions) 
+            {
+                claims.Add(new Claim("Permission", permission.Action));
+            }
 
             //token
             var token = new JwtSecurityToken(
