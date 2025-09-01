@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,12 @@ namespace WorkFinder.Services
     public class EmployerService : IEmployerService
     {
         private readonly IMapper _mapper;
+        private readonly PasswordHasher<object> _passwordHasher;
         private readonly IEmployerRepository _employerRepository;
         public EmployerService(IMapper mapper, IEmployerRepository employerRepository) 
         {
             _mapper = mapper;
+            _passwordHasher = new PasswordHasher<object>();
             _employerRepository = employerRepository;
         }
 
@@ -36,6 +39,7 @@ namespace WorkFinder.Services
         public async Task<int> EditEmployerAsync(Guid userId, EmployerRequestDto employerRequest)
         {
             var employer = _mapper.Map<Employer>(employerRequest);
+            employer.Password = _passwordHasher.HashPassword(null, employer.Password);
             var rowsAffected = await _employerRepository.EditEmployerAsync(userId, employer);
             return rowsAffected; // 0 in case of fail. 1 in case of success.
         }

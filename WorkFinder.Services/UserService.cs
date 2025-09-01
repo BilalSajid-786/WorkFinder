@@ -67,7 +67,7 @@ namespace WorkFinder.Services
             {
                 UserName = registerRequestDto.Name,
                 Email = registerRequestDto.Email,
-                PasswordHash = passwordHash,
+                Password = passwordHash,
                 RoleId = registerRequestDto.RoleId,
                 City = registerRequestDto.City,
                 Country = registerRequestDto.Country,

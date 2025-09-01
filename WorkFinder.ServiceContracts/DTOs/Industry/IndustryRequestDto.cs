@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkFinder.Entities.Entities
+namespace WorkFinder.ServiceContracts.DTOs.Industry
 {
-    public class Industry
+    public class IndustryRequestDto
     {
-        public int IndustryId { get; set; }
+        [Required]
         public string IndustryName { get; set; } = string.Empty;
     }
 }

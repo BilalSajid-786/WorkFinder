@@ -12,19 +12,9 @@ namespace WorkFinder.ServiceContracts.DTOs.Employer
     {
         [Required]
         public string CompanyName { get; set; } = string.Empty;
-        //[Required]
-        //[EmailAddress]
-        //public string Email { get; set; } = string.Empty;
-        [Required]
-        [MinLength(8)]
-        public string PasswordHash { get; set; } = string.Empty;
-        //[Required]
-        //public string City {  get; set; } = string.Empty;
-        //[Required]
-        //public string Country {  get; set; } = string.Empty;
         public string? WebsiteUrl { get; set; }
         [Required]
-        public Guid IndustryId { get; set; }
+        public int IndustryId { get; set; }
         [Required]
         public string CompanySize { get; set; } = string.Empty;
         //[Required]

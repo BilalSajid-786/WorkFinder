@@ -80,7 +80,7 @@ namespace WorkFinder.Repositories.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("@UserName", user.UserName);
             parameters.Add("@Email", user.Email);
-            parameters.Add("@PasswordHash", user.PasswordHash);
+            parameters.Add("@PasswordHash", user.Password);
             parameters.Add("@RoleId", user.RoleId);
             parameters.Add("@City", user.City);
             parameters.Add("@Country", user.Country);

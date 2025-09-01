@@ -8,6 +8,7 @@ using WorkFinder.Entities.Entities;
 using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
 using WorkFinder.ServiceContracts.DTOs.Employer;
+using WorkFinder.ServiceContracts.DTOs.Industry;
 using WorkFinder.ServiceContracts.DTOs.Skill;
 using WorkFinder.ServiceContracts.DTOs.User;
 
@@ -26,7 +27,8 @@ namespace WorkFinder.Services.Mappers
             //Employers
             CreateMap<EmployerRequestDto, Employer>();
             CreateMap<EmployerRequestDto, RegisterRequestDto>()
-                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
+                //.ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
+                //.ForMember(dest => dest.ConfirmPassword, opt => opt.MapFrom(src =>src.ConfirmPasswordHash))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.CompanyName));
             CreateMap<Employer, EmployerResponseDto>()
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
@@ -43,6 +45,12 @@ namespace WorkFinder.Services.Mappers
             CreateMap<Skill, SkillResponseDto>();
             CreateMap<string?, Skill>()
                 .ForMember(dest => dest.SkillName, opt => opt.MapFrom(src => src));
+
+            //Industries
+            CreateMap<IndustryRequestDto, Industry>();
+            CreateMap<Industry, IndustryResponseDto>();
+            CreateMap<string?, Industry>()
+                .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src));
         }
     }
 }
