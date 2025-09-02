@@ -30,6 +30,7 @@ using (var scope = app.Services.CreateScope())
     var skillService = scope.ServiceProvider.GetRequiredService<ISkillService>();
     await skillService.SeedSkillsAsync();
 
+    //industries
     var industryService = scope.ServiceProvider.GetRequiredService<IIndustryService>();
     await industryService.SeedIndustriesAsync();
 }
