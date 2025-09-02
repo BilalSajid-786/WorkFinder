@@ -10,6 +10,8 @@ namespace WorkFinder.Entities.Entities
     {
         public int ModuleId { get; set; }
         public string ModuleName { get; set; } = string.Empty;
+        public string? Route { get; set; }
+        public string? Icon { get; set; }
         IEnumerable<Permission>? Permissions { get; set; }
     }
 }

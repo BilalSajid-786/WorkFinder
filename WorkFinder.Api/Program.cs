@@ -48,6 +48,11 @@ app.UseHttpsRedirection();  //for strict https redirection
 app.UseStaticFiles();      // for serving static files
 app.UseRouting();         // for routing
 
+app.UseCors(x => x   
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
 app.UseAuthentication(); // for authentication
 app.UseAuthorization(); // for authorization
 

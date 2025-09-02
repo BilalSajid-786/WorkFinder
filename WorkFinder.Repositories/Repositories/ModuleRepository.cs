@@ -44,6 +44,7 @@ namespace WorkFinder.Repositories.Repositories
                     var parameters = new DynamicParameters();
                     parameters.Add("@ModuleId", module.ModuleId);
                     parameters.Add("@ModuleName", module.ModuleName);
+                    parameters.Add("@Route", module.Route);
                     await connection.ExecuteScalarAsync(insertionSql, parameters, commandType: System.Data.CommandType.StoredProcedure);
                 }
             }
