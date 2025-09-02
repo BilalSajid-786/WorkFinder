@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace WorkFinder.Entities.Entities
 {
-    public class Employer : User
+    public class Employer
     {
+        public Guid UserId { get; set; }
         public Guid EmployerId { get; set; }
         public string CompanyName { get; set; } = string.Empty;
         public string? WebsiteUrl { get; set; }
@@ -16,5 +17,6 @@ namespace WorkFinder.Entities.Entities
         public string CompanySize { get; set; } = string.Empty;
         public string ContactPerson { get; set; } = string.Empty;
         public string? RegistrationNumber { get; set; }
+        public User? User { get; set; }
     }
 }

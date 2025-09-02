@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Entities.Entities;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.User;
+using WorkFinder.Services;
 
 namespace WorkFinder.Api.Controllers
 {
@@ -21,6 +22,20 @@ namespace WorkFinder.Api.Controllers
         {
             var users = await _userService.GetAllUsers();
             return Ok(users);
+        }
+
+        [HttpDelete("{userId:Guid}")]
+        public async Task<IActionResult> DeleteUser(Guid userId)
+        {
+            var isDeleted = await _userService.DeleteUserAsync(userId);
+            return Ok(isDeleted);
+        }
+
+        [HttpPatch("{userId}/status")]
+        public async Task<ActionResult<bool?>> UpdateUserStatus(Guid userId, [FromBody] bool isActive)
+        {
+            var result = await _userService.UpdateUserStatusAsync(userId, isActive);
+            return Ok(result);
         }
     }
 }

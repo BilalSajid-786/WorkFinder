@@ -19,32 +19,25 @@ namespace WorkFinder.Repositories.Repositories
             _dapperDbContext = dapperDbContext;
         }
 
-        public async Task<bool> DeleteEmployerAsync(Guid userId)
-        {
-            using var connection = _dapperDbContext.CreateConnection();
-            var sql = "[DeleteEmployer]";
+        //public async Task<bool> DeleteEmployerAsync(Guid employerId)
+        //{
+        //    using var connection = _dapperDbContext.CreateConnection();
+        //    var sql = "[DeleteEmployer]";
 
-            var rowsAffected = await connection.ExecuteScalarAsync<int>(
-                sql,
-                new { UserId = userId },
-                commandType: CommandType.StoredProcedure
-            );
+        //    var rowsAffected = await connection.ExecuteScalarAsync<int>(
+        //        sql,
+        //        new { EmployerId = employerId },
+        //        commandType: CommandType.StoredProcedure
+        //    );
 
-            return rowsAffected > 0; // true if a row was updated, false if none matched
-        }
+        //    return rowsAffected > 0; // true if a row was updated, false if none matched
+        //}
 
-        public async Task<int> EditEmployerAsync(Guid userId, Employer employer)
+        public async Task<string?> EditEmployerAsync(Employer employer)
         {
             using var connection = _dapperDbContext.CreateConnection();
             var parameters = new DynamicParameters();
-            parameters.Add("@UserId", userId);
-            parameters.Add("@UserName", employer.CompanyName);
-            parameters.Add("@Email", employer.Email);
-            parameters.Add("@PasswordHash", employer.Password);
-            parameters.Add("@City", employer.City);
-            parameters.Add("@Country", employer.Country);
-            parameters.Add("@Phone", employer.Phone);
-
+            parameters.Add("@EmployerId", employer.EmployerId);
             parameters.Add("@CompanyName", employer.CompanyName);
             parameters.Add("@WebsiteUrl", employer.WebsiteUrl);
             parameters.Add("@CompanySize", employer.CompanySize);
@@ -52,45 +45,47 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@RegistrationNumber", employer.RegistrationNumber);
             parameters.Add("@IndustryId", employer.IndustryId);
 
-            var rowsAffected = await connection.ExecuteScalarAsync<int>(
+            var status = await connection.ExecuteScalarAsync<string?>(
             "UpdateEmployer", parameters, commandType: CommandType.StoredProcedure);
-            return rowsAffected;
+            return status;
         }
 
         public async Task<IEnumerable<Employer>> GetAllemployers()
         {
             using var connection = _dapperDbContext.CreateConnection();
             var sql = "[GetAllEmployers]";
-            var employers = await connection.QueryAsync<Employer, Role, Industry, Employer>(
+            var employers = await connection.QueryAsync<Employer, User, Role, Industry, Employer>(
                 sql,
-                (employer, role, industry) =>
+                (employer, user, role, industry) =>
                 {
-                    employer.Role = role;
+                    employer.User = user;
+                    employer.User.Role = role;
                     employer.Industry = industry;
                     return employer;
                 },
-                splitOn: "RoleId,IndustryId",
+                splitOn: "UserId,RoleId,IndustryId",
                 commandType: CommandType.StoredProcedure
             );
 
             return employers;
         }
 
-        public async Task<Employer?> GetEmployerByIdAsync(Guid userId)
+        public async Task<Employer?> GetEmployerByIdAsync(Guid employerId)
         {
             using var connection = _dapperDbContext.CreateConnection();
             var sql = "[GetEmployerById]";
 
-            var employer = await connection.QueryAsync<Employer, Role, Industry, Employer>(
+            var employer = await connection.QueryAsync<Employer, User, Role, Industry, Employer>(
                 sql,
-                (emp, role, industry) =>
+                (emp, user, role, industry) =>
                 {
-                    emp.Role = role;
+                    emp.User = user;
+                    emp.User.Role = role;
                     emp.Industry = industry;
                     return emp;
                 },
-                new { UserId = userId },
-                splitOn: "RoleId,IndustryId",
+                new { EmployerId = employerId },
+                splitOn: "UserId,RoleId,IndustryId",
                 commandType: CommandType.StoredProcedure
             );
 
@@ -120,18 +115,18 @@ namespace WorkFinder.Repositories.Repositories
                 commandType: System.Data.CommandType.StoredProcedure);
         }
 
-        public async Task<bool?> UpdateEmployerStatusAsync(Guid userId, bool isActive)
-        {
-            using var connection = _dapperDbContext.CreateConnection();
-            var sql = "[UpdateEmployerStatus]";
+        //public async Task<bool?> UpdateEmployerStatusAsync(Guid employerId, bool isActive)
+        //{
+        //    using var connection = _dapperDbContext.CreateConnection();
+        //    var sql = "[UpdateEmployerStatus]";
 
-            var updatedStatus = await connection.ExecuteScalarAsync<bool?>(
-                sql,
-                new { UserId = userId, IsActive = isActive },
-                commandType: CommandType.StoredProcedure
-            );
+        //    var updatedStatus = await connection.ExecuteScalarAsync<bool?>(
+        //        sql,
+        //        new { EmployerId = employerId, IsActive = isActive },
+        //        commandType: CommandType.StoredProcedure
+        //    );
 
-            return updatedStatus; // true = Active, false = Inactive, null = User not found
-        }
+        //    return updatedStatus; // true = Active, false = Inactive, null = User not found
+        //}
     }
 }

@@ -24,32 +24,32 @@ namespace WorkFinder.Api.Controllers
             return Ok(employers);
         }
 
-        [HttpPatch("{userId:Guid}")]
-        public async Task<ActionResult<int>> EditEmployer(Guid userId, [FromBody] EmployerRequestDto employerRequest)
+        [HttpPatch("{employerId:Guid}")]
+        public async Task<ActionResult<string>> EditEmployer(Guid employerId, [FromBody] EmployerRequestDto employerRequest)
         {
-            var result = await _employerService.EditEmployerAsync(userId, employerRequest);
+            var result = await _employerService.EditEmployerAsync(employerId, employerRequest);
             return Ok(result);
         }
 
-        [HttpGet("{userId:Guid}")]
-        public async Task<ActionResult<EmployerResponseDto>> GetEmployerById(Guid userId)
+        [HttpGet("{employerId:Guid}")]
+        public async Task<ActionResult<EmployerResponseDto>> GetEmployerById(Guid employerId)
         {
-            var employer = await _employerService.GetEmployerByIdAsync(userId);
+            var employer = await _employerService.GetEmployerByIdAsync(employerId);
             return Ok(employer);
         }
 
-        [HttpDelete("{userId:Guid}")]
-        public async Task<IActionResult> DeleteEmployer(Guid userId)
-        {
-            var isDeleted = await _employerService.DeleteEmployerAsync(userId);
-            return Ok(isDeleted);
-        }
+        //[HttpDelete("{employerId:Guid}")]
+        //public async Task<IActionResult> DeleteEmployer(Guid employerId)
+        //{
+        //    var isDeleted = await _employerService.DeleteEmployerAsync(employerId);
+        //    return Ok(isDeleted);
+        //}
 
-        [HttpPatch("{userId}/status")]
-        public async Task<ActionResult<bool?>> UpdateEmployerStatus(Guid userId, [FromBody] bool isActive)
-        {
-            var result = await _employerService.UpdateEmployerStatusAsync(userId, isActive);
-            return Ok(result);
-        }
+        //[HttpPatch("{userId}/status")]
+        //public async Task<ActionResult<bool?>> UpdateEmployerStatus(Guid userId, [FromBody] bool isActive)
+        //{
+        //    var result = await _employerService.UpdateEmployerStatusAsync(userId, isActive);
+        //    return Ok(result);
+        //}
     }
 }

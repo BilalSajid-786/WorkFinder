@@ -25,9 +25,9 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role.RoleId))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
             
-            CreateMap<Employer, EmployerResponseDto>()
-                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
-                .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName));
+            //CreateMap<Employer, EmployerResponseDto>()
+            //    .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
+            //    .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName));
 
             //Roles
             CreateMap<RolePermission, RolePermissionResponseDto>()
@@ -41,10 +41,19 @@ namespace WorkFinder.Services.Mappers
                 //.ForMember(dest => dest.ConfirmPassword, opt => opt.MapFrom(src =>src.ConfirmPasswordHash))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.CompanyName));
             CreateMap<Employer, EmployerResponseDto>()
-                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
-                .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName))
+                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.User.Role.RoleId))
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.User.Role.RoleName))
                 .ForMember(dest => dest.IndustryId, opt => opt.MapFrom(src => src.Industry.IndustryId))
-                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role.RoleId));
+                .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.UserId))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.User.City))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.User.Country))
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.User.Phone))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.User.IsActive));
+            CreateMap<EmployerRequestDto, User>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.CompanyName));
 
             //Applicants
             CreateMap<ApplicantRequestDto, Applicant>();

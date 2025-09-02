@@ -30,5 +30,7 @@ namespace WorkFinder.ServiceContracts
         /// <param name="userId"></param>
         /// <returns>Password Hash of a User</returns>
         Task<string?> GetUserPasswordHashById(Guid userId);
+        Task<bool> DeleteUserAsync(Guid userId);
+        Task<bool?> UpdateUserStatusAsync(Guid userId, bool isActive);
     }
 }

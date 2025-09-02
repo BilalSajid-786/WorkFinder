@@ -21,9 +21,9 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <returns>List of employers</returns>
         Task<IEnumerable<Employer>> GetAllemployers();
-        Task<int> EditEmployerAsync(Guid userId, Employer employer);
-        Task<Employer?> GetEmployerByIdAsync(Guid userId);
-        Task<bool> DeleteEmployerAsync(Guid userId);
-        Task<bool?> UpdateEmployerStatusAsync(Guid userId, bool isActive);
+        Task<string?> EditEmployerAsync(Employer employer);
+        Task<Employer?> GetEmployerByIdAsync(Guid employerId);
+        //Task<bool> DeleteEmployerAsync(Guid employerId);
+        //Task<bool?> UpdateEmployerStatusAsync(Guid userId, bool isActive);
     }
 }

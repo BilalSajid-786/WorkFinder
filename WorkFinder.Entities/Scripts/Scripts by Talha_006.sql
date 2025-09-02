@@ -200,7 +200,7 @@ END
 
 
 
-/****** Object:  StoredProcedure [dbo].[GetAllEmployers]    Script Date: 9/1/2025 5:07:34 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetAllEmployers]    Script Date: 9/3/2025 12:44:20 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -212,12 +212,19 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 
-CREATE OR ALTER PROCEDURE [dbo].[GetAllEmployers]
+ALTER PROCEDURE [dbo].[GetAllEmployers]
 AS
 BEGIN
     SET NOCOUNT ON;
 
     SELECT 
+        emp.EmployerId,
+        emp.CompanyName,
+        emp.WebsiteUrl,
+        emp.CompanySize,
+        emp.ContactPerson,
+        emp.RegistrationNumber,
+
         usr.UserId,
         usr.UserName,
         usr.Email,
@@ -225,13 +232,6 @@ BEGIN
         usr.Country,
         usr.Phone,
         usr.IsActive,
-
-        emp.EmployerId,
-        emp.CompanyName,
-        emp.WebsiteUrl,
-        emp.CompanySize,
-        emp.ContactPerson,
-        emp.RegistrationNumber,
 
         rl.RoleId,
         rl.RoleName,
@@ -293,7 +293,7 @@ BEGIN
 END
 
 
-/****** Object:  StoredProcedure [dbo].[GetEmployerById]    Script Date: 9/1/2025 5:08:46 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetEmployerById]    Script Date: 9/3/2025 12:42:34 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -305,13 +305,20 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 
-CREATE OR ALTER PROCEDURE [dbo].[GetEmployerById]
-    @UserId UNIQUEIDENTIFIER
+ALTER PROCEDURE [dbo].[GetEmployerById]
+    @EmployerId UNIQUEIDENTIFIER
 AS
 BEGIN
     SET NOCOUNT ON;
 
     SELECT 
+        emp.EmployerId,
+        emp.CompanyName,
+        emp.WebsiteUrl,
+        emp.CompanySize,
+        emp.ContactPerson,
+        emp.RegistrationNumber,
+
         usr.UserId,
         usr.UserName,
         usr.Email,
@@ -320,23 +327,16 @@ BEGIN
         usr.Phone,
         usr.IsActive,
 
-        emp.EmployerId,
-        emp.CompanyName,
-        emp.WebsiteUrl,
-        emp.CompanySize,
-        emp.ContactPerson,
-        emp.RegistrationNumber,
-
         rl.RoleId,
         rl.RoleName,
 
         ind.IndustryId,
         ind.IndustryName
-    FROM [dbo].[Users] usr
-    INNER JOIN [dbo].[Employers] emp ON usr.UserId = emp.UserId
+    FROM [dbo].[Employers] emp
+    INNER JOIN [dbo].[Users] usr ON emp.UserId = usr.UserId
     INNER JOIN [dbo].[Roles] rl ON usr.RoleId = rl.RoleId
     INNER JOIN [dbo].[Industries] ind ON emp.IndustryId = ind.IndustryId
-    WHERE usr.UserId = @UserId AND usr.IsDeleted = 0;
+    WHERE emp.EmployerId = @EmployerId AND usr.IsDeleted = 0;
 END
 
 
@@ -572,7 +572,7 @@ BEGIN
 END
 
 
-/****** Object:  StoredProcedure [dbo].[UpdateEmployer]    Script Date: 9/1/2025 5:13:52 PM ******/
+/****** Object:  StoredProcedure [dbo].[UpdateEmployer]    Script Date: 9/3/2025 12:45:57 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -584,15 +584,9 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 
-CREATE OR ALTER PROCEDURE [dbo].[UpdateEmployer]
-    @UserId UNIQUEIDENTIFIER,
-    @UserName NVARCHAR(100),
-    @Email NVARCHAR(150),
-    @PasswordHash NVARCHAR(150),
-    @City NVARCHAR(50),
-    @Country NVARCHAR(50),
-    @Phone NVARCHAR(20),
+ALTER PROCEDURE [dbo].[UpdateEmployer]
 
+    @EmployerId UNIQUEIDENTIFIER,
     @CompanyName NVARCHAR(200),
     @WebsiteUrl NVARCHAR(200),
     @CompanySize NVARCHAR(50),
@@ -602,20 +596,6 @@ CREATE OR ALTER PROCEDURE [dbo].[UpdateEmployer]
 AS
 BEGIN
     SET NOCOUNT ON;
-    DECLARE @RowsAffected INT = 0;
-
-    UPDATE Users
-    SET UserName = @UserName,
-        Email = @Email,
-        PasswordHash = @PasswordHash,
-        City = @City,
-        Country = @Country,
-        Phone = @Phone,
-        UpdatedAt = SYSUTCDATETIME(),
-        UpdatedBy = @UserId
-    WHERE UserId = @UserId;
-    
-    SET @RowsAffected = @RowsAffected + @@ROWCOUNT;
 
     UPDATE Employers
     SET CompanyName = @CompanyName,
@@ -624,11 +604,12 @@ BEGIN
         ContactPerson = @ContactPerson,
         RegistrationNumber = @RegistrationNumber,
         IndustryId = @IndustryId
-    WHERE UserId = @UserId;
+    WHERE EmployerId = @EmployerId;
 
-    SET @RowsAffected = @RowsAffected + @@ROWCOUNT;
-
-    SELECT @RowsAffected AS RowsAffected;
+    IF(@@ROWCOUNT = 1)
+    BEGIN
+        SELECT 'SUCCESS' as Status;
+    END
 END
 
 
@@ -662,3 +643,107 @@ BEGIN
     FROM [dbo].[Users] 
     WHERE UserId = @UserId AND IsDeleted = 0;
 END
+
+
+/****** Object:  StoredProcedure [dbo].[UpdateUser]    Script Date: 9/3/2025 12:47:31 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+
+CREATE PROCEDURE [dbo].[UpdateUser]
+
+    @UserId UNIQUEIDENTIFIER,
+    @UserName NVARCHAR(100),
+    @Email NVARCHAR(150),
+    @PasswordHash NVARCHAR(150),
+    @City NVARCHAR(50),
+    @Country NVARCHAR(50),
+    @Phone NVARCHAR(20)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE Users
+    SET UserName = @UserName,
+        Email = @Email,
+        PasswordHash = @PasswordHash,
+        City = @City,
+        Country = @Country,
+        Phone = @Phone,
+        UpdatedAt = SYSUTCDATETIME(),
+        UpdatedBy = @UserId
+    WHERE UserId = @UserId;
+
+    IF(@@ROWCOUNT = 1)
+    BEGIN
+        SELECT 'SUCCESS' as Status;
+    END
+END
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[DeleteUser]    Script Date: 9/3/2025 12:04:31 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+
+
+CREATE PROCEDURE [dbo].[DeleteUser]
+    @UserId UNIQUEIDENTIFIER
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    Update  [dbo].[Users] set IsDeleted = 1  WHERE UserId = @UserId AND IsDeleted = 0;
+    
+    SELECT @@ROWCOUNT AS RowsAffected;
+END
+
+
+/****** Object:  StoredProcedure [dbo].[UpdateUserStatus]    Script Date: 9/3/2025 12:50:11 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+
+CREATE PROCEDURE [dbo].[UpdateUserStatus]
+    @UserId UNIQUEIDENTIFIER,
+    @IsActive BIT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE [dbo].[Users]
+    SET IsActive = @IsActive,
+        UpdatedAt = SYSUTCDATETIME(),
+        UpdatedBy = @UserId
+    WHERE UserId = @UserId AND IsDeleted = 0;
+
+    -- Return the updated status
+    SELECT IsActive 
+    FROM [dbo].[Users] 
+    WHERE UserId = @UserId AND IsDeleted = 0;
+END
+
+

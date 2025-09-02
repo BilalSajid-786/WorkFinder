@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System.Data;
 using WorkFinder.Entities.Entities;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.RepositoryContracts;
@@ -15,6 +16,38 @@ namespace WorkFinder.Repositories.Repositories
         public UserRepository(DapperDbContext dapperDbContext)
         {
             _dapperDbContext = dapperDbContext;
+        }
+
+        public async Task<bool> DeleteUserAsync(Guid userId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[DeleteUser]";
+
+            var rowsAffected = await connection.ExecuteScalarAsync<int>(
+                sql,
+                new { UserId = userId },
+                commandType: CommandType.StoredProcedure
+            );
+
+            return rowsAffected > 0; // true if a row was updated, false if none matched
+        }
+
+        public async Task<string?> EditUserAsync(User user)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var parameters = new DynamicParameters();
+
+            parameters.Add("@UserId", user.UserId);
+            parameters.Add("@UserName", user.UserName);
+            parameters.Add("@Email", user.Email);
+            parameters.Add("@PasswordHash", user.Password);
+            parameters.Add("@City", user.City);
+            parameters.Add("@Country", user.Country);
+            parameters.Add("@Phone", user.Phone);
+
+            var status = await connection.ExecuteScalarAsync<string?>(
+            "UpdateUser", parameters, commandType: CommandType.StoredProcedure);
+            return status;
         }
 
         /// <summary>
@@ -95,6 +128,20 @@ namespace WorkFinder.Repositories.Repositories
 
             return await connection.ExecuteScalarAsync<Guid>("InsertUser",parameters,
                 commandType:System.Data.CommandType.StoredProcedure);
+        }
+
+        public async Task<bool?> UpdateUserStatusAsync(Guid userId, bool isActive)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[UpdateUserStatus]";
+
+            var updatedStatus = await connection.ExecuteScalarAsync<bool?>(
+                sql,
+                new { UserId = userId, IsActive = isActive },
+                commandType: CommandType.StoredProcedure
+            );
+
+            return updatedStatus; // true = Active, false = Inactive, null = User not found
         }
     }
 }
