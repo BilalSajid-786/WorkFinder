@@ -33,9 +33,14 @@ namespace WorkFinder.Entities.Entities
             public static readonly Permission AppliedJobs = new() { PermissionId = 13, ModuleId = 4, Action = "Job.AppliedJobs", DisplayName = "Applied Jobs" };
         }
 
+        public static class Dashboard
+        {
+            public static readonly Permission CanAccessDashboard = new() { PermissionId = 14, Action = "Dashboard.CanAccessDashboard" };
+        }
+
         public static IEnumerable<Permission> GetAllPermissions() =>
                                 new List<Permission>() { Employer.Create,Employer.Get,Employer.Update,Employer.Delete,
                                 Applicant.Create,Applicant.Get,Applicant.Update,Applicant.Delete,
-                                Job.PostJob,Job.ActiveJobs,Job.InActiveJobs,Job.AvailableJobs,Job.AppliedJobs};
+                                Job.PostJob,Job.ActiveJobs,Job.InActiveJobs,Job.AvailableJobs,Job.AppliedJobs,Dashboard.CanAccessDashboard};
     }
 }

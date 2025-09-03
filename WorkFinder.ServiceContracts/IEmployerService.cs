@@ -15,12 +15,17 @@ namespace WorkFinder.ServiceContracts
         /// Registers an Employer
         /// </summary>
         /// <returns></returns>
-        Task<Guid> RegisterEmployerAsync(EmployerRequestDto employerRequest, Guid userId);
+        Task<Guid> RegisterEmployerAsync(EmployerRequestDto employerRequest);
 
         /// <summary>
         /// Gets all existing employers.
         /// </summary>
         /// <returns>All Employers</returns>
         Task<IEnumerable<EmployerResponseDto>> GetAllEmployers();
+
+        Task<string> EditEmployerAsync(Guid employerId, EmployerRequestDto employerRequest);
+        Task<EmployerResponseDto?> GetEmployerByIdAsync(Guid employerId);
+        //Task<bool> DeleteEmployerAsync(Guid employerId);
+        //Task<bool?> UpdateEmployerStatusAsync(Guid userId, bool isActive);
     }
 }

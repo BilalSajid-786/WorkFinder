@@ -27,6 +27,16 @@ namespace WorkFinder.Services
             _mapper = mapper;
         }
 
+        public async Task<bool> DeleteUserAsync(Guid userId)
+        {
+            var isDeleted = await _userRepository.DeleteUserAsync(userId);
+            if (!isDeleted)
+            {
+                throw new Exception($"User not found.");
+            }
+            return isDeleted;
+        }
+
         public async Task<IEnumerable<UserResponseDto>> GetAllUsers()
         {
             var users = await _userRepository.GetAllUsers();
@@ -105,7 +115,7 @@ namespace WorkFinder.Services
             {
                 UserName = registerRequestDto.Name,
                 Email = registerRequestDto.Email,
-                PasswordHash = passwordHash,
+                Password = passwordHash,
                 RoleId = registerRequestDto.RoleId,
                 City = registerRequestDto.City,
                 Country = registerRequestDto.Country,
@@ -113,6 +123,16 @@ namespace WorkFinder.Services
                 CreatedAt = DateTime.UtcNow
             };
             return await _userRepository.RegisterUserAsync(user);
+        }
+
+        public async Task<bool?> UpdateUserStatusAsync(Guid userId, bool isActive)
+        {
+            var updatedStatus = await _userRepository.UpdateUserStatusAsync(userId, isActive);
+            if (updatedStatus == null)
+            {
+                throw new Exception($"User not found.");
+            }
+            return updatedStatus.Value;
         }
     }
 }

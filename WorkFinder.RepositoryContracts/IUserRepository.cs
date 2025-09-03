@@ -38,5 +38,8 @@ namespace WorkFinder.RepositoryContracts
         /// <param name="userId"></param>
         /// <returns>Password Hash</returns>
         Task<string?> GetUserPasswordHashById(Guid userId);
+        Task<string?> EditUserAsync(User user);
+        Task<bool> DeleteUserAsync(Guid userId);
+        Task<bool?> UpdateUserStatusAsync(Guid userId, bool isActive);
     }
 }

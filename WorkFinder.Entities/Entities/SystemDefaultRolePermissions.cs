@@ -24,7 +24,8 @@ namespace WorkFinder.Entities.Entities
                     SystemPermissions.Applicant.Delete,
                     SystemPermissions.Job.PostJob,
                     SystemPermissions.Job.InActiveJobs,
-                    SystemPermissions.Job.ActiveJobs
+                    SystemPermissions.Job.ActiveJobs,
+                    SystemPermissions.Dashboard.CanAccessDashboard
                 }
             },
             {

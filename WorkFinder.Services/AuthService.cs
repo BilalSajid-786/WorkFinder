@@ -86,9 +86,10 @@ namespace WorkFinder.Services
             //return await _userService.RegisterUserAsync(registerRequestDto, passwordHash);
             var userId = await RegisterUserAsync(registerRequestDto);
             if (userId == Guid.Empty)
-                throw new InvalidOperationException("Failed to register user.");
+                throw new InvalidOperationException($"Failed to register user with  email {registerRequestDto.Email}.");
 
-            var employerId = await _employerService.RegisterEmployerAsync(employerRequest, userId);
+            employerRequest.UserId = userId;
+            var employerId = await _employerService.RegisterEmployerAsync(employerRequest);
             if (employerId == Guid.Empty)
                 throw new InvalidOperationException("Failed to register employer.");
 

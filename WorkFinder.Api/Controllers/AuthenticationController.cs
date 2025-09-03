@@ -31,6 +31,8 @@ namespace WorkFinder.Api.Controllers
         public async Task<ActionResult<string>> Login(LoginRequestDto loginRequestDto)
         {
             var token = await _authService.AuthenticateAsync(loginRequestDto.Email, loginRequestDto.Password);
+            if (token is null)
+                return Unauthorized();
             return Ok(new { token = token });
         }
 
