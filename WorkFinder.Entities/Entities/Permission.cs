@@ -12,6 +12,7 @@ namespace WorkFinder.Entities.Entities
         public int ModuleId { get; set; }
         public Module? Module { get; set; }
         public string Action { get; set; } = string.Empty;
+        public string? DisplayName { get; set; } = string.Empty;
         public IEnumerable<RolePermission>? Roles { get; set; }
     }
 }

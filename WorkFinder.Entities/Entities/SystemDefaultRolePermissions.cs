@@ -22,25 +22,26 @@ namespace WorkFinder.Entities.Entities
                     SystemPermissions.Applicant.Get,
                     SystemPermissions.Applicant.Update,
                     SystemPermissions.Applicant.Delete,
-                    SystemPermissions.Job.Create,
-                    SystemPermissions.Job.ViewCreated,
-                    SystemPermissions.Job.ViewRelevant
+                    SystemPermissions.Job.PostJob,
+                    SystemPermissions.Job.InActiveJobs,
+                    SystemPermissions.Job.ActiveJobs
                 }
             },
             {
                 Guid.Parse("0A4B5DAA-8E42-46F1-B7AB-304806C6B996"), //employer
                 new List<Permission>
                 {
-                    SystemPermissions.Job.Create,
-                    SystemPermissions.Job.ViewCreated
+                    SystemPermissions.Job.PostJob,
+                    SystemPermissions.Job.ActiveJobs,
+                    SystemPermissions.Job.InActiveJobs,
                 }
             },
             {
                 Guid.Parse("4A1BDF6B-DF81-4E98-8DBE-F4E321CD82BA"), //applicant
                 new List<Permission>
                 {
-                    SystemPermissions.Job.ViewRelevant,
-                    SystemPermissions.Job.ApplyJob
+                    SystemPermissions.Job.AppliedJobs,
+                    SystemPermissions.Job.AvailableJobs
                 }
             }
         };

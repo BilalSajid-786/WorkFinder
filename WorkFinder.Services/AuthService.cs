@@ -58,7 +58,7 @@ namespace WorkFinder.Services
             return null;
         }
 
-        public async Task<ApplicantResponseDto> RegisterApplicantAsync(ApplicantRequestDto applicantRequestDto)
+        public async Task<ApplicantResponseDto> RegisterApplicantAsync(ApplicantRequestDto? applicantRequestDto)
         {
             //map from applicant dto to register dto
             RegisterRequestDto registerRequestDto = _mapper.Map<RegisterRequestDto>(applicantRequestDto);

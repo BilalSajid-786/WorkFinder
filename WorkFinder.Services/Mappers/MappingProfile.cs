@@ -32,6 +32,14 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.PermissionId, opt => opt.MapFrom(src => src.Permission.PermissionId))
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.Permission.Action));
 
+            //Modules
+            CreateMap<Module, ModuleResponseDto>();
+            CreateMap<Permission, ModuleResponseDto>()
+                .ForMember(dest => dest.ModuleId, opt => opt.MapFrom(src => src.Module.ModuleId))
+                .ForMember(dest => dest.ModuleName, opt => opt.MapFrom(src => src.Module.ModuleName))
+                .ForMember(dest => dest.ParentModuleId, opt => opt.MapFrom(src => src.Module.ParentModuleId))
+                .ForMember(dest => dest.Route, opt => opt.MapFrom(src => src.Module.Route));
+
             //Employers
             CreateMap<EmployerRequestDto, Employer>();
             CreateMap<EmployerRequestDto, RegisterRequestDto>()
