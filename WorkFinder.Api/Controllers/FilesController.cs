@@ -20,7 +20,7 @@ namespace WorkFinder.Api.Controllers
         }
 
         /// <summary>
-        /// Upload the resumes for the applicants
+        /// Upload the files for the applicants
         /// </summary>
         /// <param name="formFile"></param>
         /// <returns></returns>
