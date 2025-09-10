@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using WorkFinder.Entities.Entities;
+using WorkFinder.Entities.Entities.SystemSeeding;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.Repositories.Repositories;
 using WorkFinder.RepositoryContracts;

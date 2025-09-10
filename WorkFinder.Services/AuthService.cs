@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WorkFinder.Entities.Entities;
+using WorkFinder.Entities.Entities.SystemSeeding;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Applicant;
@@ -72,6 +72,7 @@ namespace WorkFinder.Services
             //insert applicant if user insertion is successfull
             applicantRequestDto.UserId = userId;
             var applicantId = await _applicantService.InsertApplicantAsync(applicantRequestDto);
+
             return new ApplicantResponseDto()
             {
                 ApplicantId = applicantId,

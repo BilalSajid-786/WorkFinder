@@ -18,5 +18,12 @@ namespace WorkFinder.RepositoryContracts
         /// <param name="applicant"></param>
         /// <returns>Applicant Id</returns>
         Task<Guid> InsertApplicantAsync(Applicant applicant);
+
+        /// <summary>
+        /// Add a skill for applicant
+        /// </summary>
+        /// <param name="skillId"></param>
+        /// <param name="ApplicantId"></param>
+        Task AddApplicantSkillAsync(int skillId, Guid applicantId);
     }
 }

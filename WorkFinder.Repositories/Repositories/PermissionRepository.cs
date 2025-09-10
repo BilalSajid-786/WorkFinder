@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkFinder.Entities.Entities;
+using WorkFinder.Entities.Entities.SystemSeeding;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.RepositoryContracts;
 

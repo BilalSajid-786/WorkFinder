@@ -31,7 +31,15 @@ namespace WorkFinder.Services
         public async Task<Guid> InsertApplicantAsync(ApplicantRequestDto applicantRequestDto)
         {
 
-            return await _applicantRepository.InsertApplicantAsync(_mapper.Map<Applicant>(applicantRequestDto));
+            var applicantId = await _applicantRepository.InsertApplicantAsync(_mapper.Map<Applicant>(applicantRequestDto));
+            
+            //Skill Insertion for applicant
+            foreach (var skill in applicantRequestDto.Skills)
+            {
+                await _applicantRepository.AddApplicantSkillAsync(skill.SkillId, applicantId);
+            }
+
+            return applicantId;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkFinder.Entities.Entities
+namespace WorkFinder.Entities.Entities.SystemSeeding
 {
     public class SystemDefaultRolePermissions
     {
@@ -35,6 +35,7 @@ namespace WorkFinder.Entities.Entities
                     SystemPermissions.Job.PostJob,
                     SystemPermissions.Job.ActiveJobs,
                     SystemPermissions.Job.InActiveJobs,
+                    SystemPermissions.Applicant.Get
                 }
             },
             {

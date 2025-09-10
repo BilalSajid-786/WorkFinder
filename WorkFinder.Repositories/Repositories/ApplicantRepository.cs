@@ -22,6 +22,26 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
+        /// Insert skill for an applicant
+        /// </summary>
+        /// <param name="skillId"></param>
+        /// <param name="ApplicantId"></param>
+        public async Task AddApplicantSkillAsync(int skillId, Guid applicantId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+
+            //procedure name
+            var sql = "[InsertApplicantSkill]";
+
+            //procedure parameters
+            var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", applicantId);
+            parameters.Add("@SkillId", skillId);
+
+            await connection.ExecuteAsync(sql, parameters);
+        }
+
+        /// <summary>
         /// Insert applicants into the database
         /// </summary>
         /// <param name="applicant"></param>

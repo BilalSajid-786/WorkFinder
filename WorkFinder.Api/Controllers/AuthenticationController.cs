@@ -8,6 +8,7 @@ using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
 using WorkFinder.ServiceContracts.DTOs.Employer;
+using WorkFinder.ServiceContracts.DTOs.Response;
 
 namespace WorkFinder.Api.Controllers
 {
@@ -28,12 +29,18 @@ namespace WorkFinder.Api.Controllers
         /// <param name="email">email of the user attempting to login</param>
         /// <returns>Jwt token, if valid</returns>
         [HttpPost]
-        public async Task<ActionResult<string>> Login(LoginRequestDto loginRequestDto)
+        public async Task<ActionResult<ResponseDto>> Login(LoginRequestDto loginRequestDto)
         {
             var token = await _authService.AuthenticateAsync(loginRequestDto.Email, loginRequestDto.Password);
             if (token is null)
                 return Unauthorized();
-            return Ok(new { token = token });
+
+            return new ResponseDto()
+            {
+                Result = token,
+                IsSuccess = true,
+                Message = "Token Generation Successfull"
+            };
         }
 
         /// <summary>
@@ -62,9 +69,15 @@ namespace WorkFinder.Api.Controllers
         /// <param name="applicantRequestDto"></param>
         /// <returns>Applicant Id</returns>
         [HttpPost]
-        public async Task<ActionResult<ApplicantResponseDto>> RegisterApplicant(ApplicantRequestDto applicantRequestDto)
+        public async Task<ActionResult<ResponseDto>> RegisterApplicant(ApplicantRequestDto applicantRequestDto)
         {
-            return await _authService.RegisterApplicantAsync(applicantRequestDto);
+            var response = await _authService.RegisterApplicantAsync(applicantRequestDto);
+            return new ResponseDto()
+            {
+                Result = response,
+                IsSuccess = true,
+                Message = "Applicant Registered Successfully"
+            };
         }
     }
 }

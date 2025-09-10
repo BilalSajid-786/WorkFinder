@@ -66,6 +66,7 @@ namespace WorkFinder.Services.Mappers
             //Applicants
             CreateMap<ApplicantRequestDto, Applicant>();
             CreateMap<ApplicantRequestDto, RegisterRequestDto>();
+            CreateMap<SkillResponseDto, ApplicantSkill>();
 
             //Skills
             CreateMap<SkillRequestDto, Skill>();

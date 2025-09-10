@@ -16,4 +16,8 @@
     <ProjectReference Include="..\WorkFinder.Services\WorkFinder.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

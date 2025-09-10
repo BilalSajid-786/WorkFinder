@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkFinder.Entities.Entities
+namespace WorkFinder.Entities.Entities.SystemSeeding
 {
     public static class SystemPermissions
     {
         public static class Employer
         {
-            public static readonly Permission Create = new() {PermissionId = 1, ModuleId = 2, Action = "Employer.Create" };
-            public static readonly Permission Get = new() {PermissionId = 2, ModuleId = 2, Action = "Employer.Get" };
-            public static readonly Permission Update = new() {PermissionId = 3, ModuleId = 2, Action = "Employer.Update" };
-            public static readonly Permission Delete = new() {PermissionId = 4, ModuleId = 2, Action = "Employer.Delete" };
+            public static readonly Permission Create = new() { PermissionId = 1, ModuleId = 2, Action = "Employer.Create" };
+            public static readonly Permission Get = new() { PermissionId = 2, ModuleId = 2, Action = "Employer.Get" };
+            public static readonly Permission Update = new() { PermissionId = 3, ModuleId = 2, Action = "Employer.Update" };
+            public static readonly Permission Delete = new() { PermissionId = 4, ModuleId = 2, Action = "Employer.Delete" };
         }
 
         public static class Applicant

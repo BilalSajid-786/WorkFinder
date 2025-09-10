@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkFinder.Entities.Entities
+namespace WorkFinder.Entities.Entities.SystemSeeding
 {
     public static class SystemRoles
     {

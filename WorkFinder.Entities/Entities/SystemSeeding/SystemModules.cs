@@ -5,7 +5,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkFinder.Entities.Entities
+namespace WorkFinder.Entities.Entities.SystemSeeding
 {
     public static class SystemModules
     {
@@ -39,6 +39,6 @@ namespace WorkFinder.Entities.Entities
         };
 
         public static IEnumerable<Module> GetAllModules() => new List<Module>()
-        { SystemModules.Manage,SystemModules.Employer, SystemModules.Applicant, SystemModules.Job };
+        { Manage,Employer, Applicant, Job };
     }
 }

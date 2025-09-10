@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkFinder.Entities.Entities;
+using WorkFinder.Entities.Entities.SystemSeeding;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Skill;
