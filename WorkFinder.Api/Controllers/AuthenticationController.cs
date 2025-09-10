@@ -52,7 +52,6 @@ namespace WorkFinder.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Guid>> Register(RegisterRequestDto registerRequest)
         {
-            var user = HttpContext.User;
             return await _authService.RegisterUserAsync(registerRequest);
         }
 
