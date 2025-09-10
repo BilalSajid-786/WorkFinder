@@ -10,5 +10,6 @@ namespace WorkFinder.Entities.Entities
     {
         public int SkillId { get; set; }
         public string SkillName { get; set; } = string.Empty;
+        public IEnumerable<ApplicantSkill>? ApplicantSkills { get; set; }
     }
 }

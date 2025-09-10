@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WorkFinder.Entities.Entities;
@@ -18,7 +19,8 @@ namespace WorkFinder.Services
         private readonly IUserRepository _userRepository;
         private readonly IRoleService _roleService;
         private readonly IMapper _mapper;
-        public UserService(IUserRepository userRepository,IRoleService roleService, IMapper mapper)
+        public UserService(IUserRepository userRepository, IRoleService roleService
+            ,IMapper mapper)
         {
             _userRepository = userRepository;
             _roleService = roleService;
@@ -41,6 +43,42 @@ namespace WorkFinder.Services
             return _mapper.Map<IEnumerable<UserResponseDto>>(users);
         }
 
+        private IEnumerable<ParentModuleResponseDto> MapSideBarItemByRoles(IEnumerable<ModuleResponseDto> modules)
+        {
+            // Modules having their parent modules existing
+            var moduleWithParents = modules.Where(m => m.PermissionId == 0 && m.ParentModuleId == null)
+                .Select(i => new ParentModuleResponseDto
+                {
+                    ParentModuleId = i.ModuleId,
+                    ParentModuleName = i.ModuleName,
+                    SubModules = modules.Where(s => s.ParentModuleId != null && s.ParentModuleId == i.ModuleId)
+                    .GroupBy(s => s.ModuleId)
+                    .Select(m => new ModuleResponseDto
+                    {
+                        ModuleId = m.Key,
+                        ModuleName = m.First().ModuleName,
+                        Route = m.First().Route,
+                    }).ToList()
+                });
+
+            //Modules that don't have any parentModule
+            var moduleWithOutParents = modules.Where(s => s.PermissionId != 0 && s.ParentModuleId == null)
+                .GroupBy(s => s.ModuleId)
+                .Select(g => new ParentModuleResponseDto
+                {
+                    ParentModuleId = g.Key,
+                    ParentModuleName = g.First().ModuleName,
+                    SubModules = g.Select(m => new ModuleResponseDto
+                    {
+                        ModuleId = g.Key,
+                        ModuleName = m.DisplayName,
+                    }).ToList(),
+                });
+
+            //Concat both modules
+            return moduleWithParents.Concat(moduleWithOutParents);
+        }
+
         public async Task<UserResponseDto?> GetUserByEmailAsync(string email)
         {
             var user = await _userRepository.GetUserByEmailAsync(email);
@@ -57,7 +95,7 @@ namespace WorkFinder.Services
             return await _userRepository.GetUserPasswordHashById(userId);
         }
 
-        public async Task<Guid> RegisterUserAsync(RegisterRequestDto registerRequestDto,string passwordHash)
+        public async Task<Guid> RegisterUserAsync(RegisterRequestDto registerRequestDto, string passwordHash)
         {
             if (string.IsNullOrWhiteSpace(registerRequestDto.Email) || !registerRequestDto.Email.Contains("@"))
                 throw new Exception($"{registerRequestDto.Email} is not valid.");

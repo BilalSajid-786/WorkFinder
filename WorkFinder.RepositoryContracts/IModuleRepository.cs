@@ -7,6 +7,9 @@ using WorkFinder.Entities.Entities;
 
 namespace WorkFinder.RepositoryContracts
 {
+    /// <summary>
+    /// Repository Contracts for Modules
+    /// </summary>
     public interface IModuleRepository
     {
         /// <summary>
@@ -20,5 +23,12 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<Module>> GetAllModulesAsync();
+
+        /// <summary>
+        /// Get modules for user by role
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns>Modules</returns>
+        Task<IEnumerable<Permission>> GetSideBarItemsAsync(Guid roleId);
     }
 }

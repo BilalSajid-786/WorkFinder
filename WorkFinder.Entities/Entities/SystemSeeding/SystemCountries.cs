@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkFinder.Entities.Entities
+namespace WorkFinder.Entities.Entities.SystemSeeding
 {
     public static class SystemCountries
     {
-        public static Dictionary<int,string> Countries { get; set; }
+        public static Dictionary<int, string> Countries { get; set; }
 
         static SystemCountries()
         {

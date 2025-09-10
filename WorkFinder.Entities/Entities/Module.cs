@@ -9,6 +9,7 @@ namespace WorkFinder.Entities.Entities
     public class Module
     {
         public int ModuleId { get; set; }
+        public int? ParentModuleId { get; set; }
         public string ModuleName { get; set; } = string.Empty;
         public string? Route { get; set; }
         public string? Icon { get; set; }
