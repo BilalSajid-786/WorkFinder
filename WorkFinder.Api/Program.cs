@@ -41,6 +41,7 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI(swg =>
     {
         swg.SwaggerEndpoint("/swagger/v1/swagger.json", "Work Finder API V1");
+        swg.RoutePrefix = string.Empty;
     });
 }
 

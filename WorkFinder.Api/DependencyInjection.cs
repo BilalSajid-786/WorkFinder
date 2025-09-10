@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using WorkFinder.Entities.Entities.SystemSeeding;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.Repositories.Repositories;
@@ -16,11 +18,24 @@ namespace WorkFinder.Api
         public static IServiceCollection ConfigureAppServices(this IServiceCollection services, IConfiguration configuration)
         {
             //Add Api Controllers
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    // Serialize enums as strings instead of ints
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
 
             //Add swagger
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                // Get the XML file name (same as assembly)
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                // Include XML comments
+                options.IncludeXmlComments(xmlPath);
+            });
 
             //Add Dapper DbContext
             services.AddScoped<DapperDbContext>();
@@ -67,10 +82,10 @@ namespace WorkFinder.Api
             //Repositories
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
-            services.AddTransient<ISkillRepository,SkillRepository>();
+            services.AddTransient<ISkillRepository, SkillRepository>();
             services.AddTransient<IEmployerRepository, EmployerRepository>();
-            services.AddTransient<IApplicantRepository,ApplicantRepository>();
-            services.AddTransient<IIndustryRepository,IndustryRepository>();
+            services.AddTransient<IApplicantRepository, ApplicantRepository>();
+            services.AddTransient<IIndustryRepository, IndustryRepository>();
             services.AddTransient<IPermissionRepository, PermissionRepository>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
 
@@ -79,12 +94,12 @@ namespace WorkFinder.Api
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<ISkillService,SkillService>();
+            services.AddTransient<ISkillService, SkillService>();
             services.AddTransient<IEmployerService, EmployerService>();
-            services.AddTransient<IApplicantService,ApplicantService>();
-            services.AddTransient<IIndustryService,IndustryService>();
+            services.AddTransient<IApplicantService, ApplicantService>();
+            services.AddTransient<IIndustryService, IndustryService>();
             services.AddTransient<IPermissionService, PermissionService>();
-            services.AddTransient<IModuleService,ModuleService>();
+            services.AddTransient<IModuleService, ModuleService>();
 
             return services;
         }

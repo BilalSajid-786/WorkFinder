@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Api.Controllers.Base;
 using WorkFinder.ServiceContracts.DTOs.Response;
+using WorkFinder.ServiceContracts.Enums;
 
 namespace WorkFinder.Api.Controllers
 {
@@ -23,8 +24,8 @@ namespace WorkFinder.Api.Controllers
         /// </summary>
         /// <param name="formFile"></param>
         /// <returns></returns>
-        [HttpPost("uploadResume")]
-        public async Task<ActionResult<ResponseDto>> UploadResume(IFormFile formFile)
+        [HttpPost("{fileType}")]
+        public async Task<ActionResult<ResponseDto>> UploadResume(IFormFile formFile,FileType fileType)
         {
             if (formFile == null || formFile.Length == 0)
                 return BadRequest(new ResponseDto()
@@ -41,15 +42,22 @@ namespace WorkFinder.Api.Controllers
                     Message = "File extension not supported"
                 });
 
+            string folderName = fileType switch
+            {
+                FileType.Resume => "resumes",
+                FileType.Certificate => "certificates",
+                _ => String.Empty
+            };
 
-            var resumePath = Path.Combine(_webHostEnvironment.WebRootPath, "resumes");
 
-            if (!Directory.Exists(resumePath))
-                Directory.CreateDirectory(resumePath);
+            var folderPath = Path.Combine(_webHostEnvironment.WebRootPath, folderName);
+
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
 
             var fileName = string.Concat(CurrentUser.UserId,
                 Path.GetExtension(formFile.FileName));
-            var filePath = Path.Combine(resumePath, fileName);
+            var filePath = Path.Combine(folderPath, fileName);
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
@@ -60,7 +68,7 @@ namespace WorkFinder.Api.Controllers
             {
                 Result = fileName,
                 IsSuccess = true,
-                Message = "Resume Uploaded successfull"
+                Message = $"{fileType} Uploaded successfull"
             });
         }
     }
