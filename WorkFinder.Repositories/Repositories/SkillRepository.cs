@@ -17,6 +17,16 @@ namespace WorkFinder.Repositories.Repositories
         {
             _dapperDbContext = dapperDbContext;
         }
+
+        public async Task<IEnumerable<Skill>> GetSkillByName(string searchName)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetSkillByName]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@SearchName", searchName);
+            return await connection.QueryAsync<Skill>(sql, parameters,commandType:System.Data.CommandType.StoredProcedure);
+        }
+
         public async Task<IEnumerable<Skill>> GetSkills()
         {
             using var connection = _dapperDbContext.CreateConnection();

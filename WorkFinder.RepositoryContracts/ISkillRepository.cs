@@ -24,5 +24,12 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <returns>Skills</returns>
         Task<IEnumerable<Skill>> GetSkills();
+
+        /// <summary>
+        /// Get skill by search name
+        /// </summary>
+        /// <param name="searchName"></param>
+        /// <returns></returns>
+        Task<IEnumerable<Skill>> GetSkillByName(string searchName);
     }
 }

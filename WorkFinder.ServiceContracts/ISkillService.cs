@@ -27,5 +27,12 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <returns></returns>
         Task SeedSkillsAsync();
+
+        /// <summary>
+        /// Get skill by search name
+        /// </summary>
+        /// <param name="searchName"></param>
+        /// <returns></returns>
+        Task<IEnumerable<SkillResponseDto>> GetSkillByName(string searchName);
     }
 }

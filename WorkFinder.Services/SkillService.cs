@@ -24,6 +24,13 @@ namespace WorkFinder.Services
             _skillRepository = skillRepository;
             _mapper = mapper;
         }
+
+        public async Task<IEnumerable<SkillResponseDto>> GetSkillByName(string searchName)
+        {
+            var skills = await _skillRepository.GetSkillByName(searchName);
+            return _mapper.Map<IEnumerable<SkillResponseDto>>(skills);
+        }
+
         public async Task<IEnumerable<SkillResponseDto>> GetSkills()
         {
            var skills = await _skillRepository.GetSkills();
