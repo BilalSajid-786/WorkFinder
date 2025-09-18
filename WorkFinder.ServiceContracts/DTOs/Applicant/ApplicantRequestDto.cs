@@ -15,6 +15,10 @@ namespace WorkFinder.ServiceContracts.DTOs.Applicant
         
         [Required]
         public Guid UserId { get; set; }
+
+        [Required]
+        public string Qualification { get; set; } = string.Empty;
+
         public IEnumerable<SkillResponseDto> Skills { get; set; } = new List<SkillResponseDto>();
     }
 }

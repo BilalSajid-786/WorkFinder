@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace WorkFinder.Repositories.Repositories
         /// </summary>
         /// <param name="skillId"></param>
         /// <param name="ApplicantId"></param>
-        public async Task AddApplicantSkillAsync(int skillId, Guid applicantId)
+        public async Task AddApplicantSkillAsync(Skill skill, Guid applicantId)
         {
             using var connection = _dapperDbContext.CreateConnection();
 
@@ -36,7 +37,8 @@ namespace WorkFinder.Repositories.Repositories
             //procedure parameters
             var parameters = new DynamicParameters();
             parameters.Add("@ApplicantId", applicantId);
-            parameters.Add("@SkillId", skillId);
+            parameters.Add("@SkillId", skill.SkillId);
+            parameters.Add("@SkillName", skill.SkillName);
 
             await connection.ExecuteAsync(sql, parameters);
         }
@@ -59,6 +61,23 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@Resume", applicant.Resume);
 
             return await connection.ExecuteScalarAsync<Guid>(sql,parameters,commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// Check is applicant exists in the system
+        /// </summary>
+        /// <param name="applicantId"></param>
+        /// <returns></returns>
+        public async Task<bool> IsApplicantExistAsync(Guid applicantId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+
+            //procedure name
+            var sql = "[IsApplicantExist]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", applicantId);
+
+            return await connection.ExecuteScalarAsync<bool>(sql,parameters,commandType: System.Data.CommandType.StoredProcedure);
         }
     }
 }

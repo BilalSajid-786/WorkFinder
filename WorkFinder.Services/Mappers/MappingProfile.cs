@@ -71,6 +71,7 @@ namespace WorkFinder.Services.Mappers
             //Skills
             CreateMap<SkillRequestDto, Skill>();
             CreateMap<Skill, SkillResponseDto>();
+            CreateMap<SkillResponseDto, Skill>();
             CreateMap<string?, Skill>()
                 .ForMember(dest => dest.SkillName, opt => opt.MapFrom(src => src));
 

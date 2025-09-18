@@ -12,6 +12,7 @@ namespace WorkFinder.Entities.Entities
         public Guid UserId { get; set; }
         public string? Resume { get; set; }
         public User? User { get; set; }
+        public string Qualification { get; set; } = string.Empty;
         public IEnumerable<ApplicantSkill>? Skills { get; set; }
 
     }

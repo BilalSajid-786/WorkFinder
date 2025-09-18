@@ -18,5 +18,12 @@ namespace WorkFinder.ServiceContracts
         /// <param name="applicantRequestDto"></param>
         /// <returns>Applicant Id</returns>
         Task<Guid> InsertApplicantAsync(ApplicantRequestDto applicantRequestDto);
+
+        /// <summary>
+        /// Check if applicant exists in the system
+        /// </summary>
+        /// <param name="applicantId"></param>
+        /// <returns></returns>
+        Task<bool> IsApplicantExistAsync(Guid applicantId);
     }
 }

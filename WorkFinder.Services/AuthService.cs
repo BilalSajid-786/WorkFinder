@@ -22,6 +22,7 @@ namespace WorkFinder.Services
         private readonly IMapper _mapper;
         private readonly IEmployerService _employerService;
         private readonly IApplicantService _applicantService;
+      
         public AuthService(ITokenService tokenService, IUserService userService, IMapper mapper,
             IEmployerService employerService, IApplicantService applicantService)
         {

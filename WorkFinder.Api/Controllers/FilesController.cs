@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Api.Controllers.Base;
+using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Response;
 using WorkFinder.ServiceContracts.Enums;
 
@@ -13,10 +15,12 @@ namespace WorkFinder.Api.Controllers
     [ApiController]
     public class FilesController : BaseApiController
     {
-        private IWebHostEnvironment _webHostEnvironment;
-        public FilesController(IWebHostEnvironment webHostEnvironment)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IApplicantService _applicantService;
+        public FilesController(IWebHostEnvironment webHostEnvironment, IApplicantService applicantService)
         {
             _webHostEnvironment = webHostEnvironment;
+            _applicantService = applicantService;
         }
 
         /// <summary>
@@ -24,52 +28,75 @@ namespace WorkFinder.Api.Controllers
         /// </summary>
         /// <param name="formFile"></param>
         /// <returns></returns>
-        [HttpPost("{fileType}")]
-        public async Task<ActionResult<ResponseDto>> UploadResume(IFormFile formFile,FileType fileType)
+        
+        [AllowAnonymous]
+        [HttpPost("{fileType}/{userId:guid}")]
+        public async Task<ActionResult<ResponseDto>> UploadFile(IFormFile formFile,FileType fileType, Guid userId)
         {
-            if (formFile == null || formFile.Length == 0)
-                return BadRequest(new ResponseDto()
-                {
-                    IsSuccess = false,
-                    Message = "No file exist to upload"
-                });
 
-            var allowedExtensions = new[] { ".pdf", ".docx" };
-            if (!allowedExtensions.Contains(Path.GetExtension(formFile.FileName)))
-                return BadRequest(new ResponseDto()
-                {
-                    IsSuccess = false,
-                    Message = "File extension not supported"
-                });
-
-            string folderName = fileType switch
+            try
             {
-                FileType.Resume => "resumes",
-                FileType.Certificate => "certificates",
-                _ => String.Empty
-            };
+                bool isUserExist = await _applicantService.IsApplicantExistAsync(userId);
+                if (!isUserExist)
+                    return BadRequest(new ResponseDto()
+                    {
+                        IsSuccess = false,
+                        Message = "Invalid UserId"
+                    });
+
+                if (formFile == null || formFile.Length == 0)
+                    return BadRequest(new ResponseDto()
+                    {
+                        IsSuccess = false,
+                        Message = "No file exist to upload"
+                    });
+
+                var allowedExtensions = new[] { ".pdf", ".docx" };
+                if (!allowedExtensions.Contains(Path.GetExtension(formFile.FileName)))
+                    return BadRequest(new ResponseDto()
+                    {
+                        IsSuccess = false,
+                        Message = "File extension not supported"
+                    });
+
+                string folderName = fileType switch
+                {
+                    FileType.Resume => "resumes",
+                    FileType.Certificate => "certificates",
+                    _ => String.Empty
+                };
 
 
-            var folderPath = Path.Combine(_webHostEnvironment.WebRootPath, folderName);
+                var folderPath = Path.Combine(_webHostEnvironment.WebRootPath, folderName);
 
-            if (!Directory.Exists(folderPath))
-                Directory.CreateDirectory(folderPath);
+                if (!Directory.Exists(folderPath))
+                    Directory.CreateDirectory(folderPath);
 
-            var fileName = string.Concat(CurrentUser.UserId,
-                Path.GetExtension(formFile.FileName));
-            var filePath = Path.Combine(folderPath, fileName);
+                var fileName = string.Concat(userId,
+                    Path.GetExtension(formFile.FileName));
+                var filePath = Path.Combine(folderPath, fileName);
 
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await formFile.CopyToAsync(fileStream);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(fileStream);
+                }
+
+                return Ok(new ResponseDto()
+                {
+                    Result = fileName,
+                    IsSuccess = true,
+                    Message = $"{fileType} Uploaded successfull"
+                });
             }
-
-            return Ok(new ResponseDto()
+            catch (Exception ex)
             {
-                Result = fileName,
-                IsSuccess = true,
-                Message = $"{fileType} Uploaded successfull"
-            });
+                return BadRequest(new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Message = $"{ex.Message}"
+                });
+            }
+            
         }
     }
 }
