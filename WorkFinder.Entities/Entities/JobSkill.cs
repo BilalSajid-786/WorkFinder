@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace WorkFinder.Entities.Entities
 {
-    public class Skill
+    public class JobSkill
     {
+        public int JobId { get; set; }
         public int SkillId { get; set; }
-        public string SkillName { get; set; } = string.Empty;
-        public IEnumerable<ApplicantSkill>? ApplicantSkills { get; set; }
-        public IEnumerable<JobSkill>? Jobs { get; set; }
+        public Job? Job { get; set; }
+        public Skill? Skill { get; set; }
     }
 }

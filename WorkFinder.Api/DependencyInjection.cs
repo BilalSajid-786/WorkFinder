@@ -88,6 +88,7 @@ namespace WorkFinder.Api
             services.AddTransient<IIndustryRepository, IndustryRepository>();
             services.AddTransient<IPermissionRepository, PermissionRepository>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
+            services.AddTransient<IJobRepository, JobRepository>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();
@@ -100,6 +101,7 @@ namespace WorkFinder.Api
             services.AddTransient<IIndustryService, IndustryService>();
             services.AddTransient<IPermissionService, PermissionService>();
             services.AddTransient<IModuleService, ModuleService>();
+            services.AddTransient<IJobService, JobService>();
 
             return services;
         }

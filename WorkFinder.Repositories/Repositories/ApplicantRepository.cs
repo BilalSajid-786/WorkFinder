@@ -44,6 +44,25 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
+        /// Get ApplicantId from the system
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>ApplicantId</returns>
+        public async Task<Guid?> GetApplicantIdAsync(Guid userId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+
+            //procedure name
+            var sql = "[GetApplicantId]";
+
+            //procedure parameters
+            var parameters = new DynamicParameters();
+            parameters.Add("@UserId", userId);
+
+            return await connection.ExecuteScalarAsync<Guid>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
         /// Insert applicants into the database
         /// </summary>
         /// <param name="applicant"></param>

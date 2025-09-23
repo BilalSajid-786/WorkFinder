@@ -25,5 +25,12 @@ namespace WorkFinder.ServiceContracts
         /// <param name="applicantId"></param>
         /// <returns></returns>
         Task<bool> IsApplicantExistAsync(Guid applicantId);
+
+        /// <summary>
+        /// Get applicantId against userId
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>ApplicantId</returns>
+        Task<Guid?> GetApplicantIdAsync(Guid userId);
     }
 }

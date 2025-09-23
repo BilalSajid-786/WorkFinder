@@ -23,6 +23,17 @@ namespace WorkFinder.Services
             _applicantRepository = applicantRepository;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Get ApplicantId from the system
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>ApplicantId</returns>
+        public async Task<Guid?> GetApplicantIdAsync(Guid userId)
+        {
+            return await _applicantRepository.GetApplicantIdAsync(userId);
+        }
+
         /// <summary>
         /// Insert an applicant into the system
         /// </summary>

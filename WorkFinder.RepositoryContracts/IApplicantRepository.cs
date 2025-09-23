@@ -32,5 +32,12 @@ namespace WorkFinder.RepositoryContracts
         /// <param name="applicantId"></param>
         /// <returns></returns>
         Task<bool> IsApplicantExistAsync(Guid applicantId);
+
+        /// <summary>
+        /// Get applicantId against userId from the db
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>ApplicantId</returns>
+        Task<Guid?> GetApplicantIdAsync(Guid userId);
     }
 }

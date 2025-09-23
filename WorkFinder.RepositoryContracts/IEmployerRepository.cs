@@ -23,7 +23,13 @@ namespace WorkFinder.RepositoryContracts
         Task<IEnumerable<Employer>> GetAllemployers();
         Task<string?> EditEmployerAsync(Employer employer);
         Task<Employer?> GetEmployerByIdAsync(Guid employerId);
-        //Task<bool> DeleteEmployerAsync(Guid employerId);
-        //Task<bool?> UpdateEmployerStatusAsync(Guid userId, bool isActive);
+
+        /// <summary>
+        /// Gets an employerId for a given user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>EmployerId</returns>
+        Task<Guid?> GetEmployerIdAsync(Guid userId);
+
     }
 }

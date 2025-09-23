@@ -9,6 +9,7 @@ using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
 using WorkFinder.ServiceContracts.DTOs.Employer;
 using WorkFinder.ServiceContracts.DTOs.Industry;
+using WorkFinder.ServiceContracts.DTOs.Job;
 using WorkFinder.ServiceContracts.DTOs.Role;
 using WorkFinder.ServiceContracts.DTOs.Skill;
 using WorkFinder.ServiceContracts.DTOs.User;
@@ -80,6 +81,10 @@ namespace WorkFinder.Services.Mappers
             CreateMap<Industry, IndustryResponseDto>();
             CreateMap<string?, Industry>()
                 .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src));
+
+            //Jobs
+            CreateMap<JobRequestDto, Job>();
+            CreateMap<Job, JobResponseDto>();
         }
     }
 }

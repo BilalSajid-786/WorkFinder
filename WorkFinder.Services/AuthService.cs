@@ -51,6 +51,25 @@ namespace WorkFinder.Services
             //check passwordHash
             var isValidPassword = _passwordHasher.VerifyHashedPassword(null, passwordHash, password);
 
+            //get user specific employer or applicantid if not admin
+            if(user.RoleId == SystemRoles.ApplicantId)
+            {
+                Guid? applicantId = await _applicantService.GetApplicantIdAsync(user.UserId);
+                if (applicantId is null)
+                    return null;
+                user.UserId = applicantId.Value;
+            }
+            
+            if (user.RoleId == SystemRoles.EmployerId)
+            {
+                Guid? employerId = await _employerService.GetEmployerIdAsync(user.UserId);
+                if (employerId is null)
+                    return null;
+                user.UserId = employerId.Value;
+            }
+
+
+
             //return token if valid email and password
             if (isValidPassword == PasswordVerificationResult.Success)
                 return await _tokenService.GenerateToken(user);

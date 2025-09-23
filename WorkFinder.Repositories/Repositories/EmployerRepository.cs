@@ -93,6 +93,25 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
+        /// Gets an employerId for a given userId
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>EmployerId</returns>
+        public async Task<Guid?> GetEmployerIdAsync(Guid userId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            
+            //procedure name
+            var sql = "[GetEmployerId]";
+
+            //parameters name
+            var parameters = new DynamicParameters();
+            parameters.Add("@UserId", userId);
+
+            return await connection.ExecuteScalarAsync<Guid?>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
         /// Inserts a new employer in the database
         /// </summary>
         /// <param name="employer">employer to be inserted</param>

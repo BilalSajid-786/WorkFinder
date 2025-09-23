@@ -25,7 +25,14 @@ namespace WorkFinder.ServiceContracts
 
         Task<string> EditEmployerAsync(Guid employerId, EmployerRequestDto employerRequest);
         Task<EmployerResponseDto?> GetEmployerByIdAsync(Guid employerId);
-        //Task<bool> DeleteEmployerAsync(Guid employerId);
-        //Task<bool?> UpdateEmployerStatusAsync(Guid userId, bool isActive);
+
+        /// <summary>
+        /// Gets an employerId for a given user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>EmployerId</returns>
+        Task<Guid?> GetEmployerIdAsync(Guid userId);
+
+
     }
 }

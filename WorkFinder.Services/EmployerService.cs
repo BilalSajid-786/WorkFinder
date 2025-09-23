@@ -69,6 +69,16 @@ namespace WorkFinder.Services
             return _mapper.Map<EmployerResponseDto>(employer);
         }
 
+        /// <summary>
+        /// Get employerId for a given userId
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>EmployerId of a user</returns>
+        public async Task<Guid?> GetEmployerIdAsync(Guid userId)
+        {
+            return await _employerRepository.GetEmployerIdAsync(userId);
+        }
+
         public async Task<Guid> RegisterEmployerAsync(EmployerRequestDto employerRequest)
         {
             var employer = _mapper.Map<Employer>(employerRequest);

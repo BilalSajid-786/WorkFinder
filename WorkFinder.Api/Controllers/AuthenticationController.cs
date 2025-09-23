@@ -48,12 +48,12 @@ namespace WorkFinder.Api.Controllers
         /// </summary>
         /// <param name="loginRequest"></param>
         /// <returns>Id of the registered user</returns>
-        [Authorize(Policy = "Job.Apply")]
-        [HttpPost]
-        public async Task<ActionResult<Guid>> Register(RegisterRequestDto registerRequest)
-        {
-            return await _authService.RegisterUserAsync(registerRequest);
-        }
+        //[Authorize(Policy = "Job.Apply")]
+        //[HttpPost]
+        //public async Task<ActionResult<Guid>> Register(RegisterRequestDto registerRequest)
+        //{
+        //    return await _authService.RegisterUserAsync(registerRequest);
+        //}
 
 
         [HttpPost]
@@ -63,7 +63,7 @@ namespace WorkFinder.Api.Controllers
         }
 
         /// <summary>
-        /// Registers an Applicant
+        /// Registers an Applicant, if given details are valid
         /// </summary>
         /// <param name="applicantRequestDto"></param>
         /// <returns>Applicant Id</returns>

@@ -18,5 +18,6 @@ namespace WorkFinder.Entities.Entities
         public string ContactPerson { get; set; } = string.Empty;
         public string? RegistrationNumber { get; set; }
         public User? User { get; set; }
+        public IEnumerable<Job>? Jobs { get; set; }
     }
 }
