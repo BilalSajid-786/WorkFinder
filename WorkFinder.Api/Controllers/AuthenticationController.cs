@@ -57,9 +57,15 @@ namespace WorkFinder.Api.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<EmployerResponseDto>> RegisterEmployer(EmployerRequestDto employerRequest)
+        public async Task<ActionResult<ResponseDto>> RegisterEmployer(EmployerRequestDto employerRequest)
         {
-            return await _authService.RegisterEmployerAsync(employerRequest);
+            var response = await _authService.RegisterEmployerAsync(employerRequest);
+            return new ResponseDto()
+            {
+                Result = response,
+                IsSuccess = true,
+                Message = "Employer Registered Successfully."
+            };
         }
 
         /// <summary>
