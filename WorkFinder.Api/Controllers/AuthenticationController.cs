@@ -43,18 +43,6 @@ namespace WorkFinder.Api.Controllers
             };
         }
 
-        /// <summary>
-        /// Registers a given User in the system, if details are valid
-        /// </summary>
-        /// <param name="loginRequest"></param>
-        /// <returns>Id of the registered user</returns>
-        //[Authorize(Policy = "Job.Apply")]
-        //[HttpPost]
-        //public async Task<ActionResult<Guid>> Register(RegisterRequestDto registerRequest)
-        //{
-        //    return await _authService.RegisterUserAsync(registerRequest);
-        //}
-
 
         [HttpPost]
         public async Task<ActionResult<EmployerResponseDto>> RegisterEmployer(EmployerRequestDto employerRequest)
