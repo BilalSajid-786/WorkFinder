@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,12 @@ namespace WorkFinder.Api.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly ResponseDto _responseDto;
 
         public AuthenticationController(IAuthService authService)
         {
             _authService = authService;
+            _responseDto = new();
         }
 
         /// <summary>
@@ -31,23 +34,40 @@ namespace WorkFinder.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<ResponseDto>> Login(LoginRequestDto loginRequestDto)
         {
-            var token = await _authService.AuthenticateAsync(loginRequestDto.Email, loginRequestDto.Password);
-            if (token is null)
-                return Unauthorized();
-
-            return new ResponseDto()
+            try
             {
-                Result = token,
-                IsSuccess = true,
-                Message = "Token Generation Successfull"
-            };
+                var token = await _authService.AuthenticateAsync(loginRequestDto.Email, loginRequestDto.Password);
+                _responseDto.Result= token;
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Token Generation Successfull";
+                return _responseDto;
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+                return Unauthorized(_responseDto);
+            }
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<EmployerResponseDto>> RegisterEmployer(EmployerRequestDto employerRequest)
+        public async Task<ActionResult<ResponseDto>> RegisterEmployer(EmployerRequestDto employerRequest)
         {
-            return await _authService.RegisterEmployerAsync(employerRequest);
+            EmployerResponseDto? response;
+            try
+            {
+                response = await _authService.RegisterEmployerAsync(employerRequest);
+                _responseDto.Result = response;
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Employer Registered Successfully";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
         }
 
         /// <summary>
@@ -58,13 +78,20 @@ namespace WorkFinder.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<ResponseDto>> RegisterApplicant(ApplicantRequestDto applicantRequestDto)
         {
-            var response = await _authService.RegisterApplicantAsync(applicantRequestDto);
-            return new ResponseDto()
+            ApplicantResponseDto? response;
+            try
             {
-                Result = response,
-                IsSuccess = true,
-                Message = "Applicant Registered Successfully"
-            };
+                response = await _authService.RegisterApplicantAsync(applicantRequestDto);
+                _responseDto.Result = response;
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Applicant Registered Successfully";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
         }
     }
 }

@@ -41,12 +41,12 @@ namespace WorkFinder.Services
 
             //return null if user doesn't exist
             if (user is null)
-                return null;
+                throw new Exception($"Invalid Email {email}");
 
             var passwordHash = await _userService.GetUserPasswordHashById(user.UserId);
 
             if (passwordHash is null)
-                return null;
+                throw new Exception($"Invalid Password {password}");
 
             //check passwordHash
             var isValidPassword = _passwordHasher.VerifyHashedPassword(null, passwordHash, password);
@@ -69,17 +69,19 @@ namespace WorkFinder.Services
             }
 
 
-
             //return token if valid email and password
             if (isValidPassword == PasswordVerificationResult.Success)
                 return await _tokenService.GenerateToken(user);
-
-
-            return null;
+            else
+                throw new Exception($"Invalid Password {password}");
         }
 
         public async Task<ApplicantResponseDto> RegisterApplicantAsync(ApplicantRequestDto? applicantRequestDto)
         {
+            //check if email exist already or not
+            if (await CheckEmailExists(applicantRequestDto?.Email))
+                throw new Exception($"User with the email {applicantRequestDto.Email} already exists");
+
             //map from applicant dto to register dto
             RegisterRequestDto registerRequestDto = _mapper.Map<RegisterRequestDto>(applicantRequestDto);
             registerRequestDto.RoleId = SystemRoles.ApplicantId;
@@ -102,9 +104,12 @@ namespace WorkFinder.Services
 
         public async Task<EmployerResponseDto> RegisterEmployerAsync(EmployerRequestDto employerRequest)
         {
+            //check if email exist already or not
+            if (await CheckEmailExists(employerRequest?.Email))
+                throw new Exception($"User with the email {employerRequest.Email} already exists");
+
             var registerRequestDto = _mapper.Map<RegisterRequestDto>(employerRequest);
-            //var passwordHash = _passwordHasher.HashPassword(null, registerRequestDto.Password);
-            //return await _userService.RegisterUserAsync(registerRequestDto, passwordHash);
+
             var userId = await RegisterUserAsync(registerRequestDto);
             if (userId == Guid.Empty)
                 throw new InvalidOperationException($"Failed to register user with  email {registerRequestDto.Email}.");
@@ -125,6 +130,13 @@ namespace WorkFinder.Services
         {
             var passwordHash = _passwordHasher.HashPassword(null, registerRequestDto.Password);
             return await _userService.RegisterUserAsync(registerRequestDto, passwordHash);
+        }
+
+        private async Task<bool> CheckEmailExists(string email)
+        {
+            if (await _userService.GetUserByEmailAsync(email) is not null)
+                return true;
+            return false;
         }
     }
 }
