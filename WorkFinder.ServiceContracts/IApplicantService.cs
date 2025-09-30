@@ -32,5 +32,11 @@ namespace WorkFinder.ServiceContracts
         /// <param name="userId"></param>
         /// <returns>ApplicantId</returns>
         Task<Guid?> GetApplicantIdAsync(Guid userId);
+
+        /// <summary>
+        /// Updates a resume for an applicant in system
+        /// </summary>
+        /// <returns></returns>
+        Task UpdateApplicantResume(string resumeName, Guid applicantId);
     }
 }

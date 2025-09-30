@@ -22,7 +22,7 @@ namespace WorkFinder.Services
         private readonly IMapper _mapper;
         private readonly IEmployerService _employerService;
         private readonly IApplicantService _applicantService;
-      
+
         public AuthService(ITokenService tokenService, IUserService userService, IMapper mapper,
             IEmployerService employerService, IApplicantService applicantService)
         {
@@ -51,27 +51,28 @@ namespace WorkFinder.Services
             //check passwordHash
             var isValidPassword = _passwordHasher.VerifyHashedPassword(null, passwordHash, password);
 
-            //get user specific employer or applicantid if not admin
-            if(user.RoleId == SystemRoles.ApplicantId)
-            {
-                Guid? applicantId = await _applicantService.GetApplicantIdAsync(user.UserId);
-                if (applicantId is null)
-                    return null;
-                user.UserId = applicantId.Value;
-            }
-            
-            if (user.RoleId == SystemRoles.EmployerId)
-            {
-                Guid? employerId = await _employerService.GetEmployerIdAsync(user.UserId);
-                if (employerId is null)
-                    return null;
-                user.UserId = employerId.Value;
-            }
-
-
             //return token if valid email and password
             if (isValidPassword == PasswordVerificationResult.Success)
+            {
+                //if user is of role applicant populate the baseuserid and applicantid accordingly
+                if (user.RoleId == SystemRoles.ApplicantId)
+                {
+                    var id = await _applicantService.GetApplicantIdAsync(user.UserId);
+                    user.BaseUserId = user.UserId;
+                    user.UserId = id.Value;
+                }
+                else if (user.RoleId == SystemRoles.EmployerId) //if user is of role employer populate the baseuserid and employerid accordingly
+                {
+                    var id = await _employerService.GetEmployerIdAsync(user.UserId);
+                    user.BaseUserId = user.UserId;
+                    user.UserId = id.Value;
+                }
+                else // if user is an admin
+                {
+                    user.BaseUserId = user.UserId;
+                }
                 return await _tokenService.GenerateToken(user);
+            }
             else
                 throw new Exception($"Invalid Password {password}");
         }

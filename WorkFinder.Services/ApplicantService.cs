@@ -63,5 +63,14 @@ namespace WorkFinder.Services
         {
             return await _applicantRepository.IsApplicantExistAsync(applicantId);
         }
+
+        /// <summary>
+        /// Updates a resume for an applicant in the system
+        /// </summary>
+        /// <returns></returns>
+        public async Task UpdateApplicantResume(string resumeName, Guid applicantId)
+        {
+            await _applicantRepository.UpdateApplicantResume(resumeName, applicantId);
+        }
     }
 }

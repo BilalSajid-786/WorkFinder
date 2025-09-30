@@ -18,12 +18,14 @@ namespace WorkFinder.Services
     {
         private readonly IJobRepository _jobRepository;
         private readonly IEmployerService _employerService;
+        private readonly IIndustryService _industryService;
         private readonly IMapper _mapper;
-        public JobService(IJobRepository jobRepository, IMapper mapper, IEmployerService employerService)
+        public JobService(IJobRepository jobRepository, IMapper mapper, IEmployerService employerService, IIndustryService industryService)
         {
             _jobRepository = jobRepository;
             _mapper = mapper;
             _employerService = employerService;
+            _industryService = industryService;
         }
 
         /// <summary>
@@ -54,12 +56,13 @@ namespace WorkFinder.Services
         /// <returns>Inserted Job</returns>
         public async Task<JobResponseDto> InsertJobAsync(JobRequestDto job)
         {
-            if(await _employerService.GetEmployerByIdAsync(job.EmployerId) is not null)
-            {
-                var insertedJob = await _jobRepository.InsertJobAsync(_mapper.Map<Job>(job));
-                return _mapper.Map<JobResponseDto>(insertedJob);
-            }
-            return new();
+            if (await _employerService.GetEmployerByIdAsync(job.EmployerId) is null)
+                throw new Exception($"Invalid Employer Id {job.EmployerId}");
+            if (await _industryService.GetIndustryByIdAsync(job.IndustryId) is null)
+                throw new Exception($"Invalid Industry Id {job.IndustryId}");
+
+            var insertedJob = await _jobRepository.InsertJobAsync(_mapper.Map<Job>(job));
+            return _mapper.Map<JobResponseDto>(insertedJob);
         }
     }
 }

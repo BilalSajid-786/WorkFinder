@@ -9,6 +9,7 @@ namespace WorkFinder.ServiceContracts.DTOs.User
     public class UserResponseDto
     {
         public Guid UserId { get; set; }
+        public Guid BaseUserId { get; set; }
         public string UserName { get; set; } = string.Empty;
         public string RoleName { get; set; } = string.Empty;
         public Guid RoleId { get; set; }

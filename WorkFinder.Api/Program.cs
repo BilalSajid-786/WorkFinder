@@ -8,7 +8,7 @@ builder.Services.ConfigureAppServices(builder.Configuration);
 
 var app = builder.Build();
 
-//Seeding roles
+//Seeding Data
 using (var scope = app.Services.CreateScope())
 {
     //roles
@@ -33,6 +33,14 @@ using (var scope = app.Services.CreateScope())
     //industries
     var industryService = scope.ServiceProvider.GetRequiredService<IIndustryService>();
     await industryService.SeedIndustriesAsync();
+
+    //qualifications
+    var qualificationService = scope.ServiceProvider.GetRequiredService<IQualificationService>();
+    await qualificationService.SeedQualficationAsync();
+
+    //countries
+    var countries = scope.ServiceProvider.GetRequiredService<ICountryService>();
+    await countries.SeedCountriesAsync();
 }
 
 if(app.Environment.IsDevelopment())

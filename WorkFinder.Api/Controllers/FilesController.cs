@@ -17,47 +17,51 @@ namespace WorkFinder.Api.Controllers
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IApplicantService _applicantService;
+        private readonly ResponseDto _responseDto;
         public FilesController(IWebHostEnvironment webHostEnvironment, IApplicantService applicantService)
         {
             _webHostEnvironment = webHostEnvironment;
             _applicantService = applicantService;
+            _responseDto = new();
         }
 
         /// <summary>
-        /// Upload the files for the applicants
+        /// Upload the files for the applicants. Supported filetype: Resume, Certificate. Allowed Extensions: pdf, docx
         /// </summary>
         /// <param name="formFile"></param>
+        /// <param name="fileType"></param>
+        /// <param name="applicantId"></param>
         /// <returns></returns>
-        
+
         [AllowAnonymous]
-        [HttpPost("{fileType}/{userId:guid}")]
-        public async Task<ActionResult<ResponseDto>> UploadFile(IFormFile formFile,FileType fileType, Guid userId)
+        [HttpPost("{fileType}/{applicantId:guid}")]
+        public async Task<ActionResult<ResponseDto>> UploadFile(IFormFile formFile, FileType fileType, Guid applicantId)
         {
 
             try
             {
-                bool isUserExist = await _applicantService.IsApplicantExistAsync(userId);
+                bool isUserExist = await _applicantService.IsApplicantExistAsync(applicantId);
                 if (!isUserExist)
-                    return BadRequest(new ResponseDto()
-                    {
-                        IsSuccess = false,
-                        Message = "Invalid UserId"
-                    });
+                {
+                    _responseDto.IsSuccess = false;
+                    _responseDto.Message = "Invalid ApplicantId";
+                    return BadRequest(_responseDto);
+                }
 
                 if (formFile == null || formFile.Length == 0)
-                    return BadRequest(new ResponseDto()
-                    {
-                        IsSuccess = false,
-                        Message = "No file exist to upload"
-                    });
+                {
+                    _responseDto.IsSuccess = false;
+                    _responseDto.Message = "No file exist to upload";
+                    return BadRequest(_responseDto);
+                }
 
                 var allowedExtensions = new[] { ".pdf", ".docx" };
                 if (!allowedExtensions.Contains(Path.GetExtension(formFile.FileName)))
-                    return BadRequest(new ResponseDto()
-                    {
-                        IsSuccess = false,
-                        Message = "File extension not supported"
-                    });
+                {
+                    _responseDto.IsSuccess = false;
+                    _responseDto.Message = "File extension not supported";
+                    return BadRequest(_responseDto);
+                }
 
                 string folderName = fileType switch
                 {
@@ -72,7 +76,7 @@ namespace WorkFinder.Api.Controllers
                 if (!Directory.Exists(folderPath))
                     Directory.CreateDirectory(folderPath);
 
-                var fileName = string.Concat(userId,
+                var fileName = string.Concat(applicantId,
                     Path.GetExtension(formFile.FileName));
                 var filePath = Path.Combine(folderPath, fileName);
 
@@ -81,22 +85,19 @@ namespace WorkFinder.Api.Controllers
                     await formFile.CopyToAsync(fileStream);
                 }
 
-                return Ok(new ResponseDto()
-                {
-                    Result = fileName,
-                    IsSuccess = true,
-                    Message = $"{fileType} Uploaded successfull"
-                });
+                if (fileType == FileType.Resume)
+                    await _applicantService.UpdateApplicantResume(fileName,applicantId);
+
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = $"{fileType} upload Successfull";
+                _responseDto.Result = fileName;
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResponseDto()
-                {
-                    IsSuccess = false,
-                    Message = $"{ex.Message}"
-                });
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
             }
-            
+            return _responseDto;
         }
     }
 }

@@ -26,6 +26,8 @@ namespace WorkFinder.Api.Controllers
             _responseDto = new();
         }
 
+        #region Auth
+
         /// <summary>
         /// Authenticates the user with the given email and password
         /// </summary>
@@ -50,7 +52,15 @@ namespace WorkFinder.Api.Controllers
             }
         }
 
+        #endregion
 
+        #region Registration
+
+        /// <summary>
+        /// Registers an employer, if given details are valid
+        /// </summary>
+        /// <param name="employerRequest"></param>
+        /// <returns>ResponseDto</returns>
         [HttpPost]
         public async Task<ActionResult<ResponseDto>> RegisterEmployer(EmployerRequestDto employerRequest)
         {
@@ -93,5 +103,6 @@ namespace WorkFinder.Api.Controllers
             }
             return _responseDto;
         }
+        #endregion
     }
 }

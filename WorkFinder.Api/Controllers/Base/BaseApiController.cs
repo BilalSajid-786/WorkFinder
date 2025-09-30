@@ -18,6 +18,7 @@ namespace WorkFinder.Api.Controllers.Base
                 return new()
                 {
                     UserId = Guid.TryParse(HttpContext.User.FindFirstValue("UserId"),out var userId)? userId : Guid.Empty,
+                    BaseUserId = Guid.TryParse(HttpContext.User.FindFirstValue("BaseUserId"), out var baseUserId) ? baseUserId : Guid.Empty,
                     RoleId = Guid.TryParse(HttpContext.User.FindFirstValue("RoleId"),out var roleId) ? roleId : Guid.Empty,
                     UserRole = HttpContext.User.FindFirstValue("UserRole") ?? string.Empty
                 };

@@ -30,18 +30,26 @@ namespace WorkFinder.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<ResponseDto>> PostJobAsync([FromBody] JobRequestDto jobRequestDto)
         {
-            jobRequestDto.CreatedBy = CurrentUser.UserId;
-            var jobResponse = await _jobService.InsertJobAsync(jobRequestDto);
-            if(jobResponse.JobId != 0)
+            try
             {
-                _responseDto.IsSuccess = true;
-                _responseDto.Message = "Job Post Success";
-                _responseDto.Result = jobResponse;
+                jobRequestDto.CreatedBy = CurrentUser.BaseUserId;
+                var jobResponse = await _jobService.InsertJobAsync(jobRequestDto);
+                if (jobResponse.JobId != 0)
+                {
+                    _responseDto.IsSuccess = true;
+                    _responseDto.Message = "Job Post Success";
+                    _responseDto.Result = jobResponse;
+                }
+                else
+                {
+                    _responseDto.IsSuccess = false;
+                    _responseDto.Message = "Job Post Failure";
+                }
             }
-            else
+            catch (Exception ex)
             {
                 _responseDto.IsSuccess = false;
-                _responseDto.Message = "Job Post Failure";
+                _responseDto.Message = ex.Message;
             }
             return _responseDto;
         }

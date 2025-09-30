@@ -27,6 +27,17 @@ namespace WorkFinder.Services
             return _mapper.Map<IEnumerable<IndustryResponseDto>>(industries);
         }
 
+        /// <summary>
+        /// Get industry details for a given id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IndustryResponseDto?> GetIndustryByIdAsync(int id)
+        {
+            var industry = await _industryRepository.GetIndustryByIdAsync(id);
+            return _mapper.Map<IndustryResponseDto>(industry);
+        }
+
         public async Task InsertIndustry(IndustryRequestDto industryRequest)
         {
             await _industryRepository.InsertIndustry(_mapper.Map<Industry>(industryRequest));
