@@ -5,6 +5,7 @@ using WorkFinder.Api.Controllers.Base;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Job;
 using WorkFinder.ServiceContracts.DTOs.Response;
+using WorkFinder.ServiceContracts.Enums;
 using static WorkFinder.Entities.Entities.SystemSeeding.SystemPermissions;
 
 namespace WorkFinder.Api.Controllers
@@ -45,6 +46,28 @@ namespace WorkFinder.Api.Controllers
                     _responseDto.IsSuccess = false;
                     _responseDto.Message = "Job Post Failure";
                 }
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
+        /// <summary>
+        /// Get available JobTypes
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Policy = "Job.PostJob")]
+        [HttpGet("jobTypes")]
+        public ActionResult<ResponseDto> JobTypes()
+        {
+            try
+            {
+                _responseDto.Result = Enum.GetNames(typeof(JobType)).ToList();
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
             }
             catch (Exception ex)
             {

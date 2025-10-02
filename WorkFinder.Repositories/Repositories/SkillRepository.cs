@@ -34,13 +34,13 @@ namespace WorkFinder.Repositories.Repositories
             return await connection.QueryAsync<Skill>(sql,commandType: System.Data.CommandType.StoredProcedure);
         }
 
-        public async Task InsertSkill(Skill skill)
+        public async Task<int> InsertSkill(Skill skill)
         {
             using var connection = _dapperDbContext.CreateConnection();
             var sql = "[InsertSkill]";
             var parameters = new DynamicParameters();
             parameters.Add("@SkillName", skill.SkillName);
-            await connection.ExecuteScalarAsync<int>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+            return await connection.ExecuteScalarAsync<int>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
         }
     }
 }

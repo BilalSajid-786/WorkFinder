@@ -18,7 +18,15 @@ namespace WorkFinder.RepositoryContracts
         /// <param name="job"></param>
         /// <returns>Newly inserted Job</returns>
         Task<Job> InsertJobAsync(Job job);
-        
+
+        /// <summary>
+        /// Insert the skill for job
+        /// </summary>
+        /// <param name="skill"></param>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        Task InsertJobSkill(int skillId, int jobId);
+
         /// <summary>
         /// Get all jobs from the db
         /// </summary>

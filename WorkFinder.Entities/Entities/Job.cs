@@ -12,6 +12,7 @@ namespace WorkFinder.Entities.Entities
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
+        public string JobType { get; set; } = string.Empty;
         public DateTime ExpiryDate { get; set; }
         public Guid EmployerId { get; set; }
         public int IndustryId { get; set; }

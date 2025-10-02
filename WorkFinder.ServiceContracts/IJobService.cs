@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkFinder.ServiceContracts.DTOs.Job;
+using WorkFinder.ServiceContracts.DTOs.Skill;
 
 namespace WorkFinder.ServiceContracts
 {

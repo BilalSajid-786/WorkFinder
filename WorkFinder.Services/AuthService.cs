@@ -66,6 +66,8 @@ namespace WorkFinder.Services
                     var id = await _employerService.GetEmployerIdAsync(user.UserId);
                     user.BaseUserId = user.UserId;
                     user.UserId = id.Value;
+                    var employerDetails = await _employerService.GetEmployerByIdAsync(user.UserId);
+                    user.CompanyName = employerDetails.CompanyName;
                 }
                 else // if user is an admin
                 {

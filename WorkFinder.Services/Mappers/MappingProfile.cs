@@ -85,7 +85,8 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src));
 
             //Jobs
-            CreateMap<JobRequestDto, Job>();
+            CreateMap<JobRequestDto, Job>()
+                .ForMember(dest => dest.Skills, opt => opt.Ignore());
             CreateMap<Job, JobResponseDto>();
 
             //Qualifications

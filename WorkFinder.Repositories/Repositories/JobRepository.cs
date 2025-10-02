@@ -59,12 +59,29 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@Title", job.Title);
             parameters.Add("@Description", job.Description);
             parameters.Add("@City", job.City);
+            parameters.Add("@JobType", job.JobType);
             parameters.Add("@ExpiryDate", job.ExpiryDate);
             parameters.Add("@EmployerId", job.EmployerId);
             parameters.Add("@IndustryId", job.IndustryId);
             parameters.Add("@CreatedBy", job.CreatedBy);
             job.JobId = await connection.ExecuteScalarAsync<int>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
             return job;
+        }
+
+        /// <summary>
+        /// Insert the skill for a job in db
+        /// </summary>
+        /// <param name="skill"></param>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        public async Task InsertJobSkill(int skillId, int jobId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[InsertJobSkill]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@JobId", jobId);
+            parameters.Add("@SkillId", skillId);
+            await connection.ExecuteAsync(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
         }
     }
 }

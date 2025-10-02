@@ -14,7 +14,7 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <param name="skill"></param>
         /// <returns></returns>
-        Task InsertSkill(SkillRequestDto skill);
+        Task<int> InsertSkill(SkillRequestDto skill);
 
         /// <summary>
         /// Gets all skills from the system

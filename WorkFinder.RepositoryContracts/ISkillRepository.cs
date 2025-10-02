@@ -17,7 +17,7 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <param name="skill"></param>
         /// <returns></returns>
-        Task InsertSkill(Skill skill);
+        Task<int> InsertSkill(Skill skill);
 
         /// <summary>
         /// Gets all skills from the database
