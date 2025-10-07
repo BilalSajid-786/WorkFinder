@@ -21,5 +21,12 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <returns>Industries</returns>
         Task<IEnumerable<Industry>> GetIndustries();
+
+        /// <summary>
+        /// Gets an industry detail by an id from db
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<Industry?> GetIndustryByIdAsync(int id);
     }
 }

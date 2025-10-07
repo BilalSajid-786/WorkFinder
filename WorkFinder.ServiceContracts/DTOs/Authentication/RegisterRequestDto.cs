@@ -25,8 +25,6 @@ namespace WorkFinder.ServiceContracts.DTOs.Authentication
         public string Country { get; set; } = string.Empty;
         [Required]
         public string Phone { get; set; } = string.Empty;
-        [Required]
-        public string Gender { get; set; } = string.Empty;
 
     }
 }

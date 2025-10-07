@@ -78,6 +78,7 @@ namespace WorkFinder.Repositories.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("@UserId", applicant.UserId);
             parameters.Add("@Resume", applicant.Resume);
+            parameters.Add("@Gender", applicant.Gender);
 
             return await connection.ExecuteScalarAsync<Guid>(sql,parameters,commandType: System.Data.CommandType.StoredProcedure);
         }
@@ -97,6 +98,24 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@ApplicantId", applicantId);
 
             return await connection.ExecuteScalarAsync<bool>(sql,parameters,commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// Updates a resume for an applicant in db
+        /// </summary>
+        /// <param name="applicantId"></param>
+        /// <returns></returns>
+        public async Task UpdateApplicantResume(string resumeName, Guid applicantId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+
+            //procedure name
+            var sql = "[UpdateApplicantResume]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@Resume", resumeName);
+            parameters.Add("@ApplicantId", applicantId);
+
+            await connection.ExecuteScalarAsync<int>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
         }
     }
 }

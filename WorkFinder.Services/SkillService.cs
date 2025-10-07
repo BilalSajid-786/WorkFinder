@@ -37,9 +37,9 @@ namespace WorkFinder.Services
            return _mapper.Map<IEnumerable<SkillResponseDto>>(skills);
         }
 
-        public async Task InsertSkill(SkillRequestDto skill)
+        public async Task<int> InsertSkill(SkillRequestDto skill)
         {
-            await _skillRepository.InsertSkill(_mapper.Map<Skill>(skill));
+            return await _skillRepository.InsertSkill(_mapper.Map<Skill>(skill));
         }
 
         public async Task SeedSkillsAsync()

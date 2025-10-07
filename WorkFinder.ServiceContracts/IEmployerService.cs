@@ -33,6 +33,5 @@ namespace WorkFinder.ServiceContracts
         /// <returns>EmployerId</returns>
         Task<Guid?> GetEmployerIdAsync(Guid userId);
 
-
     }
 }

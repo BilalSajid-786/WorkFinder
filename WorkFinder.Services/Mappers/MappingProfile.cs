@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using WorkFinder.Entities.Entities;
 using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
+using WorkFinder.ServiceContracts.DTOs.Country;
 using WorkFinder.ServiceContracts.DTOs.Employer;
 using WorkFinder.ServiceContracts.DTOs.Industry;
 using WorkFinder.ServiceContracts.DTOs.Job;
+using WorkFinder.ServiceContracts.DTOs.Qualification;
 using WorkFinder.ServiceContracts.DTOs.Role;
 using WorkFinder.ServiceContracts.DTOs.Skill;
 using WorkFinder.ServiceContracts.DTOs.User;
@@ -83,8 +85,15 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src));
 
             //Jobs
-            CreateMap<JobRequestDto, Job>();
+            CreateMap<JobRequestDto, Job>()
+                .ForMember(dest => dest.Skills, opt => opt.Ignore());
             CreateMap<Job, JobResponseDto>();
+
+            //Qualifications
+            CreateMap<Qualification, QualificationResponseDto>();
+
+            //Countries
+            CreateMap<Country, CountryResponseDto>();
         }
     }
 }

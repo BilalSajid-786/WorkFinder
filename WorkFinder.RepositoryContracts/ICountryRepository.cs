@@ -17,7 +17,7 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <param name="country"></param>
         /// <returns></returns>
-        Task InsertCountry(Country country);
+        Task<int> InsertCountry(Country country);
 
         /// <summary>
         /// Get all countries from the database

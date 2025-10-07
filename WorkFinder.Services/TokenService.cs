@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WorkFinder.Entities.Entities;
+using WorkFinder.Entities.Entities.SystemSeeding;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.User;
 
@@ -44,9 +45,15 @@ namespace WorkFinder.Services
             {
                 new Claim("UserId",user.UserId.ToString()),
                 new Claim("RoleId",user.RoleId.ToString()),
-                new Claim("UserRole",user.RoleName)
+                new Claim("UserRole",user.RoleName),
+                new Claim("BaseUserId",user.BaseUserId.ToString())
             };
+            if(user.RoleId == SystemRoles.EmployerId)
+            {
+                claims.Add(new Claim("CompanyName", user.CompanyName));
+            }
 
+            //permissions
             foreach (var permission in permissions) 
             {
                 claims.Add(new Claim("Permissions", permission.Action));

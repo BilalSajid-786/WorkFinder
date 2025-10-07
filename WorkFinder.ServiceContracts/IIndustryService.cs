@@ -23,6 +23,13 @@ namespace WorkFinder.ServiceContracts
         Task<IEnumerable<IndustryResponseDto>> GetIndustries();
 
         /// <summary>
+        /// Gets an industry detail by an id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<IndustryResponseDto?> GetIndustryByIdAsync(int id);
+
+        /// <summary>
         /// Seed industries if there are no indutries available.
         /// </summary>
         /// <returns></returns>
