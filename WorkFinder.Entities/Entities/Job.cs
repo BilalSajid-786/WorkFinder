@@ -12,6 +12,7 @@ namespace WorkFinder.Entities.Entities
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
         public string JobType { get; set; } = string.Empty;
         public DateTime ExpiryDate { get; set; }
         public Guid EmployerId { get; set; }
@@ -19,5 +20,6 @@ namespace WorkFinder.Entities.Entities
         public Employer? Employer { get; set; }
         public Industry? Industry { get; set; }
         public IEnumerable<JobSkill>? Skills { get; set; }
+        public IEnumerable<ApplicantJobs>? Applicants { get; set; }
     }
 }

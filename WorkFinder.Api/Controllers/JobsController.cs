@@ -76,5 +76,24 @@ namespace WorkFinder.Api.Controllers
             }
             return _responseDto;
         }
+
+        [Authorize(Policy = "Job.AvailableJobs")]
+        [HttpPost("availableJobs")]
+        public async Task<ActionResult<ResponseDto>> GetApplicantAvailableJobs(ApplicantJobRequestDto applicantJobRequestDto)
+        {
+            try
+            {
+                _responseDto.Result = await _jobService.GetApplicantAvailableJobsAsync(applicantJobRequestDto);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
     }
 }

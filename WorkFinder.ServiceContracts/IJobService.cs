@@ -31,5 +31,12 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <returns>All jobs of a specific employer</returns>
         Task<IEnumerable<JobResponseDto>> GetEmployerJobsAsync(Guid employerId);
+
+        /// <summary>
+        /// Get available jobs for an applicant
+        /// </summary>
+        /// <param name="applicantJobRequestDto"></param>
+        /// <returns>Available Jobs for an applicant</returns>
+        Task<IEnumerable<ApplicantJobsResponseDto>> GetApplicantAvailableJobsAsync(ApplicantJobRequestDto applicantJobRequestDto);
     }
 }

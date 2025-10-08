@@ -41,6 +41,14 @@ namespace WorkFinder.Services
             return _mapper.Map<IEnumerable<JobResponseDto>>(jobs);
         }
 
+        public async Task<IEnumerable<ApplicantJobsResponseDto>> GetApplicantAvailableJobsAsync(ApplicantJobRequestDto applicantJobRequestDto)
+        {
+            var jobs = await _jobRepository.GetApplicantAvailableJobsAsync(applicantJobRequestDto.Location,
+                applicantJobRequestDto.IndustryId,
+                applicantJobRequestDto.JobType);
+            return _mapper.Map<IEnumerable<ApplicantJobsResponseDto>>(jobs);
+        }
+
         /// <summary>
         /// Get all jobs of an employer
         /// </summary>

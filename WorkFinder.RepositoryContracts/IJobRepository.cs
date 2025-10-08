@@ -38,5 +38,14 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <returns>All jobs of a specific employer</returns>
         Task<IEnumerable<Job>> GetEmployerJobsAsync(Guid employerId);
+        
+        /// <summary>
+        /// Get available jobs for an applicant
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="industryId"></param>
+        /// <param name="jobType"></param>
+        /// <returns>Available jobs according to filter values</returns>
+        Task<IEnumerable<Job>> GetApplicantAvailableJobsAsync(string? location, int? industryId,string? jobType);
     }
 }

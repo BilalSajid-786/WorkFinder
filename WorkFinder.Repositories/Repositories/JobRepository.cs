@@ -29,6 +29,36 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
+        /// Get Available Jobs from db for an applicant
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="industryId"></param>
+        /// <param name="jobType"></param>
+        /// <returns>Available Jobs for an applicant</returns>
+        public async Task<IEnumerable<Job>> GetApplicantAvailableJobsAsync(string? location, int? industryId, string? jobType)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetApplicantAvailableJobs]";
+            var paramters = new DynamicParameters();
+            paramters.Add("@Location", location);
+            paramters.Add("@IndustryId", industryId);
+            paramters.Add("@JobType", jobType);
+            var records =await connection.QueryAsync<Job, Industry, Employer,Job>
+                (sql
+                ,(job, industry, employer) =>
+                {
+                    job.Industry = industry;
+                    job.Employer = employer;
+                    return job;
+                }
+                , paramters
+                , splitOn: "IndustryId,EmployerId"
+                , commandType: System.Data.CommandType.StoredProcedure
+                );
+            return records;
+        }
+
+        /// <summary>
         /// Get all jobs of a given employer
         /// </summary>
         /// <param name="employerId"></param>
@@ -59,6 +89,7 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@Title", job.Title);
             parameters.Add("@Description", job.Description);
             parameters.Add("@City", job.City);
+            parameters.Add("@Country", job.Country);
             parameters.Add("@JobType", job.JobType);
             parameters.Add("@ExpiryDate", job.ExpiryDate);
             parameters.Add("@EmployerId", job.EmployerId);

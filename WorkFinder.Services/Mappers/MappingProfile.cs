@@ -27,7 +27,7 @@ namespace WorkFinder.Services.Mappers
             CreateMap<User, UserResponseDto>()
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role.RoleId))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
-            
+
             //CreateMap<Employer, EmployerResponseDto>()
             //    .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
             //    .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName));
@@ -43,7 +43,7 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.ModuleId, opt => opt.MapFrom(src => src.Module.ModuleId))
                 .ForMember(dest => dest.ModuleName, opt => opt.MapFrom(src => src.Module.ModuleName))
                 .ForMember(dest => dest.ParentModuleId, opt => opt.MapFrom(src => src.Module.ParentModuleId))
-                .ForMember(dest => dest.Route, opt => opt.MapFrom(src => src.Module.Route));
+                .ForMember(dest => dest.Route, opt => opt.MapFrom(src => src.Route));
 
             //Employers
             CreateMap<EmployerRequestDto, Employer>();
@@ -88,6 +88,10 @@ namespace WorkFinder.Services.Mappers
             CreateMap<JobRequestDto, Job>()
                 .ForMember(dest => dest.Skills, opt => opt.Ignore());
             CreateMap<Job, JobResponseDto>();
+            CreateMap<Job, ApplicantJobsResponseDto>()
+                .ForMember(dest => dest.PostedDate, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.Industry, opt => opt.MapFrom(src => src.Industry.IndustryName))
+                .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.Employer.CompanyName));
 
             //Qualifications
             CreateMap<Qualification, QualificationResponseDto>();

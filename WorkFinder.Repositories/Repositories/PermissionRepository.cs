@@ -39,6 +39,7 @@ namespace WorkFinder.Repositories.Repositories
                     parameters.Add("@ModuleId", permission.ModuleId);
                     parameters.Add("@Action", permission.Action);
                     parameters.Add("@DisplayName", permission.DisplayName);
+                    parameters.Add("@Route", permission.Route);
                     await connection.ExecuteScalarAsync<int>(insertionSql, parameters,commandType: System.Data.CommandType.StoredProcedure);
                 }
             }

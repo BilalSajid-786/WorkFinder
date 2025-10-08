@@ -61,6 +61,7 @@ namespace WorkFinder.Services
                     {
                         ModuleId = g.Key,
                         ModuleName = m.DisplayName,
+                        Route = m.Route
                     }).ToList(),
                 });
 
