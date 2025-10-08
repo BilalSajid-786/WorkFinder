@@ -11,6 +11,7 @@ using WorkFinder.ServiceContracts.DTOs.Country;
 using WorkFinder.ServiceContracts.DTOs.Employer;
 using WorkFinder.ServiceContracts.DTOs.Industry;
 using WorkFinder.ServiceContracts.DTOs.Job;
+using WorkFinder.ServiceContracts.DTOs.Pagination;
 using WorkFinder.ServiceContracts.DTOs.Qualification;
 using WorkFinder.ServiceContracts.DTOs.Role;
 using WorkFinder.ServiceContracts.DTOs.Skill;
@@ -87,7 +88,15 @@ namespace WorkFinder.Services.Mappers
             //Jobs
             CreateMap<JobRequestDto, Job>()
                 .ForMember(dest => dest.Skills, opt => opt.Ignore());
-            CreateMap<Job, JobResponseDto>();
+            CreateMap<Job, JobResponseDto>()
+                .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName))
+                .ForMember(dest => dest.IndustryId, opt => opt.MapFrom(src => src.Industry.IndustryId))
+                .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.Skills.Select(s => new SkillResponseDto
+                {
+                    SkillId = s.Skill.SkillId,
+                    SkillName = s.Skill.SkillName
+                })));
+            CreateMap<PaginationRequestDto, Pagination>();
 
             //Qualifications
             CreateMap<Qualification, QualificationResponseDto>();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkFinder.ServiceContracts.DTOs.Skill;
 
 namespace WorkFinder.ServiceContracts.DTOs.Job
 {
@@ -14,6 +15,10 @@ namespace WorkFinder.ServiceContracts.DTOs.Job
         public string City { get; set; } = string.Empty;
         public DateTime ExpiryDate { get; set; }
         public Guid EmployerId { get; set; }
+        public string JobType { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
         public int IndustryId { get; set; }
+        public string IndustryName { get; set; } = string.Empty;
+        public List<SkillResponseDto> Skills { get; set; } = new();
     }
 }

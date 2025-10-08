@@ -38,5 +38,11 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <returns>All jobs of a specific employer</returns>
         Task<IEnumerable<Job>> GetEmployerJobsAsync(Guid employerId);
+
+        /// <summary>
+        /// Get active jobs from the db
+        /// </summary>
+        /// <returns>Active jobs</returns>
+        Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination);
     }
 }

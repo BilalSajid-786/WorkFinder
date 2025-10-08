@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkFinder.ServiceContracts.DTOs.Country;
 using WorkFinder.ServiceContracts.DTOs.Job;
+using WorkFinder.ServiceContracts.DTOs.Pagination;
 using WorkFinder.ServiceContracts.DTOs.Skill;
 
 namespace WorkFinder.ServiceContracts
@@ -31,5 +33,11 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <returns>All jobs of a specific employer</returns>
         Task<IEnumerable<JobResponseDto>> GetEmployerJobsAsync(Guid employerId);
+
+        /// <summary>
+        /// Get active jobs from system
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<JobResponseDto>> GetActiveJobsAsync(PaginationRequestDto paginationRequestDto);
     }
 }
