@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Api.Controllers.Base;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Job;
+using WorkFinder.ServiceContracts.DTOs.Pagination;
 using WorkFinder.ServiceContracts.DTOs.Response;
 using WorkFinder.ServiceContracts.Enums;
+using WorkFinder.Services;
 using static WorkFinder.Entities.Entities.SystemSeeding.SystemPermissions;
 
 namespace WorkFinder.Api.Controllers
@@ -95,5 +97,29 @@ namespace WorkFinder.Api.Controllers
             return _responseDto;
         }
 
+
+        /// <summary>
+        /// Get Active Jobs
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Policy = "Job.ActiveJobs")]
+        [HttpPost("activeJobs")]
+
+        public async Task<ActionResult<ResponseDto>> GetActiveJobsAsyn(PaginationRequestDto paginationRequestDto)
+        {
+            try
+            {
+                var activeJobs = await _jobService.GetActiveJobsAsync(paginationRequestDto);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
+                _responseDto.Result = activeJobs;
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto; ;
+        }
     }
 }

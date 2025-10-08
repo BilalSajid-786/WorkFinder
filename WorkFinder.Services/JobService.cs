@@ -8,6 +8,7 @@ using WorkFinder.Entities.Entities;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Job;
+using WorkFinder.ServiceContracts.DTOs.Pagination;
 
 namespace WorkFinder.Services
 {
@@ -29,6 +30,17 @@ namespace WorkFinder.Services
             _employerService = employerService;
             _industryService = industryService;
             _skillService = skillService;
+        }
+
+        /// <summary>
+        /// Get active jobs from the system
+        /// </summary>
+        /// <returns>Active Jobs</returns>
+        public async Task<IEnumerable<JobResponseDto>> GetActiveJobsAsync(PaginationRequestDto paginationRequestDto)
+        {
+            var pagination = _mapper.Map<Pagination>(paginationRequestDto);
+            var activeJobs = await _jobRepository.GetActveJobsAsync(pagination);
+            return _mapper.Map<IEnumerable<JobResponseDto>>(activeJobs);
         }
 
         /// <summary>

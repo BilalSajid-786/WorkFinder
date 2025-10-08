@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System.Data;
 using WorkFinder.Entities.Entities;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.RepositoryContracts;
@@ -14,6 +15,61 @@ namespace WorkFinder.Repositories.Repositories
         public JobRepository(DapperDbContext dapperDbContext)
         {
             _dapperDbContext = dapperDbContext;
+        }
+
+        /// <summary>
+        /// Get active jobs from db.
+        /// </summary>
+        /// <returns>active jobs</returns>
+
+        public async Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetActiveJobs]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@SearchValue", pagination.SearchValue);
+            parameters.Add("@SortColumn", pagination.SortColumn);
+            parameters.Add("@SortOrder", pagination.SortOrder);
+            parameters.Add("@PageSize", pagination.PageSize);
+            parameters.Add("@PageNo", pagination.PageNo);
+            parameters.Add("@EmployerId", pagination.EmployerId);
+
+            var jobs = (await connection.QueryAsync<Job, Industry, Job>(
+                sql,
+                (job, industry) =>
+                {
+                    job.Industry = industry;
+                    return job;
+                },
+                parameters,
+                commandType: CommandType.StoredProcedure,
+                splitOn: "IndustryId" // tell Dapper where the split happens
+            )).ToList();
+
+            if (!jobs.Any())
+                return jobs;
+            var jobIds = string.Join(",", jobs.Select(j => j.JobId));
+
+            var skillParams = new DynamicParameters();
+            skillParams.Add("@JobIds", jobIds);
+
+            var jobSkills = (await connection.QueryAsync<JobSkill, Skill, JobSkill>(
+            "[GetJobSkills]",
+            (jobSkill, skill) =>
+            {
+            jobSkill.Skill = skill;
+            return jobSkill;
+            },
+            skillParams,
+            commandType: CommandType.StoredProcedure,
+            splitOn: "SkillId"
+            )).ToList();
+
+            foreach (var job in jobs)
+            {
+                job.Skills = jobSkills.Where(js => js.JobId == job.JobId).ToList();
+            }
+            return jobs;
         }
 
         /// <summary>
