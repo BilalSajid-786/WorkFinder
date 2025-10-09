@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WorkFinder.Common.Dtos.Jobs;
-using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.Entities.Entities;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
@@ -55,10 +53,12 @@ namespace WorkFinder.Services
             return _mapper.Map<IEnumerable<JobResponseDto>>(jobs);
         }
 
-        public async Task<PaginatedList<ApplicantJobsResponseDto>> GetApplicantAvailableJobsAsync(PaginationParameters<AvailableJobsFilter> request)
+        public async Task<IEnumerable<ApplicantJobsResponseDto>> GetApplicantAvailableJobsAsync(ApplicantJobRequestDto applicantJobRequestDto)
         {
-            var jobs = await _jobRepository.GetApplicantAvailableJobsAsync(request);
-            return _mapper.Map<PaginatedList<ApplicantJobsResponseDto>>(jobs);
+            var jobs = await _jobRepository.GetApplicantAvailableJobsAsync(applicantJobRequestDto.Location,
+                applicantJobRequestDto.IndustryId,
+                applicantJobRequestDto.JobType);
+            return _mapper.Map<IEnumerable<ApplicantJobsResponseDto>>(jobs);
         }
 
         /// <summary>

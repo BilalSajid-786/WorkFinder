@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WorkFinder.Common.Dtos.Jobs;
-using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.ServiceContracts.DTOs.Country;
 using WorkFinder.ServiceContracts.DTOs.Job;
 using WorkFinder.ServiceContracts.DTOs.Pagination;
@@ -39,9 +37,9 @@ namespace WorkFinder.ServiceContracts
         /// <summary>
         /// Get available jobs for an applicant
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        Task<PaginatedList<ApplicantJobsResponseDto>> GetApplicantAvailableJobsAsync(PaginationParameters<AvailableJobsFilter> request);
+        /// <param name="applicantJobRequestDto"></param>
+        /// <returns>Available Jobs for an applicant</returns>
+        Task<IEnumerable<ApplicantJobsResponseDto>> GetApplicantAvailableJobsAsync(ApplicantJobRequestDto applicantJobRequestDto);
 
         /// <summary>
         /// Get active jobs from system

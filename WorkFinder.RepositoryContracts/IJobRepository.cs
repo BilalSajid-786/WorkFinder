@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WorkFinder.Common.Dtos.Jobs;
-using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.Entities.Entities;
 
 namespace WorkFinder.RepositoryContracts
@@ -40,13 +38,15 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <returns>All jobs of a specific employer</returns>
         Task<IEnumerable<Job>> GetEmployerJobsAsync(Guid employerId);
-
+        
         /// <summary>
         /// Get available jobs for an applicant
         /// </summary>
-        /// <param name="queryParameters"></param>
-        /// <returns></returns>
-        Task<PaginatedList<Job>> GetApplicantAvailableJobsAsync(PaginationParameters<AvailableJobsFilter> queryParameters);
+        /// <param name="location"></param>
+        /// <param name="industryId"></param>
+        /// <param name="jobType"></param>
+        /// <returns>Available jobs according to filter values</returns>
+        Task<IEnumerable<Job>> GetApplicantAvailableJobsAsync(string? location, int? industryId,string? jobType);
 
         /// <summary>
         /// Get active jobs from the db

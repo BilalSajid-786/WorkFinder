@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WorkFinder.Common\WorkFinder.Common.csproj" />
     <ProjectReference Include="..\WorkFinder.Entities\WorkFinder.Entities.csproj" />
   </ItemGroup>
 

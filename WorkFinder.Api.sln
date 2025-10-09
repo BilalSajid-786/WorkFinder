@@ -3,23 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkFinder.Api", "WorkFinder.Api\WorkFinder.Api.csproj", "{8CBD2D0D-559E-4530-8F99-E0E68238B305}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkFinder.Api", "WorkFinder.Api\WorkFinder.Api.csproj", "{8CBD2D0D-559E-4530-8F99-E0E68238B305}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E245CC4A-EEC2-426C-82D1-E661A33FD2B6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AC0C55D8-A76A-4A7E-8F49-42E5CB573AF7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkFinder.Entities", "WorkFinder.Entities\WorkFinder.Entities.csproj", "{41F336E4-B3D9-4DE2-83C5-38D7D3EF3CB0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkFinder.Entities", "WorkFinder.Entities\WorkFinder.Entities.csproj", "{41F336E4-B3D9-4DE2-83C5-38D7D3EF3CB0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkFinder.ServiceContracts", "WorkFinder.ServiceContracts\WorkFinder.ServiceContracts.csproj", "{50ED0B88-180E-4B59-967F-81165E15F6C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkFinder.ServiceContracts", "WorkFinder.ServiceContracts\WorkFinder.ServiceContracts.csproj", "{50ED0B88-180E-4B59-967F-81165E15F6C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkFinder.Repositories", "WorkFinder.Repositories\WorkFinder.Repositories.csproj", "{6194555C-19E5-4FAB-8F60-50117F22651C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkFinder.Repositories", "WorkFinder.Repositories\WorkFinder.Repositories.csproj", "{6194555C-19E5-4FAB-8F60-50117F22651C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkFinder.Services", "WorkFinder.Services\WorkFinder.Services.csproj", "{D4695BBF-D012-4AC6-BD65-3525AE5B24A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkFinder.Services", "WorkFinder.Services\WorkFinder.Services.csproj", "{D4695BBF-D012-4AC6-BD65-3525AE5B24A5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkFinder.RepositoryContracts", "WorkFinder.RepositoryContracts\WorkFinder.RepositoryContracts.csproj", "{44FA1A96-10DF-47A9-8428-329F781359E3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkFinder.Common", "WorkFinder.Common\WorkFinder.Common.csproj", "{A3E37993-7484-45AF-A1CA-0EF286402455}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkFinder.RepositoryContracts", "WorkFinder.RepositoryContracts\WorkFinder.RepositoryContracts.csproj", "{44FA1A96-10DF-47A9-8428-329F781359E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +49,6 @@ Global
 		{44FA1A96-10DF-47A9-8428-329F781359E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44FA1A96-10DF-47A9-8428-329F781359E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44FA1A96-10DF-47A9-8428-329F781359E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A3E37993-7484-45AF-A1CA-0EF286402455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3E37993-7484-45AF-A1CA-0EF286402455}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3E37993-7484-45AF-A1CA-0EF286402455}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3E37993-7484-45AF-A1CA-0EF286402455}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,7 +60,6 @@ Global
 		{6194555C-19E5-4FAB-8F60-50117F22651C} = {E245CC4A-EEC2-426C-82D1-E661A33FD2B6}
 		{D4695BBF-D012-4AC6-BD65-3525AE5B24A5} = {E245CC4A-EEC2-426C-82D1-E661A33FD2B6}
 		{44FA1A96-10DF-47A9-8428-329F781359E3} = {E245CC4A-EEC2-426C-82D1-E661A33FD2B6}
-		{A3E37993-7484-45AF-A1CA-0EF286402455} = {E245CC4A-EEC2-426C-82D1-E661A33FD2B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1B92C277-9A09-4061-BA4E-71353DB9AC47}

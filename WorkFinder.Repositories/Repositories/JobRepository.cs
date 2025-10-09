@@ -1,7 +1,5 @@
 ﻿using Dapper;
 using System.Data;
-using WorkFinder.Common.Dtos.Jobs;
-using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.Entities.Entities;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.RepositoryContracts;
@@ -60,8 +58,8 @@ namespace WorkFinder.Repositories.Repositories
             "[GetJobSkills]",
             (jobSkill, skill) =>
             {
-                jobSkill.Skill = skill;
-                return jobSkill;
+            jobSkill.Skill = skill;
+            return jobSkill;
             },
             skillParams,
             commandType: CommandType.StoredProcedure,
@@ -94,49 +92,28 @@ namespace WorkFinder.Repositories.Repositories
         /// <param name="industryId"></param>
         /// <param name="jobType"></param>
         /// <returns>Available Jobs for an applicant</returns>
-        public async Task<PaginatedList<Job>> GetApplicantAvailableJobsAsync(PaginationParameters<AvailableJobsFilter> queryParameters)
+        public async Task<IEnumerable<Job>> GetApplicantAvailableJobsAsync(string? location, int? industryId, string? jobType)
         {
             using var connection = _dapperDbContext.CreateConnection();
             var sql = "[GetApplicantAvailableJobs]";
-            var parameters = new DynamicParameters();
-            parameters.Add("@Location", queryParameters.Filters?.Location);
-            parameters.Add("@IndustryId", queryParameters.Filters?.IndustryId);
-            parameters.Add("@JobType", queryParameters.Filters?.JobType);
-            parameters.Add("@SearchValue", queryParameters.SearchValue);
-            parameters.Add("@SortColumn", queryParameters.SortColumn);
-            parameters.Add("@SortOrder", queryParameters.SortOrder);
-            parameters.Add("@PageSize", queryParameters.PageSize);
-            parameters.Add("@PageNo", queryParameters.PageNo);
-
-            parameters.Add("@TotalCount", dbType: DbType.Int32, direction: ParameterDirection.Output);
-
-            // get paginated jobs
-            var jobs = (await connection.QueryAsync<Job, Industry, Employer, Job>(
-                "GetApplicantAvailableJobs",
-                (job, industry, employer) =>
+            var paramters = new DynamicParameters();
+            paramters.Add("@Location", location);
+            paramters.Add("@IndustryId", industryId);
+            paramters.Add("@JobType", jobType);
+            var records =await connection.QueryAsync<Job, Industry, Employer,Job>
+                (sql
+                ,(job, industry, employer) =>
                 {
                     job.Industry = industry;
                     job.Employer = employer;
                     return job;
-                },
-                param: parameters,
-                splitOn: "IndustryId,EmployerId",
-                commandType: CommandType.StoredProcedure
-            )).ToList();
-
-            var totalCount = parameters.Get<int>("@TotalCount");
-
-            // Combine results
-            var paginatedList = new PaginatedList<Job>(
-                    jobs.ToList(),
-                    parameters.Get<int>("@TotalCount"),
-                    queryParameters.PageNo,
-                    queryParameters.PageSize
+                }
+                , paramters
+                , splitOn: "IndustryId,EmployerId"
+                , commandType: System.Data.CommandType.StoredProcedure
                 );
-
-                return paginatedList;
-            }
-        
+            return records;
+        }
 
         /// <summary>
         /// Get all jobs of a given employer
