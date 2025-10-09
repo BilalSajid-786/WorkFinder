@@ -52,6 +52,6 @@ namespace WorkFinder.RepositoryContracts
         /// Get active jobs from the db
         /// </summary>
         /// <returns>Active jobs</returns>
-        Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination);
+        Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination, Guid employerId);
     }
 }

@@ -22,7 +22,7 @@ namespace WorkFinder.Repositories.Repositories
         /// </summary>
         /// <returns>active jobs</returns>
 
-        public async Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination)
+        public async Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination, Guid employerId)
         {
             using var connection = _dapperDbContext.CreateConnection();
             var sql = "[GetActiveJobs]";
@@ -32,18 +32,19 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@SortOrder", pagination.SortOrder);
             parameters.Add("@PageSize", pagination.PageSize);
             parameters.Add("@PageNo", pagination.PageNo);
-            parameters.Add("@EmployerId", pagination.EmployerId);
+            parameters.Add("@EmployerId", employerId);
 
-            var jobs = (await connection.QueryAsync<Job, Industry, Job>(
+            var jobs = (await connection.QueryAsync<Job, Employer, Industry, Job>(
                 sql,
-                (job, industry) =>
+                (job, employer, industry) =>
                 {
+                    job.Employer = employer;
                     job.Industry = industry;
                     return job;
                 },
                 parameters,
                 commandType: CommandType.StoredProcedure,
-                splitOn: "IndustryId" // tell Dapper where the split happens
+                splitOn: "EmpSplit,IndSplit" // tell Dapper where the split happens
             )).ToList();
 
             if (!jobs.Any())

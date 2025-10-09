@@ -36,10 +36,10 @@ namespace WorkFinder.Services
         /// Get active jobs from the system
         /// </summary>
         /// <returns>Active Jobs</returns>
-        public async Task<IEnumerable<JobResponseDto>> GetActiveJobsAsync(PaginationRequestDto paginationRequestDto)
+        public async Task<IEnumerable<JobResponseDto>> GetActiveJobsAsync(PaginationRequestDto paginationRequestDto, Guid employerId)
         {
             var pagination = _mapper.Map<Pagination>(paginationRequestDto);
-            var activeJobs = await _jobRepository.GetActveJobsAsync(pagination);
+            var activeJobs = await _jobRepository.GetActveJobsAsync(pagination, employerId);
             return _mapper.Map<IEnumerable<JobResponseDto>>(activeJobs);
         }
 

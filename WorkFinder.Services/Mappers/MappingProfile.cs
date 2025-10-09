@@ -91,13 +91,15 @@ namespace WorkFinder.Services.Mappers
             CreateMap<Job, JobResponseDto>()
                 .ForMember(dest => dest.IndustryName, opt => opt.MapFrom(src => src.Industry.IndustryName))
                 .ForMember(dest => dest.IndustryId, opt => opt.MapFrom(src => src.Industry.IndustryId))
+                .ForMember(dest => dest.EmployerId, opt => opt.MapFrom(src => src.Employer.EmployerId))
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Employer.CompanyName))
                 .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.Skills.Select(s => new SkillResponseDto
                 {
                     SkillId = s.Skill.SkillId,
                     SkillName = s.Skill.SkillName
                 })));
             CreateMap<PaginationRequestDto, Pagination>();
-            CreateMap<Job, JobResponseDto>();
+            //CreateMap<Job, JobResponseDto>();
             CreateMap<Job, ApplicantJobsResponseDto>()
                 .ForMember(dest => dest.PostedDate, opt => opt.MapFrom(src => src.CreatedAt))
                 .ForMember(dest => dest.Industry, opt => opt.MapFrom(src => src.Industry.IndustryName))

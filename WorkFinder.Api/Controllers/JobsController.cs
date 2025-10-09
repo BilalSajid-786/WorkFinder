@@ -109,7 +109,8 @@ namespace WorkFinder.Api.Controllers
         {
             try
             {
-                var activeJobs = await _jobService.GetActiveJobsAsync(paginationRequestDto);
+                Guid employerId = base.CurrentUser.UserId;
+                var activeJobs = await _jobService.GetActiveJobsAsync(paginationRequestDto, employerId);
                 _responseDto.IsSuccess = true;
                 _responseDto.Message = "Success";
                 _responseDto.Result = activeJobs;

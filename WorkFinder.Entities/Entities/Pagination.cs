@@ -14,6 +14,6 @@ namespace WorkFinder.Entities.Entities
         public string SortOrder { get; set; } = string.Empty;
         public int PageSize { get; set; }
         public int PageNo { get; set; }
-        public Guid EmployerId { get; set; }
+        //public Guid EmployerId { get; set; }
     }
 }

@@ -45,6 +45,6 @@ namespace WorkFinder.ServiceContracts
         /// Get active jobs from system
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<JobResponseDto>> GetActiveJobsAsync(PaginationRequestDto paginationRequestDto);
+        Task<IEnumerable<JobResponseDto>> GetActiveJobsAsync(PaginationRequestDto paginationRequestDto, Guid employerId);
     }
 }
