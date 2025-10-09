@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.Entities.Entities;
 using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
@@ -102,6 +103,9 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.PostedDate, opt => opt.MapFrom(src => src.CreatedAt))
                 .ForMember(dest => dest.Industry, opt => opt.MapFrom(src => src.Industry.IndustryName))
                 .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.Employer.CompanyName));
+
+            // Generic PaginatedList mapping
+            CreateMap<PaginatedList<Job>, PaginatedList<ApplicantJobsResponseDto>>();
 
             //Qualifications
             CreateMap<Qualification, QualificationResponseDto>();

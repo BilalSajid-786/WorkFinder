@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WorkFinder.Common\WorkFinder.Common.csproj" />
     <ProjectReference Include="..\WorkFinder.Repositories\WorkFinder.Repositories.csproj" />
     <ProjectReference Include="..\WorkFinder.Services\WorkFinder.Services.csproj" />
   </ItemGroup>

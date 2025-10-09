@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WorkFinder.Common\WorkFinder.Common.csproj" />
+  </ItemGroup>
+
 </Project>
