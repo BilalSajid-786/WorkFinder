@@ -135,20 +135,6 @@ namespace WorkFinder.Repositories.Repositories
 
                 return paginatedList;
             }
-
-            //var records =await connection.QueryAsync<Job, Industry, Employer,Job>
-            //    (sql
-            //    ,(job, industry, employer) =>
-            //    {
-            //        job.Industry = industry;
-            //        job.Employer = employer;
-            //        return job;
-            //    }
-            //    , paramters
-            //    , splitOn: "IndustryId,EmployerId"
-            //    , commandType: System.Data.CommandType.StoredProcedure
-            //    );
-            //return new PaginatedList<Job>(records, 10, 10, 10);
         
 
         /// <summary>
