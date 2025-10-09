@@ -14,7 +14,7 @@ namespace WorkFinder.ServiceContracts.DTOs.Pagination
         public string SortColumn { get; set; } = string.Empty;
         public string SortOrder { get; set; } = string.Empty;
         [Required]
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } = 5;
         [Required]
         public int PageNo { get; set; }
         //[Required]

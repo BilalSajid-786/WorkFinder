@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Api.Controllers.Base;
+using WorkFinder.Common.Dtos.Jobs;
+using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Job;
 using WorkFinder.ServiceContracts.DTOs.Pagination;
@@ -81,7 +83,7 @@ namespace WorkFinder.Api.Controllers
 
         [Authorize(Policy = "Job.AvailableJobs")]
         [HttpPost("availableJobs")]
-        public async Task<ActionResult<ResponseDto>> GetApplicantAvailableJobs(ApplicantJobRequestDto applicantJobRequestDto)
+        public async Task<ActionResult<ResponseDto>> GetApplicantAvailableJobs(PaginationParameters<AvailableJobsFilter> applicantJobRequestDto)
         {
             try
             {
