@@ -110,5 +110,10 @@ namespace WorkFinder.Services
             }
             return _mapper.Map<JobResponseDto>(insertedJob);
         }
+
+        public async Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId)
+        {
+            return await _jobRepository.UpdateJobStatusAsync(jobId, status, employerId);
+        }
     }
 }

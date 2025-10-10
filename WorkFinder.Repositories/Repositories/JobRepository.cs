@@ -171,5 +171,19 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@SkillId", skillId);
             await connection.ExecuteAsync(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
         }
+
+        public async Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[UpdateJobStatus]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@JobId", jobId);
+            parameters.Add("@IsActive", status);
+            parameters.Add("@UserId", employerId);
+            var result = await connection.ExecuteScalarAsync<int?>(
+            sql, parameters, commandType: CommandType.StoredProcedure);
+
+            return result;
+        }
     }
 }
