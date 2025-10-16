@@ -14,10 +14,10 @@ namespace WorkFinder.ServiceContracts.DTOs.Pagination
         public string SortColumn { get; set; } = string.Empty;
         public string SortOrder { get; set; } = string.Empty;
         [Required]
-        public int PageSize { get; set; } = 5;
+        public int PageSize { get; set; }
         [Required]
-        public int PageNo { get; set; } = 1;
+        public int PageNo { get; set; }
         [Required]
-        public Guid EmployerId { get; set; }
+        public bool Status { get; set; }
     }
 }

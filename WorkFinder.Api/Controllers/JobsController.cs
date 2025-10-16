@@ -217,17 +217,18 @@ namespace WorkFinder.Api.Controllers
 
 
         /// <summary>
-        /// Get Active Jobs
+        /// Get Employer Jobs
         /// </summary>
         /// <returns></returns>
         [Authorize(Policy = "Job.ActiveJobs")]
-        [HttpPost("activeJobs")]
+        [HttpPost("employerJobs")]
 
-        public async Task<ActionResult<ResponseDto>> GetActiveJobsAsyn(PaginationRequestDto paginationRequestDto)
+        public async Task<ActionResult<ResponseDto>> GetEmployerJobsAsyn(PaginationRequestDto paginationRequestDto)
         {
             try
             {
-                var activeJobs = await _jobService.GetActiveJobsAsync(paginationRequestDto);
+                Guid employerId = base.CurrentUser.UserId;
+                var activeJobs = await _jobService.GetEmployerJobsAsync(paginationRequestDto, employerId);
                 _responseDto.IsSuccess = true;
                 _responseDto.Message = "Success";
                 _responseDto.Result = activeJobs;
@@ -238,6 +239,26 @@ namespace WorkFinder.Api.Controllers
                 _responseDto.Message = ex.Message;
             }
             return _responseDto; ;
+        }
+
+        [Authorize(Policy = "Job.ActiveJobs")]
+        [HttpPost("updateJobStatusAsync/{jobId:int}/{status:bool}")]
+
+        public async Task<ActionResult<ResponseDto>> UpdateJobStatusAsync([FromRoute] int jobId, [FromRoute] bool status)
+        {
+            try
+            {
+                Guid employerId = base.CurrentUser.UserId;
+                _responseDto.Result = await _jobService.UpdateJobStatusAsync(jobId, status, employerId);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
         }
     }
 }

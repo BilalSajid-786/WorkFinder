@@ -50,11 +50,11 @@ namespace WorkFinder.Services
         /// <summary>
         /// Get active jobs from the system
         /// </summary>
-        /// <returns>Active Jobs</returns>
-        public async Task<IEnumerable<JobResponseDto>> GetActiveJobsAsync(PaginationRequestDto paginationRequestDto)
+        /// <returns>Employer Jobs</returns>
+        public async Task<IEnumerable<JobResponseDto>> GetEmployerJobsAsync(PaginationRequestDto paginationRequestDto, Guid employerId)
         {
             var pagination = _mapper.Map<Pagination>(paginationRequestDto);
-            var activeJobs = await _jobRepository.GetActveJobsAsync(pagination);
+            var activeJobs = await _jobRepository.GetEmployerJobsAsync(pagination, employerId);
             return _mapper.Map<IEnumerable<JobResponseDto>>(activeJobs);
         }
 
@@ -154,6 +154,11 @@ namespace WorkFinder.Services
         public async Task<bool> SaveJobAsync(ApplicantApplyJobDto applicantSaveJobDto)
         {
             return await _jobRepository.SaveJobAsync(_mapper.Map<SavedJob>(applicantSaveJobDto));
+        }
+
+        public async Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId)
+        {
+            return await _jobRepository.UpdateJobStatusAsync(jobId, status, employerId);
         }
     }
 }

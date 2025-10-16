@@ -22,5 +22,6 @@ namespace WorkFinder.Entities.Entities
         public IEnumerable<JobSkill>? Skills { get; set; }
         public IEnumerable<ApplicantJob>? ApplicantJobs { get; set; }
         public IEnumerable<SavedJob>? ApplicantSavedJobs { get; set; }
+        public int TotalRows { get; set; }
     }
 }

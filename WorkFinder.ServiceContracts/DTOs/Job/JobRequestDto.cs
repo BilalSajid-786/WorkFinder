@@ -21,6 +21,8 @@ namespace WorkFinder.ServiceContracts.DTOs.Job
         [EnumValidation(typeof(JobType))]
         public string JobType { get; set; } = string.Empty;
         [Required]
+        public bool IsActive { get; set; }
+        [Required]
         public string City { get; set; } = string.Empty;
         [Required]
         public string Country { get; set; } = string.Empty;

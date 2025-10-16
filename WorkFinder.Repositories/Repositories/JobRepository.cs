@@ -20,32 +20,34 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
-        /// Get active jobs from db.
+        /// Get employer jobs from db.
         /// </summary>
-        /// <returns>active jobs</returns>
+        /// <returns>employer jobs</returns>
 
-        public async Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination)
+        public async Task<IEnumerable<Job>> GetEmployerJobsAsync(Pagination pagination, Guid employerId)
         {
             using var connection = _dapperDbContext.CreateConnection();
-            var sql = "[GetActiveJobs]";
+            var sql = "[GetEmployerJobs]";
             var parameters = new DynamicParameters();
             parameters.Add("@SearchValue", pagination.SearchValue);
             parameters.Add("@SortColumn", pagination.SortColumn);
             parameters.Add("@SortOrder", pagination.SortOrder);
             parameters.Add("@PageSize", pagination.PageSize);
             parameters.Add("@PageNo", pagination.PageNo);
-            parameters.Add("@EmployerId", pagination.EmployerId);
+            parameters.Add("@Status", pagination.Status);
+            parameters.Add("@EmployerId", employerId);
 
-            var jobs = (await connection.QueryAsync<Job, Industry, Job>(
+            var jobs = (await connection.QueryAsync<Job, Employer, Industry, Job>(
                 sql,
-                (job, industry) =>
+                (job, employer, industry) =>
                 {
+                    job.Employer = employer;
                     job.Industry = industry;
                     return job;
                 },
                 parameters,
                 commandType: CommandType.StoredProcedure,
-                splitOn: "IndustryId" // tell Dapper where the split happens
+                splitOn: "EmpSplit,IndSplit" // tell Dapper where the split happens
             )).ToList();
 
             if (!jobs.Any())
@@ -59,8 +61,8 @@ namespace WorkFinder.Repositories.Repositories
             "[GetJobSkills]",
             (jobSkill, skill) =>
             {
-                jobSkill.Skill = skill;
-                return jobSkill;
+            jobSkill.Skill = skill;
+            return jobSkill;
             },
             skillParams,
             commandType: CommandType.StoredProcedure,
@@ -373,6 +375,20 @@ namespace WorkFinder.Repositories.Repositories
                 );
 
             return paginatedList;
+        }
+
+        public async Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[UpdateJobStatus]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@JobId", jobId);
+            parameters.Add("@IsActive", status);
+            parameters.Add("@UserId", employerId);
+            var result = await connection.ExecuteScalarAsync<int?>(
+            sql, parameters, commandType: CommandType.StoredProcedure);
+
+            return result;
         }
     }
 }

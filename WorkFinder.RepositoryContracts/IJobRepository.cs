@@ -44,9 +44,17 @@ namespace WorkFinder.RepositoryContracts
         /// <summary>
         /// Get available jobs for an applicant
         /// </summary>
-        /// <param name="queryParameters"></param>
-        /// <returns></returns>
+        /// <param name="location"></param>
+        /// <param name="industryId"></param>
+        /// <param name="jobType"></param>
+        /// <returns>Available jobs according to filter values</returns>
         Task<PaginatedList<Job>> GetApplicantAvailableJobsAsync(PaginationParameters<AvailableJobsFilter> queryParameters);
+
+        /// <summary>
+        /// Get employer jobs from the db
+        /// </summary>
+        /// <returns>Employer jobs</returns>
+        Task<IEnumerable<Job>> GetEmployerJobsAsync(Pagination pagination, Guid employerId);
 
         /// <summary>
         /// Get applied jobs for an applicant
@@ -66,9 +74,10 @@ namespace WorkFinder.RepositoryContracts
 
         /// <summary>
         /// Get active jobs from the db
+        /// Update employer jobs status from the db
         /// </summary>
         /// <returns>Active jobs</returns>
-        Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination);
+        //Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination);
 
         /// <summary>
         /// Insert an applicant application for a job
@@ -76,6 +85,12 @@ namespace WorkFinder.RepositoryContracts
         /// <param name="applicantJob"></param>
         /// <returns></returns>
         Task<bool> ApplyJobAsync(ApplicantJob applicantJob);
+
+        /// <summary>
+        /// Update employer jobs status from the db
+        /// </summary>
+        /// <returns>Update jobs</returns>
+        Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId);
 
         /// <summary>
         /// Insert a saved job for an applicant

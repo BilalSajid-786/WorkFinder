@@ -39,9 +39,15 @@ namespace WorkFinder.ServiceContracts
         /// <summary>
         /// Get available jobs for an applicant
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="applicantJobRequestDto"></param>
+        /// <returns>Available Jobs for an applicant</returns>
         Task<PaginatedList<ApplicantJobsResponseDto>> GetApplicantAvailableJobsAsync(PaginationParameters<AvailableJobsFilter> request);
+
+        /// <summary>
+        /// Get employer jobs from system
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<JobResponseDto>> GetEmployerJobsAsync(PaginationRequestDto paginationRequestDto, Guid employerId);
 
         /// <summary>
         /// Get applied Jobs for an applicant
@@ -61,7 +67,7 @@ namespace WorkFinder.ServiceContracts
         /// Get active jobs from system
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<JobResponseDto>> GetActiveJobsAsync(PaginationRequestDto paginationRequestDto);
+        //Task<IEnumerable<JobResponseDto>> GetActiveJobsAsync(PaginationRequestDto paginationRequestDto);
 
         /// <summary>
         /// Insert Applicant Application for a job
@@ -76,5 +82,6 @@ namespace WorkFinder.ServiceContracts
         /// <param name="applicantSaveJobDto"></param>
         /// <returns></returns>
         Task<bool> SaveJobAsync(ApplicantApplyJobDto applicantSaveJobDto);
+        Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId);
     }
 }
