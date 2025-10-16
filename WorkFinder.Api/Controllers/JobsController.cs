@@ -81,15 +81,131 @@ namespace WorkFinder.Api.Controllers
             return _responseDto;
         }
 
+        /// <summary>
+        /// Get Available Jobs for an applicant
+        /// </summary>
+        /// <param name="applicantJobRequestDto"></param>
+        /// <returns></returns>
         [Authorize(Policy = "Job.AvailableJobs")]
         [HttpPost("availableJobs")]
         public async Task<ActionResult<ResponseDto>> GetApplicantAvailableJobs(PaginationParameters<AvailableJobsFilter> applicantJobRequestDto)
         {
             try
             {
+                if (applicantJobRequestDto.Filters != null)
+                    applicantJobRequestDto.Filters.ApplicantId = base.CurrentUser.UserId;
+                else
+                    applicantJobRequestDto.Filters = new()
+                    {
+                        ApplicantId = base.CurrentUser.UserId,
+                    };
                 _responseDto.Result = await _jobService.GetApplicantAvailableJobsAsync(applicantJobRequestDto);
                 _responseDto.IsSuccess = true;
                 _responseDto.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
+        /// <summary>
+        /// Get Available Jobs for an applicant
+        /// </summary>
+        /// <param name="applicantJobRequestDto"></param>
+        /// <returns></returns>
+        [Authorize(Policy = "Job.AppliedJobs")]
+        [HttpPost("appliedJobs")]
+        public async Task<ActionResult<ResponseDto>> GetApplicantAppliedJobs(PaginationParameters<AvailableJobsFilter> applicantJobRequestDto)
+        {
+            try
+            {
+                applicantJobRequestDto.Filters = new()
+                {
+                    ApplicantId = base.CurrentUser.UserId,
+                };
+                _responseDto.Result = await _jobService.GetApplicantAppliedJobsAsync(applicantJobRequestDto);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
+
+        /// <summary>
+        /// Get Saved Jobs for an applicant
+        /// </summary>
+        /// <param name="applicantJobRequestDto"></param>
+        /// <returns></returns>
+        [Authorize(Policy = "Job.SavedJobs")]
+        [HttpPost("savedJobs")]
+        public async Task<ActionResult<ResponseDto>> GetApplicantSavedJobs(PaginationParameters<AvailableJobsFilter> applicantJobRequestDto)
+        {
+            try
+            {
+                applicantJobRequestDto.Filters = new()
+                {
+                    ApplicantId = base.CurrentUser.UserId,
+                };
+                _responseDto.Result = await _jobService.GetApplicantSavedJobsAsync(applicantJobRequestDto);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
+
+        /// <summary>
+        /// Apply job for an applicant
+        /// </summary>
+        /// <param name="applicantApplyJobDto"></param>
+        /// <returns>true or false</returns>
+        [Authorize(Policy = "Job.AppliedJobs")]
+        [HttpPost("applyJob")]
+        public async Task<ActionResult<ResponseDto>> ApplyJob(ApplicantApplyJobDto applicantApplyJobDto)
+        {
+            try
+            {
+                applicantApplyJobDto.ApplicantId = base.CurrentUser.UserId;
+                _responseDto.Result = await _jobService.ApplyJobAsync(applicantApplyJobDto);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Job Application Successfull";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
+        /// <summary>
+        /// Save job for an applicant
+        /// </summary>
+        /// <param name="applicantSaveJobDto"></param>
+        /// <returns>true or false</returns>
+        [Authorize(Policy = "Job.SavedJobs")]
+        [HttpPost("saveJob")]
+        public async Task<ActionResult<ResponseDto>> SaveJob(ApplicantApplyJobDto applicantSaveJobDto)
+        {
+            try
+            {
+                applicantSaveJobDto.ApplicantId = base.CurrentUser.UserId;
+                _responseDto.Result = await _jobService.SaveJobAsync(applicantSaveJobDto);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Job Saved Successfull";
             }
             catch (Exception ex)
             {

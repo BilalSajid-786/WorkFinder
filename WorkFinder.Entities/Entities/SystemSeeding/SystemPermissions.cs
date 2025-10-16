@@ -31,16 +31,17 @@ namespace WorkFinder.Entities.Entities.SystemSeeding
             public static readonly Permission InActiveJobs = new() { PermissionId = 11, ModuleId = 4, Action = "Job.InActiveJobs", DisplayName = "Inactive Jobs" };
             public static readonly Permission AvailableJobs = new() { PermissionId = 12, ModuleId = 4, Action = "Job.AvailableJobs", DisplayName = "Available Jobs", Route = "/availablejobs" };
             public static readonly Permission AppliedJobs = new() { PermissionId = 13, ModuleId = 4, Action = "Job.AppliedJobs", DisplayName = "Applied Jobs", Route = "/appliedjobs" };
+            public static readonly Permission SavedJobs = new() { PermissionId = 14, ModuleId = 4, Action = "Job.SavedJobs", DisplayName = "Saved Jobs", Route = "/savedjobs" };
         }
 
         public static class Dashboard
         {
-            public static readonly Permission CanAccessDashboard = new() { PermissionId = 14, Action = "Dashboard.CanAccessDashboard" };
+            public static readonly Permission CanAccessDashboard = new() { PermissionId = 15, Action = "Dashboard.CanAccessDashboard" };
         }
 
         public static IEnumerable<Permission> GetAllPermissions() =>
                                 new List<Permission>() { Employer.Create,Employer.Get,Employer.Update,Employer.Delete,
                                 Applicant.Create,Applicant.Get,Applicant.Update,Applicant.Delete,
-                                Job.PostJob,Job.ActiveJobs,Job.InActiveJobs,Job.AvailableJobs,Job.AppliedJobs,Dashboard.CanAccessDashboard};
+                                Job.PostJob,Job.ActiveJobs,Job.InActiveJobs,Job.AvailableJobs,Job.AppliedJobs,Job.SavedJobs,Dashboard.CanAccessDashboard};
     }
 }

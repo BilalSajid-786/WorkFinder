@@ -49,9 +49,39 @@ namespace WorkFinder.RepositoryContracts
         Task<PaginatedList<Job>> GetApplicantAvailableJobsAsync(PaginationParameters<AvailableJobsFilter> queryParameters);
 
         /// <summary>
+        /// Get applied jobs for an applicant
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <returns></returns>
+        Task<PaginatedList<ApplicantJob>> GetApplicantAppliedJobsAsync(PaginationParameters<AvailableJobsFilter> queryParameters);
+
+        /// <summary>
+        /// Get saved jobs for an applicant
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <returns></returns>
+        Task<PaginatedList<SavedJob>> GetApplicantSavedJobsAsync(PaginationParameters<AvailableJobsFilter> queryParameters);
+
+
+
+        /// <summary>
         /// Get active jobs from the db
         /// </summary>
         /// <returns>Active jobs</returns>
         Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination);
+
+        /// <summary>
+        /// Insert an applicant application for a job
+        /// </summary>
+        /// <param name="applicantJob"></param>
+        /// <returns></returns>
+        Task<bool> ApplyJobAsync(ApplicantJob applicantJob);
+
+        /// <summary>
+        /// Insert a saved job for an applicant
+        /// </summary>
+        /// <param name="savedJob"></param>
+        /// <returns></returns>
+        Task<bool> SaveJobAsync(SavedJob savedJob);
     }
 }

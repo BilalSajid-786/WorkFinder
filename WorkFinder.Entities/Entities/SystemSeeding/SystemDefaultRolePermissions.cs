@@ -43,7 +43,8 @@ namespace WorkFinder.Entities.Entities.SystemSeeding
                 new List<Permission>
                 {
                     SystemPermissions.Job.AppliedJobs,
-                    SystemPermissions.Job.AvailableJobs
+                    SystemPermissions.Job.AvailableJobs,
+                    SystemPermissions.Job.SavedJobs
                 }
             }
         };

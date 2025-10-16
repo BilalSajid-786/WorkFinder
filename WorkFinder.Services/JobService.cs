@@ -11,6 +11,7 @@ using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Job;
 using WorkFinder.ServiceContracts.DTOs.Pagination;
+using WorkFinder.ServiceContracts.Enums;
 
 namespace WorkFinder.Services
 {
@@ -35,6 +36,18 @@ namespace WorkFinder.Services
         }
 
         /// <summary>
+        /// Insert Applicant application for a job
+        /// </summary>
+        /// <param name="applicantApplyJobDto"></param>
+        /// <returns></returns>
+        public async Task<bool> ApplyJobAsync(ApplicantApplyJobDto applicantApplyJobDto)
+        {
+            var applicantJob = _mapper.Map<ApplicantJob>(applicantApplyJobDto);
+            applicantJob.Status = StatusType.Applied.ToString();
+            return await _jobRepository.ApplyJobAsync(applicantJob);
+        }
+
+        /// <summary>
         /// Get active jobs from the system
         /// </summary>
         /// <returns>Active Jobs</returns>
@@ -55,9 +68,31 @@ namespace WorkFinder.Services
             return _mapper.Map<IEnumerable<JobResponseDto>>(jobs);
         }
 
+        /// <summary>
+        /// Get applicant applied jobs
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<PaginatedList<ApplicantJobsResponseDto>> GetApplicantAppliedJobsAsync(PaginationParameters<AvailableJobsFilter> request)
+        {
+            var jobs = await _jobRepository.GetApplicantAppliedJobsAsync(request);
+            return _mapper.Map<PaginatedList<ApplicantJobsResponseDto>>(jobs);
+        }
+
         public async Task<PaginatedList<ApplicantJobsResponseDto>> GetApplicantAvailableJobsAsync(PaginationParameters<AvailableJobsFilter> request)
         {
             var jobs = await _jobRepository.GetApplicantAvailableJobsAsync(request);
+            return _mapper.Map<PaginatedList<ApplicantJobsResponseDto>>(jobs);
+        }
+
+        /// <summary>
+        /// Get saved jobs for an applicant
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<PaginatedList<ApplicantJobsResponseDto>> GetApplicantSavedJobsAsync(PaginationParameters<AvailableJobsFilter> request)
+        {
+            var jobs = await _jobRepository.GetApplicantSavedJobsAsync(request);
             return _mapper.Map<PaginatedList<ApplicantJobsResponseDto>>(jobs);
         }
 
@@ -109,6 +144,16 @@ namespace WorkFinder.Services
                 }
             }
             return _mapper.Map<JobResponseDto>(insertedJob);
+        }
+
+        /// <summary>
+        /// Save job for an applicant
+        /// </summary>
+        /// <param name="applicantSaveJobDto"></param>
+        /// <returns></returns>
+        public async Task<bool> SaveJobAsync(ApplicantApplyJobDto applicantSaveJobDto)
+        {
+            return await _jobRepository.SaveJobAsync(_mapper.Map<SavedJob>(applicantSaveJobDto));
         }
     }
 }

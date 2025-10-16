@@ -20,6 +20,7 @@ namespace WorkFinder.Entities.Entities
         public Employer? Employer { get; set; }
         public Industry? Industry { get; set; }
         public IEnumerable<JobSkill>? Skills { get; set; }
-        public IEnumerable<ApplicantJobs>? Applicants { get; set; }
+        public IEnumerable<ApplicantJob>? ApplicantJobs { get; set; }
+        public IEnumerable<SavedJob>? ApplicantSavedJobs { get; set; }
     }
 }

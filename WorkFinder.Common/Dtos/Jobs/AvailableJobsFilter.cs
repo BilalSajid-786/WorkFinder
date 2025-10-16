@@ -11,5 +11,6 @@ namespace WorkFinder.Common.Dtos.Jobs
         public string? Location { get; set; }
         public string? JobType { get; set; }
         public int? IndustryId { get; set; }
+        public Guid ApplicantId { get; set; }
     }
 }

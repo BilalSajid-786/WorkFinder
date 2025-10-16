@@ -79,6 +79,8 @@ namespace WorkFinder.Services.Mappers
             CreateMap<SkillResponseDto, Skill>();
             CreateMap<string?, Skill>()
                 .ForMember(dest => dest.SkillName, opt => opt.MapFrom(src => src));
+            CreateMap<JobSkill, string>()
+                .ConvertUsing(src => src.SkillName);
 
             //Industries
             CreateMap<IndustryRequestDto, Industry>();
@@ -104,8 +106,34 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.Industry, opt => opt.MapFrom(src => src.Industry.IndustryName))
                 .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.Employer.CompanyName));
 
+            CreateMap<ApplicantJob, ApplicantJobsResponseDto>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Job.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Job.Description))
+                .ForMember(dest => dest.PostedDate, opt => opt.MapFrom(src => src.Job.CreatedAt))
+                .ForMember(dest => dest.Industry, opt => opt.MapFrom(src => src.Job.Industry.IndustryName))
+                .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.Job.Employer.CompanyName))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Job.City))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Job.Country))
+                .ForMember(dest => dest.JobStatus, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.Job.Skills));
+
+            CreateMap<SavedJob, ApplicantJobsResponseDto>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Job.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Job.Description))
+                .ForMember(dest => dest.PostedDate, opt => opt.MapFrom(src => src.Job.CreatedAt))
+                .ForMember(dest => dest.Industry, opt => opt.MapFrom(src => src.Job.Industry.IndustryName))
+                .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.Job.Employer.CompanyName))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Job.City))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Job.Country))
+                .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.Job.Skills));
+
+            CreateMap<ApplicantApplyJobDto, ApplicantJob>();
+            CreateMap<ApplicantApplyJobDto, SavedJob>();
+
             // Generic PaginatedList mapping
             CreateMap<PaginatedList<Job>, PaginatedList<ApplicantJobsResponseDto>>();
+            CreateMap<PaginatedList<ApplicantJob>, PaginatedList<ApplicantJobsResponseDto>>();
+            CreateMap<PaginatedList<SavedJob>, PaginatedList<ApplicantJobsResponseDto>>();
 
             //Qualifications
             CreateMap<Qualification, QualificationResponseDto>();

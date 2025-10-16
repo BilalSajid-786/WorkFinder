@@ -74,6 +74,27 @@ namespace WorkFinder.Repositories.Repositories
             return jobs;
         }
 
+
+        async Task<IEnumerable<JobSkill>> GetJobSkillsAsync(string jobIds)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetJobSkills]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@JobIds", jobIds);
+            return await connection.QueryAsync<JobSkill, Skill, JobSkill>(
+            sql,
+            (jobSkill, skill) =>
+            {
+                jobSkill.SkillId = skill.SkillId;
+                jobSkill.SkillName = skill.SkillName;
+                return jobSkill;
+            },
+            parameters,
+            commandType: CommandType.StoredProcedure,
+            splitOn: "SkillId"
+            );
+        }
+
         /// <summary>
         /// Get all jobs from db.
         /// </summary>
@@ -98,6 +119,7 @@ namespace WorkFinder.Repositories.Repositories
             using var connection = _dapperDbContext.CreateConnection();
             var sql = "[GetApplicantAvailableJobs]";
             var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", queryParameters.Filters?.ApplicantId);
             parameters.Add("@Location", queryParameters.Filters?.Location);
             parameters.Add("@IndustryId", queryParameters.Filters?.IndustryId);
             parameters.Add("@JobType", queryParameters.Filters?.JobType);
@@ -123,6 +145,16 @@ namespace WorkFinder.Repositories.Repositories
                 commandType: CommandType.StoredProcedure
             )).ToList();
 
+            if (jobs.Any())
+            {
+                var jobIds = string.Join(",", jobs.Select(j => j.JobId));
+                var jobSkills = await GetJobSkillsAsync(jobIds);
+                foreach (var job in jobs)
+                {
+                    job.Skills = jobSkills.Where(js => js.JobId == job.JobId);
+                }
+            }
+
             var totalCount = parameters.Get<int>("@TotalCount");
 
             // Combine results
@@ -133,9 +165,9 @@ namespace WorkFinder.Repositories.Repositories
                     queryParameters.PageSize
                 );
 
-                return paginatedList;
-            }
-        
+            return paginatedList;
+        }
+
 
         /// <summary>
         /// Get all jobs of a given employer
@@ -192,6 +224,155 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@JobId", jobId);
             parameters.Add("@SkillId", skillId);
             await connection.ExecuteAsync(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// insert applicant application for a job
+        /// </summary>
+        /// <param name="applicantJob"></param>
+        /// <returns></returns>
+        public async Task<bool> ApplyJobAsync(ApplicantJob applicantJob)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[ApplyJob]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@JobId", applicantJob.JobId);
+            parameters.Add("@ApplicantId", applicantJob.ApplicantId);
+            parameters.Add("@Status", applicantJob.Status);
+            return await connection.ExecuteScalarAsync<bool>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// Get applicant applied jobs
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<PaginatedList<ApplicantJob>> GetApplicantAppliedJobsAsync(PaginationParameters<AvailableJobsFilter> queryParameters)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetApplicantAppliedJobs]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", queryParameters.Filters?.ApplicantId);
+            parameters.Add("@SearchValue", queryParameters.SearchValue);
+            parameters.Add("@SortColumn", queryParameters.SortColumn);
+            parameters.Add("@SortOrder", queryParameters.SortOrder);
+            parameters.Add("@PageSize", queryParameters.PageSize);
+            parameters.Add("@PageNo", queryParameters.PageNo);
+
+            parameters.Add("@TotalCount", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+            // get paginated jobs
+            var jobs = (await connection.QueryAsync<Job, Industry, Employer,ApplicantJob, ApplicantJob>(
+                sql,
+                (job, industry, employer,applicantJob) =>
+                {
+                    job.Industry = industry;
+                    job.Employer = employer;
+                    applicantJob.Job = job;
+                    applicantJob.JobId = job.JobId;
+                    return applicantJob;
+                },
+                param: parameters,
+                splitOn: "IndustryId,EmployerId,Status",
+                commandType: CommandType.StoredProcedure
+            )).ToList();
+
+            if (jobs.Any())
+            {
+                var jobIds = string.Join(",", jobs.Select(j => j.JobId));
+                var jobSkills = await GetJobSkillsAsync(jobIds);
+                foreach (var job in jobs)
+                {
+                    job.Job.Skills = jobSkills.Where(js => js.JobId == job.JobId);
+                }
+            }
+
+            var totalCount = parameters.Get<int>("@TotalCount");
+
+            // Combine results
+            var paginatedList = new PaginatedList<ApplicantJob>(
+                    jobs,
+                    parameters.Get<int>("@TotalCount"),
+                    queryParameters.PageNo,
+                    queryParameters.PageSize
+                );
+
+            return paginatedList;
+        }
+
+        /// <summary>
+        /// Insert a saved job for an applicant
+        /// </summary>
+        /// <param name="savedJob"></param>
+        /// <returns></returns>
+        public async Task<bool> SaveJobAsync(SavedJob savedJob)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[SaveJob]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", savedJob.ApplicantId);
+            parameters.Add("@JobId",savedJob.JobId);
+            return await connection.ExecuteScalarAsync<bool>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// Get saved jobs for an applicant
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <returns></returns>
+        public async Task<PaginatedList<SavedJob>> GetApplicantSavedJobsAsync(PaginationParameters<AvailableJobsFilter> queryParameters)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetApplicantSavedJobs]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", queryParameters.Filters?.ApplicantId);
+            parameters.Add("@SearchValue", queryParameters.SearchValue);
+            parameters.Add("@SortColumn", queryParameters.SortColumn);
+            parameters.Add("@SortOrder", queryParameters.SortOrder);
+            parameters.Add("@PageSize", queryParameters.PageSize);
+            parameters.Add("@PageNo", queryParameters.PageNo);
+
+            parameters.Add("@TotalCount", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+            // get paginated jobs
+            var jobs = (await connection.QueryAsync<Job, Industry, Employer, SavedJob>(
+                sql,
+                (job, industry, employer) =>
+                {
+                    SavedJob savedJob = new();
+                    job.Industry = industry;
+                    job.Employer = employer;
+                    savedJob.Job = job;
+                    savedJob.JobId = job.JobId;
+                    return savedJob;
+                },
+                param: parameters,
+                splitOn: "IndustryId,EmployerId",
+                commandType: CommandType.StoredProcedure
+            )).ToList();
+
+            if (jobs.Any())
+            {
+                var jobIds = string.Join(",", jobs.Select(j => j.JobId));
+                var jobSkills = await GetJobSkillsAsync(jobIds);
+                foreach (var job in jobs)
+                {
+                    job.Job.Skills = jobSkills.Where(js => js.JobId == job.JobId);
+                }
+            }
+
+            var totalCount = parameters.Get<int>("@TotalCount");
+
+            // Combine results
+            var paginatedList = new PaginatedList<SavedJob>(
+                    jobs,
+                    parameters.Get<int>("@TotalCount"),
+                    queryParameters.PageNo,
+                    queryParameters.PageSize
+                );
+
+            return paginatedList;
         }
     }
 }

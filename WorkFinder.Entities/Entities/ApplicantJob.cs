@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WorkFinder.Entities.Entities
 {
-    public class ApplicantJobs
+    public class ApplicantJob
     {
-        public int ApplicantId { get; set; }
+        public Guid ApplicantId { get; set; }
         public int JobId { get; set; }
         public string Status { get; set; } = string.Empty;
         public Applicant? Applicant { get; set; }
