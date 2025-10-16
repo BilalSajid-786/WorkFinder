@@ -49,10 +49,15 @@ namespace WorkFinder.RepositoryContracts
         Task<IEnumerable<Job>> GetApplicantAvailableJobsAsync(string? location, int? industryId,string? jobType);
 
         /// <summary>
-        /// Get active jobs from the db
+        /// Get employer jobs from the db
         /// </summary>
-        /// <returns>Active jobs</returns>
-        Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination, Guid employerId);
+        /// <returns>Employer jobs</returns>
+        Task<IEnumerable<Job>> GetEmployerJobsAsync(Pagination pagination, Guid employerId);
+
+        /// <summary>
+        /// Update employer jobs status from the db
+        /// </summary>
+        /// <returns>Update jobs</returns>
         Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId);
     }
 }

@@ -18,20 +18,21 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
-        /// Get active jobs from db.
+        /// Get employer jobs from db.
         /// </summary>
-        /// <returns>active jobs</returns>
+        /// <returns>employer jobs</returns>
 
-        public async Task<IEnumerable<Job>> GetActveJobsAsync(Pagination pagination, Guid employerId)
+        public async Task<IEnumerable<Job>> GetEmployerJobsAsync(Pagination pagination, Guid employerId)
         {
             using var connection = _dapperDbContext.CreateConnection();
-            var sql = "[GetActiveJobs]";
+            var sql = "[GetEmployerJobs]";
             var parameters = new DynamicParameters();
             parameters.Add("@SearchValue", pagination.SearchValue);
             parameters.Add("@SortColumn", pagination.SortColumn);
             parameters.Add("@SortOrder", pagination.SortOrder);
             parameters.Add("@PageSize", pagination.PageSize);
             parameters.Add("@PageNo", pagination.PageNo);
+            parameters.Add("@Status", pagination.Status);
             parameters.Add("@EmployerId", employerId);
 
             var jobs = (await connection.QueryAsync<Job, Employer, Industry, Job>(

@@ -99,18 +99,18 @@ namespace WorkFinder.Api.Controllers
 
 
         /// <summary>
-        /// Get Active Jobs
+        /// Get Employer Jobs
         /// </summary>
         /// <returns></returns>
         [Authorize(Policy = "Job.ActiveJobs")]
-        [HttpPost("activeJobs")]
+        [HttpPost("employerJobs")]
 
-        public async Task<ActionResult<ResponseDto>> GetActiveJobsAsyn(PaginationRequestDto paginationRequestDto)
+        public async Task<ActionResult<ResponseDto>> GetEmployerJobsAsyn(PaginationRequestDto paginationRequestDto)
         {
             try
             {
                 Guid employerId = base.CurrentUser.UserId;
-                var activeJobs = await _jobService.GetActiveJobsAsync(paginationRequestDto, employerId);
+                var activeJobs = await _jobService.GetEmployerJobsAsync(paginationRequestDto, employerId);
                 _responseDto.IsSuccess = true;
                 _responseDto.Message = "Success";
                 _responseDto.Result = activeJobs;

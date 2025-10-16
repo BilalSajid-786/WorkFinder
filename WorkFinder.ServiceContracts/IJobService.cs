@@ -42,10 +42,15 @@ namespace WorkFinder.ServiceContracts
         Task<IEnumerable<ApplicantJobsResponseDto>> GetApplicantAvailableJobsAsync(ApplicantJobRequestDto applicantJobRequestDto);
 
         /// <summary>
-        /// Get active jobs from system
+        /// Get employer jobs from system
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<JobResponseDto>> GetActiveJobsAsync(PaginationRequestDto paginationRequestDto, Guid employerId);
+        Task<IEnumerable<JobResponseDto>> GetEmployerJobsAsync(PaginationRequestDto paginationRequestDto, Guid employerId);
+
+        /// <summary>
+        /// Update employer jobs status
+        /// </summary>
+        /// <returns></returns>
         Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId);
     }
 }

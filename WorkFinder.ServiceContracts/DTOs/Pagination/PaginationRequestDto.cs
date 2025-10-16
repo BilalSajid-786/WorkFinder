@@ -17,7 +17,7 @@ namespace WorkFinder.ServiceContracts.DTOs.Pagination
         public int PageSize { get; set; }
         [Required]
         public int PageNo { get; set; }
-        //[Required]
-        //public Guid EmployerId { get; set; }
+        [Required]
+        public bool Status { get; set; }
     }
 }
