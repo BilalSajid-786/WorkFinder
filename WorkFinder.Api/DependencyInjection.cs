@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using WorkFinder.Common;
 using WorkFinder.Entities.Entities.SystemSeeding;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.Repositories.Repositories;
@@ -43,6 +44,9 @@ namespace WorkFinder.Api
             //Add AutoMapper for entities to dto and dto to entities
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
+            //SignalR
+            services.AddSignalR();
+
             //Add Authentication Scheme with Jwt
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -76,7 +80,13 @@ namespace WorkFinder.Api
             //CORS policy
             services.AddCors(options =>
             {
-
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod(); // Works without credentials
+                });
             });
 
             //Repositories
@@ -106,6 +116,9 @@ namespace WorkFinder.Api
             services.AddTransient<IJobService, JobService>();
             services.AddTransient<IQualificationService, QualificationService>();
             services.AddTransient<ICountryService, CountryService>();
+
+            //SingalR
+            services.AddSingleton<UserConnectionManager>();
 
             return services;
         }

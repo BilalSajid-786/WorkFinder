@@ -63,6 +63,8 @@ namespace WorkFinder.Api.Controllers
                     return BadRequest(_responseDto);
                 }
 
+                string fileName = string.Empty;
+
                 string folderName = fileType switch
                 {
                     FileType.Resume => "resumes",
@@ -76,8 +78,14 @@ namespace WorkFinder.Api.Controllers
                 if (!Directory.Exists(folderPath))
                     Directory.CreateDirectory(folderPath);
 
-                var fileName = string.Concat(applicantId,
+                if(fileType == FileType.Resume)
+                fileName = string.Concat(applicantId,
                     Path.GetExtension(formFile.FileName));
+                else
+                    fileName = string.Concat(Guid.NewGuid(), 
+                        Path.GetExtension(formFile.FileName));
+                
+
                 var filePath = Path.Combine(folderPath, fileName);
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -86,7 +94,7 @@ namespace WorkFinder.Api.Controllers
                 }
 
                 if (fileType == FileType.Resume)
-                    await _applicantService.UpdateApplicantResume(fileName,applicantId);
+                    await _applicantService.UpdateApplicantResume(formFile.FileName,applicantId);
 
                 _responseDto.IsSuccess = true;
                 _responseDto.Message = $"{fileType} upload Successfull";

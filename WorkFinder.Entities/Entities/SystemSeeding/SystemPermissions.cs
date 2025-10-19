@@ -26,9 +26,9 @@ namespace WorkFinder.Entities.Entities.SystemSeeding
 
         public static class Job
         {
-            public static readonly Permission PostJob = new() { PermissionId = 9, ModuleId = 4, Action = "Job.PostJob", DisplayName = "Post a Job" };
-            public static readonly Permission ActiveJobs = new() { PermissionId = 10, ModuleId = 4, Action = "Job.ActiveJobs", DisplayName = "Active Jobs" };
-            public static readonly Permission InActiveJobs = new() { PermissionId = 11, ModuleId = 4, Action = "Job.InActiveJobs", DisplayName = "Inactive Jobs" };
+            public static readonly Permission PostJob = new() { PermissionId = 9, ModuleId = 4, Action = "Job.PostJob", DisplayName = "Post a Job", Route = "/postjob" };
+            public static readonly Permission ActiveJobs = new() { PermissionId = 10, ModuleId = 4, Action = "Job.ActiveJobs", DisplayName = "Active Jobs", Route = "/activejobs" };
+            public static readonly Permission InActiveJobs = new() { PermissionId = 11, ModuleId = 4, Action = "Job.InActiveJobs", DisplayName = "Inactive Jobs", Route = "/inactivejobs" };
             public static readonly Permission AvailableJobs = new() { PermissionId = 12, ModuleId = 4, Action = "Job.AvailableJobs", DisplayName = "Available Jobs", Route = "/availablejobs" };
             public static readonly Permission AppliedJobs = new() { PermissionId = 13, ModuleId = 4, Action = "Job.AppliedJobs", DisplayName = "Applied Jobs", Route = "/appliedjobs" };
             public static readonly Permission SavedJobs = new() { PermissionId = 14, ModuleId = 4, Action = "Job.SavedJobs", DisplayName = "Saved Jobs", Route = "/savedjobs" };

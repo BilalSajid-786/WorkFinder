@@ -1,4 +1,5 @@
 using WorkFinder.Api;
+using WorkFinder.Api.SignalR;
 using WorkFinder.ServiceContracts;
 using WorkFinder.Services;
 
@@ -57,15 +58,14 @@ app.UseHttpsRedirection();  //for strict https redirection
 app.UseStaticFiles();      // for serving static files
 app.UseRouting();         // for routing
 
-app.UseCors(x => x   
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+app.UseCors("AllowAll");
 
 app.UseAuthentication(); // for authentication
 app.UseAuthorization(); // for authorization
 
 
 app.MapControllers();  // for execution of endpoints
+
+app.MapHub<ChatHub>("/chatHub"); // maps SignalR Hub
 
 app.Run();
