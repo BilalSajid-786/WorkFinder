@@ -79,6 +79,7 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@UserId", applicant.UserId);
             parameters.Add("@Resume", applicant.Resume);
             parameters.Add("@Gender", applicant.Gender);
+            parameters.Add("@QualificationId", applicant.QualificationId);
 
             return await connection.ExecuteScalarAsync<Guid>(sql,parameters,commandType: System.Data.CommandType.StoredProcedure);
         }
