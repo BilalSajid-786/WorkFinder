@@ -54,7 +54,7 @@ namespace WorkFinder.RepositoryContracts
         /// Get employer jobs from the db
         /// </summary>
         /// <returns>Employer jobs</returns>
-        Task<IEnumerable<Job>> GetEmployerJobsAsync(Pagination pagination, Guid employerId);
+        Task<PaginatedList<Job>> GetEmployerJobsAsync(PaginationParameters<AvailableJobsFilter> queryParameters, Guid employerId);
 
         /// <summary>
         /// Get applied jobs for an applicant
@@ -98,5 +98,11 @@ namespace WorkFinder.RepositoryContracts
         /// <param name="savedJob"></param>
         /// <returns></returns>
         Task<bool> SaveJobAsync(SavedJob savedJob);
+        /// <summary>
+        /// Get Job Applicants by Job Id
+        /// </summary>
+        /// <param name="jobApplicantRequestDto"></param>
+        /// <returns></returns>
+        Task<PaginatedList<Applicant>>GetJobApplicantsByIdAsync(PaginationParameters<JobApplicantsFilter> jobApplicantRequestDto);
     }
 }
