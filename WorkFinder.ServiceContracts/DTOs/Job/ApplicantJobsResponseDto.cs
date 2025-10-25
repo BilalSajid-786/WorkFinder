@@ -16,6 +16,7 @@ namespace WorkFinder.ServiceContracts.DTOs.Job
         public string Country { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Industry { get; set; } = string.Empty;
+        public Guid EmployerId { get; set; }
         public string? JobStatus { get; set; }
         public DateTime PostedDate { get; set; }
         public JobType JobType { get; set; }

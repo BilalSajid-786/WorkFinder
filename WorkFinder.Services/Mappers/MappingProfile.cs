@@ -12,6 +12,7 @@ using WorkFinder.ServiceContracts.DTOs.Country;
 using WorkFinder.ServiceContracts.DTOs.Employer;
 using WorkFinder.ServiceContracts.DTOs.Industry;
 using WorkFinder.ServiceContracts.DTOs.Job;
+using WorkFinder.ServiceContracts.DTOs.Messages;
 using WorkFinder.ServiceContracts.DTOs.Pagination;
 using WorkFinder.ServiceContracts.DTOs.Qualification;
 using WorkFinder.ServiceContracts.DTOs.Role;
@@ -117,7 +118,8 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Job.City))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Job.Country))
                 .ForMember(dest => dest.JobStatus, opt => opt.MapFrom(src => src.Status))
-                .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.Job.Skills));
+                .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.Job.Skills))
+                .ForMember(dest => dest.EmployerId, opt => opt.MapFrom(src => src.Job.EmployerId));
 
             CreateMap<SavedJob, ApplicantJobsResponseDto>()
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Job.Title))
@@ -142,6 +144,10 @@ namespace WorkFinder.Services.Mappers
 
             //Countries
             CreateMap<Country, CountryResponseDto>();
+
+            //Messages
+            CreateMap<MessageRequestDto, Message>();
+            CreateMap<Message, MessageResponseDto>();
         }
     }
 }
