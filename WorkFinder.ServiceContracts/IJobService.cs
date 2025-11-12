@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkFinder.Common.Dtos.Jobs;
 using WorkFinder.Common.Dtos.Pagination;
+using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Country;
 using WorkFinder.ServiceContracts.DTOs.Job;
 using WorkFinder.ServiceContracts.DTOs.Pagination;
@@ -47,7 +48,7 @@ namespace WorkFinder.ServiceContracts
         /// Get employer jobs from system
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<JobResponseDto>> GetEmployerJobsAsync(PaginationRequestDto paginationRequestDto, Guid employerId);
+        Task<PaginatedList<JobResponseDto>> GetEmployerJobsAsync(PaginationParameters<AvailableJobsFilter> request, Guid employerId);
 
         /// <summary>
         /// Get applied Jobs for an applicant
@@ -83,5 +84,11 @@ namespace WorkFinder.ServiceContracts
         /// <returns></returns>
         Task<bool> SaveJobAsync(ApplicantApplyJobDto applicantSaveJobDto);
         Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId);
+        /// <summary>
+        /// Get Job Applicants By Job Id
+        /// </summary>
+        /// <param name="jobApplicantRequestDto"></param>
+        /// <returns></returns>
+        Task<PaginatedList<ApplicantResponseDto>>GetJobApplicantsByIdAsync(PaginationParameters<JobApplicantsFilter> jobApplicantRequestDto);
     }
 }

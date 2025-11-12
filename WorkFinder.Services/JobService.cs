@@ -9,9 +9,11 @@ using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.Entities.Entities;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
+using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Job;
 using WorkFinder.ServiceContracts.DTOs.Pagination;
 using WorkFinder.ServiceContracts.Enums;
+using static WorkFinder.Entities.Entities.SystemSeeding.SystemPermissions;
 
 namespace WorkFinder.Services
 {
@@ -51,11 +53,10 @@ namespace WorkFinder.Services
         /// Get active jobs from the system
         /// </summary>
         /// <returns>Employer Jobs</returns>
-        public async Task<IEnumerable<JobResponseDto>> GetEmployerJobsAsync(PaginationRequestDto paginationRequestDto, Guid employerId)
+        public async Task<PaginatedList<JobResponseDto>> GetEmployerJobsAsync(PaginationParameters<AvailableJobsFilter> request, Guid employerId)
         {
-            var pagination = _mapper.Map<Pagination>(paginationRequestDto);
-            var activeJobs = await _jobRepository.GetEmployerJobsAsync(pagination, employerId);
-            return _mapper.Map<IEnumerable<JobResponseDto>>(activeJobs);
+            var activeJobs = await _jobRepository.GetEmployerJobsAsync(request, employerId);
+            return _mapper.Map<PaginatedList<JobResponseDto>>(activeJobs);
         }
 
         /// <summary>
@@ -119,7 +120,7 @@ namespace WorkFinder.Services
             if (await _industryService.GetIndustryByIdAsync(job.IndustryId) is null)
                 throw new Exception($"Invalid Industry Id {job.IndustryId}");
 
-            var insertedJob = await _jobRepository.InsertJobAsync(_mapper.Map<Job>(job));
+            var insertedJob = await _jobRepository.InsertJobAsync(_mapper.Map<Entities.Entities.Job>(job));
             if(insertedJob.JobId > 0)
             {
                 if(job.Skills is not null)
@@ -159,6 +160,17 @@ namespace WorkFinder.Services
         public async Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId)
         {
             return await _jobRepository.UpdateJobStatusAsync(jobId, status, employerId);
+        }
+
+        /// <summary>
+        /// Get Job Applicants by Job Id
+        /// </summary>
+        /// <param name="jobApplicantRequestDto"></param>
+        /// <returns></returns>
+        public async Task<PaginatedList<ApplicantResponseDto>> GetJobApplicantsByIdAsync(PaginationParameters<JobApplicantsFilter> jobApplicantRequestDto)
+        {
+            var applicants = await _jobRepository.GetJobApplicantsByIdAsync(jobApplicantRequestDto);
+            return _mapper.Map<PaginatedList<ApplicantResponseDto>>(applicants);
         }
     }
 }
