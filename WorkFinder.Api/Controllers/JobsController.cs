@@ -138,6 +138,30 @@ namespace WorkFinder.Api.Controllers
         #region Applicant
 
         /// <summary>
+        /// Update Job Applicants Status
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize(Policy = "Job.ActiveJobs")]
+        [HttpPost("UpdateJobApplicantStatus")]
+        public async Task<ActionResult<ResponseDto>> UpdateJobApplicantStatusAsync(UpdateJobApplicantStatusRequestDto request)
+        {
+            try
+            {
+                var applicantStatus = await _jobService.UpdateJobApplicantStatusAsync(request);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
+                _responseDto.Result = applicantStatus;
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
+        /// <summary>
         /// Get Job Applicants by Job ID
         /// </summary>
         /// <param name="jobApplicantRequestDto"></param>

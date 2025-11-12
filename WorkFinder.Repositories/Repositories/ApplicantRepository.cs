@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkFinder.Common.Dtos.Applicants;
+using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.Entities.Entities;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.RepositoryContracts;
@@ -60,6 +62,79 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@UserId", userId);
 
             return await connection.ExecuteScalarAsync<Guid>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// Get Applicants
+        /// </summary>
+        /// <param name="applicantRequestDto"></param>
+        /// <returns></returns>
+        public async Task<PaginatedList<Applicant>> GetApplicantsAsync(PaginationParameters<ApplicantsFilter> applicantRequestDto)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetApplicants]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@SortColumn", applicantRequestDto.SortColumn);
+            parameters.Add("@SortOrder", applicantRequestDto.SortOrder);
+            parameters.Add("@PageSize", applicantRequestDto.PageSize);
+            parameters.Add("@PageNo", applicantRequestDto.PageNo);
+            parameters.Add("@SkillId", applicantRequestDto.Filters?.SkillId);
+            parameters.Add("@City", applicantRequestDto.Filters?.City);
+            parameters.Add("@Country", applicantRequestDto.Filters?.Country);
+
+            parameters.Add("@TotalCount", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+            var applicants = (await connection.QueryAsync<User, Applicant, Qualification, Skill, Applicant>(
+            sql,
+            (user, applicant, qualification, skill) =>
+            {
+                applicant.User = user;   // hydrate nested User
+                applicant.Qualification = qualification;
+                applicant.Skills = new List<ApplicantSkill>() { new(){
+                    Skill = skill
+                } };
+                return applicant;
+            },
+            param: parameters,
+            commandType: CommandType.StoredProcedure,
+            splitOn: "ApplicantId, QualificationId, SkillId"      // IMPORTANT: matches your SELECT order
+            )).ToList();
+
+            if (applicants.Any())
+            {
+                var applicantIds = string.Join(",", applicants.Select(app => app.ApplicantId));
+
+                var skillParams = new DynamicParameters();
+                skillParams.Add("@ApplicantIds", applicantIds);
+
+                var aplicantSkills = (await connection.QueryAsync<ApplicantSkill, Skill, ApplicantSkill>(
+                "[GetApplicantSkills]",
+                (applicantSkill, skill) =>
+                {
+                    applicantSkill.Skill = skill;
+                    return applicantSkill;
+                },
+                skillParams,
+                commandType: CommandType.StoredProcedure,
+                splitOn: "SkillId"
+                )).ToList();
+
+                foreach (var applicant in applicants)
+                {
+                    applicant.Skills = aplicantSkills.Where(apps => apps.ApplicantId == applicant.ApplicantId).ToList();
+                }
+            }
+            var totalCount = parameters.Get<int>("@TotalCount");
+
+            // Combine results
+            var paginatedList = new PaginatedList<Applicant>(
+                    applicants.ToList(),
+                    parameters.Get<int>("@TotalCount"),
+                    applicantRequestDto.PageNo,
+                    applicantRequestDto.PageSize
+            );
+
+            return paginatedList;
         }
 
         /// <summary>

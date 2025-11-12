@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkFinder.Common.Dtos.Applicants;
+using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.ServiceContracts.DTOs.Applicant;
 
 namespace WorkFinder.ServiceContracts
@@ -38,5 +40,12 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <returns></returns>
         Task UpdateApplicantResume(string resumeName, Guid applicantId);
+
+        /// <summary>
+        /// Get applicants
+        /// </summary>
+        /// <param name="applicantRequestDto"></param>
+        /// <returns>Applicants</returns>
+        Task<PaginatedList<ApplicantResponseDto>> GetApplicantsAsync(PaginationParameters<ApplicantsFilter> applicantRequestDto);
     }
 }

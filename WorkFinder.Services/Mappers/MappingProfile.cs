@@ -8,6 +8,7 @@ using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.Entities.Entities;
 using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
+using WorkFinder.ServiceContracts.DTOs.City;
 using WorkFinder.ServiceContracts.DTOs.Country;
 using WorkFinder.ServiceContracts.DTOs.Employer;
 using WorkFinder.ServiceContracts.DTOs.Industry;
@@ -159,6 +160,9 @@ namespace WorkFinder.Services.Mappers
             CreateMap<ApplicantApplyJobDto, ApplicantJob>();
             CreateMap<ApplicantApplyJobDto, SavedJob>();
 
+            CreateMap<UpdateJobApplicantStatusRequestDto, ApplicantJob>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.ApplicantStatus));
+
             // Generic PaginatedList mapping
             CreateMap<PaginatedList<Job>, PaginatedList<ApplicantJobsResponseDto>>();
             CreateMap<PaginatedList<Job>, PaginatedList<JobResponseDto>>();
@@ -171,6 +175,9 @@ namespace WorkFinder.Services.Mappers
 
             //Countries
             CreateMap<Country, CountryResponseDto>();
+
+            //Cities
+            CreateMap<City, CityResponseDto>();
         }
     }
 }

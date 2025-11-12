@@ -473,5 +473,19 @@ namespace WorkFinder.Repositories.Repositories
 
             return paginatedList;
         }
+
+        public async Task<string?> UpdateJobApplicantStatusAsync(ApplicantJob applicantJob)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[UpdateJobApplicantStatus]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", applicantJob.ApplicantId);
+            parameters.Add("@JobId", applicantJob.JobId);
+            parameters.Add("@ApplicantStatus", applicantJob.Status);
+            var result = await connection.ExecuteScalarAsync<string?>(
+            sql, parameters, commandType: CommandType.StoredProcedure);
+
+            return result;
+        }
     }
 }

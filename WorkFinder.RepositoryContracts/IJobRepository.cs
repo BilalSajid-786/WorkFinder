@@ -104,5 +104,12 @@ namespace WorkFinder.RepositoryContracts
         /// <param name="jobApplicantRequestDto"></param>
         /// <returns></returns>
         Task<PaginatedList<Applicant>>GetJobApplicantsByIdAsync(PaginationParameters<JobApplicantsFilter> jobApplicantRequestDto);
+
+        /// <summary>
+        /// Update Job Applicants Status
+        /// </summary>
+        /// <param name="applicantJob"></param>
+        /// <returns></returns>
+        Task<string?> UpdateJobApplicantStatusAsync(ApplicantJob applicantJob);
     }
 }

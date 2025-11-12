@@ -172,5 +172,11 @@ namespace WorkFinder.Services
             var applicants = await _jobRepository.GetJobApplicantsByIdAsync(jobApplicantRequestDto);
             return _mapper.Map<PaginatedList<ApplicantResponseDto>>(applicants);
         }
+
+        public async Task<string?> UpdateJobApplicantStatusAsync(UpdateJobApplicantStatusRequestDto request)
+        {
+            var ApplicantJob = _mapper.Map<ApplicantJob>(request);
+            return await _jobRepository.UpdateJobApplicantStatusAsync(ApplicantJob);
+        }
     }
 }

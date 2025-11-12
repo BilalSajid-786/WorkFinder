@@ -17,9 +17,15 @@ namespace WorkFinder.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<SkillResponseDto>> GetSkills()
+        public async Task<ActionResult<ResponseDto>> GetSkills()
         {
-            return Ok(await _skillService.GetSkills());
+            var skills = await _skillService.GetSkills();
+            return new ResponseDto()
+            {
+                Result = skills,
+                IsSuccess = true,
+                Message = "Success"
+            };
         }
 
         /// <summary>

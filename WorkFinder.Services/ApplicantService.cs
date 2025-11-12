@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkFinder.Common.Dtos.Applicants;
+using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.Entities.Entities;
 using WorkFinder.RepositoryContracts;
 using WorkFinder.ServiceContracts;
@@ -32,6 +34,17 @@ namespace WorkFinder.Services
         public async Task<Guid?> GetApplicantIdAsync(Guid userId)
         {
             return await _applicantRepository.GetApplicantIdAsync(userId);
+        }
+
+        /// <summary>
+        /// Get applicants
+        /// </summary>
+        /// <param name="applicantRequestDto"></param>
+        /// <returns>Applicants</returns>
+        public async Task<PaginatedList<ApplicantResponseDto>> GetApplicantsAsync(PaginationParameters<ApplicantsFilter> applicantRequestDto)
+        {
+            var applicants = await _applicantRepository.GetApplicantsAsync(applicantRequestDto);
+            return _mapper.Map<PaginatedList<ApplicantResponseDto>>(applicants);
         }
 
         /// <summary>

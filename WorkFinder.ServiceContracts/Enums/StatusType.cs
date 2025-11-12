@@ -10,6 +10,8 @@ namespace WorkFinder.ServiceContracts.Enums
     {
         Applied,
         ShortListed,
-        Closed
+        Hired,
+        Reviewed,
+        Rejected
     }
 }

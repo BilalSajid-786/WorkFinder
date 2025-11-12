@@ -9,6 +9,7 @@ using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Country;
 using WorkFinder.ServiceContracts.DTOs.Job;
 using WorkFinder.ServiceContracts.DTOs.Pagination;
+using WorkFinder.ServiceContracts.DTOs.Response;
 using WorkFinder.ServiceContracts.DTOs.Skill;
 
 namespace WorkFinder.ServiceContracts
@@ -90,5 +91,12 @@ namespace WorkFinder.ServiceContracts
         /// <param name="jobApplicantRequestDto"></param>
         /// <returns></returns>
         Task<PaginatedList<ApplicantResponseDto>>GetJobApplicantsByIdAsync(PaginationParameters<JobApplicantsFilter> jobApplicantRequestDto);
+
+        /// <summary>
+        /// Update Job Applicants Status
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<string?> UpdateJobApplicantStatusAsync(UpdateJobApplicantStatusRequestDto request);
     }
 }
