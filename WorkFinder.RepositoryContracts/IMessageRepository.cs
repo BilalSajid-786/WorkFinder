@@ -17,7 +17,7 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        Task InsertMessage(Message message);
+        Task<int> InsertMessage(Message message);
 
         /// <summary>
         /// Get a list of all messages from db.

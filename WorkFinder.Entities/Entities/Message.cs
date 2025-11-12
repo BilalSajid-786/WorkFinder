@@ -14,5 +14,6 @@ namespace WorkFinder.Entities.Entities
         public string Text { get; set; } = string.Empty;
         public DateTime SentAt { get; set; }
         public bool IsRead { get; set; }
+        public Notification? Notification { get; set; }
     }
 }

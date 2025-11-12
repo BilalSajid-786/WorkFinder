@@ -41,7 +41,7 @@ namespace WorkFinder.Repositories.Repositories
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public async Task InsertMessage(Message message)
+        public async Task<int> InsertMessage(Message message)
         {
             using var connection = _dapperDbContext.CreateConnection();
             var sql = "[InsertMessage]";
@@ -49,7 +49,7 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@SenderId", message.SenderId);
             parameters.Add("@ReceiverId", message.ReceiverId);
             parameters.Add("@Text", message.Text);
-            await connection.ExecuteAsync(sql, parameters,commandType: System.Data.CommandType.StoredProcedure);
+            return await connection.ExecuteScalarAsync<int>(sql, parameters,commandType: System.Data.CommandType.StoredProcedure);
         }
     }
 }

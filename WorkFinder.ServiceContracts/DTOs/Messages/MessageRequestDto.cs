@@ -11,6 +11,7 @@ namespace WorkFinder.ServiceContracts.DTOs.Messages
     {
         [Required]
         public Guid SenderId { get; set; }
+        public string SenderName { get; set; } = string.Empty;
         [Required]
         public Guid ReceiverId { get; set; }
         public string Text { get; set; } = string.Empty;

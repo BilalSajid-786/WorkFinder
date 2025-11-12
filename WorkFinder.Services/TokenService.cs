@@ -46,7 +46,8 @@ namespace WorkFinder.Services
                 new Claim("UserId",user.UserId.ToString()),
                 new Claim("RoleId",user.RoleId.ToString()),
                 new Claim("UserRole",user.RoleName),
-                new Claim("BaseUserId",user.BaseUserId.ToString())
+                new Claim("BaseUserId",user.BaseUserId.ToString()),
+                new Claim("UserName",user.UserName)
             };
             if(user.RoleId == SystemRoles.EmployerId)
             {

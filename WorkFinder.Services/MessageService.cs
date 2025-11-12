@@ -17,11 +17,13 @@ namespace WorkFinder.Services
     public class MessageService : IMessageService
     {
         private readonly IMessageRepository _messageRepository;
+        private readonly INotificationRepository _notificationRepository;
         private readonly IMapper _mapper;
-        public MessageService(IMessageRepository messageRepository, IMapper mapper)
+        public MessageService(IMessageRepository messageRepository, IMapper mapper, INotificationRepository notificationRepository)
         {
             _messageRepository = messageRepository;
             _mapper = mapper;
+            _notificationRepository = notificationRepository;
         }
 
         /// <summary>
@@ -40,9 +42,9 @@ namespace WorkFinder.Services
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public async Task InsertMessage(MessageRequestDto message)
+        public async Task<int> InsertMessage(MessageRequestDto message)
         {
-            await _messageRepository.InsertMessage(_mapper.Map<Message>(message));
+           return await _messageRepository.InsertMessage(_mapper.Map<Message>(message));
         }
     }
 }
