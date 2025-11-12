@@ -102,6 +102,8 @@ namespace WorkFinder.Api
             services.AddTransient<IQualificationRepository, QualificationRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<ICityRepository, CityRepository>();
+            services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<INotificationRepository,NotificationRepository>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();
@@ -118,6 +120,9 @@ namespace WorkFinder.Api
             services.AddTransient<IQualificationService, QualificationService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<ICityService, CityService>();
+            services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<INotificationService, NotificationService>();
+
 
             //SingalR
             services.AddSingleton<UserConnectionManager>();

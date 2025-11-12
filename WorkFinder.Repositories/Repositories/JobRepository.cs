@@ -151,6 +151,7 @@ namespace WorkFinder.Repositories.Repositories
                 "GetApplicantAvailableJobs",
                 (job, industry, employer) =>
                 {
+                    job.EmployerId = employer.EmployerId;
                     job.Industry = industry;
                     job.Employer = employer;
                     return job;
@@ -284,6 +285,7 @@ namespace WorkFinder.Repositories.Repositories
                 {
                     job.Industry = industry;
                     job.Employer = employer;
+                    job.EmployerId = employer.EmployerId;
                     applicantJob.Job = job;
                     applicantJob.JobId = job.JobId;
                     return applicantJob;

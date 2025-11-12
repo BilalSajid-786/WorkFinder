@@ -65,7 +65,6 @@ namespace WorkFinder.Api.Controllers
         /// Get available JobTypes
         /// </summary>
         /// <returns></returns>
-        [Authorize(Policy = "Job.PostJob")]
         [HttpGet("jobTypes")]
         public ActionResult<ResponseDto> JobTypes()
         {
