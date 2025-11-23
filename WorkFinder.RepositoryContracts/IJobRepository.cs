@@ -98,6 +98,14 @@ namespace WorkFinder.RepositoryContracts
         /// <param name="savedJob"></param>
         /// <returns></returns>
         Task<bool> SaveJobAsync(SavedJob savedJob);
+
+        /// <summary>
+        /// Removes a saved job for an applicant
+        /// </summary>
+        /// <param name="unsavedJob"></param>
+        /// <returns></returns>
+        Task<bool> UnsaveJobAsync(SavedJob unsavedJob);
+
         /// <summary>
         /// Get Job Applicants by Job Id
         /// </summary>

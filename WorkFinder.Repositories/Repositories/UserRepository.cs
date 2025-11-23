@@ -130,6 +130,22 @@ namespace WorkFinder.Repositories.Repositories
                 commandType:System.Data.CommandType.StoredProcedure);
         }
 
+        /// <summary>
+        /// Update User Password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task UpdateUserPassword(string password, Guid userId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[UpdateUserPassword]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@UserId", userId);
+            parameters.Add("@Password", password);
+            await connection.ExecuteAsync(sql, parameters,
+                commandType: System.Data.CommandType.StoredProcedure);
+        }
+
         public async Task<bool?> UpdateUserStatusAsync(Guid userId, bool isActive)
         {
             using var connection = _dapperDbContext.CreateConnection();

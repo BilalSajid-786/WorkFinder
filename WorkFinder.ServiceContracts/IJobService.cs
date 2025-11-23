@@ -84,6 +84,14 @@ namespace WorkFinder.ServiceContracts
         /// <param name="applicantSaveJobDto"></param>
         /// <returns></returns>
         Task<bool> SaveJobAsync(ApplicantApplyJobDto applicantSaveJobDto);
+
+        /// <summary>
+        /// Remove saved job for an applicant from the system
+        /// </summary>
+        /// <param name="applicantSaveJobDto"></param>
+        /// <returns></returns>
+        Task<bool> UnsaveJobAsync(ApplicantApplyJobDto applicantUnsaveJobDto);
+
         Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId);
         /// <summary>
         /// Get Job Applicants By Job Id

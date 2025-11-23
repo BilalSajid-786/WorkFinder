@@ -24,6 +24,8 @@ namespace WorkFinder.ServiceContracts
         /// <returns>All Users</returns>
         Task<IEnumerable<UserResponseDto>> GetAllUsers();
 
+        Task UpdateUserPassword(string password, Guid userId);
+
         /// <summary>
         /// Gets the password hash of a user for the given Id
         /// </summary>

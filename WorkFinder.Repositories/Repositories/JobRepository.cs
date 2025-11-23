@@ -489,5 +489,20 @@ namespace WorkFinder.Repositories.Repositories
 
             return result;
         }
+
+        /// <summary>
+        /// Unsave job for an applicant in the db
+        /// </summary>
+        /// <param name="unsavedJob"></param>
+        /// <returns></returns>
+        public async Task<bool> UnsaveJobAsync(SavedJob unsavedJob)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[UnsaveJob]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", unsavedJob.ApplicantId);
+            parameters.Add("@JobId", unsavedJob.JobId);
+            return await connection.ExecuteScalarAsync<bool>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
     }
 }

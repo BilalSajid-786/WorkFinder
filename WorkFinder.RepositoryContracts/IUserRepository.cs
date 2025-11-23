@@ -20,6 +20,13 @@ namespace WorkFinder.RepositoryContracts
         Task<Guid> RegisterUserAsync(User user);
 
         /// <summary>
+        /// Update User Password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        Task UpdateUserPassword(string password, Guid userId);
+
+        /// <summary>
         /// Gets a user by email
         /// </summary>
         /// <param name="email"></param>

@@ -321,6 +321,25 @@ namespace WorkFinder.Api.Controllers
             return _responseDto;
         }
 
+        [Authorize(Policy = "Job.SavedJobs")]
+        [HttpPost("unsaveJob")]
+        public async Task<ActionResult<ResponseDto>> UnsaveJob(ApplicantApplyJobDto applicantSaveJobDto)
+        {
+            try
+            {
+                applicantSaveJobDto.ApplicantId = base.CurrentUser.UserId;
+                _responseDto.Result = await _jobService.UnsaveJobAsync(applicantSaveJobDto);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Job Unsaved Successfull";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
         #endregion
 
     }

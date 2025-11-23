@@ -178,5 +178,15 @@ namespace WorkFinder.Services
             var ApplicantJob = _mapper.Map<ApplicantJob>(request);
             return await _jobRepository.UpdateJobApplicantStatusAsync(ApplicantJob);
         }
+
+        /// <summary>
+        /// Unsave job for an applicant in the system
+        /// </summary>
+        /// <param name="applicantUnsaveJobDto"></param>
+        /// <returns></returns>
+        public async Task<bool> UnsaveJobAsync(ApplicantApplyJobDto applicantUnsaveJobDto)
+        {
+            return await _jobRepository.UnsaveJobAsync(_mapper.Map<SavedJob>(applicantUnsaveJobDto));
+        }
     }
 }

@@ -134,5 +134,15 @@ namespace WorkFinder.Services
             }
             return updatedStatus.Value;
         }
+
+        /// <summary>
+        /// Update user password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task UpdateUserPassword(string password, Guid userId)
+        {
+            await _userRepository.UpdateUserPassword(password, userId);
+        }
     }
 }

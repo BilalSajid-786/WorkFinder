@@ -18,12 +18,14 @@ namespace WorkFinder.Api.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IForgotPasswordService _forgotPasswordService;
         private readonly ResponseDto _responseDto;
 
-        public AuthenticationController(IAuthService authService)
+        public AuthenticationController(IAuthService authService, IForgotPasswordService forgotPasswordService)
         {
             _authService = authService;
             _responseDto = new();
+            _forgotPasswordService = forgotPasswordService;
         }
 
         #region Auth
@@ -103,6 +105,49 @@ namespace WorkFinder.Api.Controllers
             }
             return _responseDto;
         }
+        #endregion
+
+        #region ForgotPassword
+
+        /// <summary>
+        /// Sent a forgot password link to user email
+        /// </summary>
+        /// <param name="forgotPasswordDto"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ActionResult<ResponseDto>> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        {
+            try
+            {
+                await _forgotPasswordService.SendPasswordResetEmail(forgotPasswordDto.Email);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Password reset link sent successfully";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ResponseDto>> ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            try
+            {
+                await _forgotPasswordService.ResetPassword(resetPasswordDto);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess= false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
         #endregion
     }
 }

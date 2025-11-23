@@ -104,6 +104,7 @@ namespace WorkFinder.Api
             services.AddTransient<ICityRepository, CityRepository>();
             services.AddTransient<IMessageRepository, MessageRepository>();
             services.AddTransient<INotificationRepository,NotificationRepository>();
+            services.AddTransient<IPasswordResetRepository, PasswordResetRepository>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();
@@ -122,10 +123,16 @@ namespace WorkFinder.Api
             services.AddTransient<ICityService, CityService>();
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<IForgotPasswordService, ForgotPasswordService>();
+            services.AddTransient<IEmailService, EmailService>();
 
 
             //SingalR
             services.AddSingleton<UserConnectionManager>();
+
+            //Zoom Meetings
+            services.AddSingleton<IMeetingTokenService, MeetingTokenService>();
+            services.AddSingleton<IMeetingService, MeetingService>();
 
             return services;
         }
