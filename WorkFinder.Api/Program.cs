@@ -1,7 +1,7 @@
 using WorkFinder.Api;
-using WorkFinder.Api.SignalR;
 using WorkFinder.ServiceContracts;
 using WorkFinder.Services;
+using WorkFinder.Services.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 

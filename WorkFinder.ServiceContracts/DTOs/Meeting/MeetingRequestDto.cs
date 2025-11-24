@@ -11,5 +11,7 @@ namespace WorkFinder.ServiceContracts.DTOs.Meeting
         public string Topic { get; set; } = string.Empty;
         public DateTime StartTime { get; set; }
         public int Duration { get; set; }
+        public Guid SenderId { get; set; }
+        public Guid ReceiverId { get; set; }
     }
 }

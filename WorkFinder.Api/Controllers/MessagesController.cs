@@ -75,27 +75,27 @@ namespace WorkFinder.Api.Controllers
                 //Persist message in db for record
                 var messageId = await _messageService.InsertMessage(messageRequestDto);
                 
-                //check if user is online on connection
-                var connectionId = _userConnectionManager.GetConnectionId(messageRequestDto.ReceiverId);
+                ////check if user is online on connection
+                //var connectionId = _userConnectionManager.GetConnectionId(messageRequestDto.ReceiverId);
 
-                //if user is online send message via SignalR
-                if(connectionId is not null)
-                {
-                    await _hubContext.Clients.Client(connectionId)
-                        .SendAsync("ReceiveMessage", messageRequestDto.SenderId, messageRequestDto.Text);
-                }
-                else
-                {
-                    var notification = new Notification()
-                    {
-                        SenderId = messageRequestDto.SenderId,
-                        SenderName = messageRequestDto.SenderName,
-                        ReceiverId = messageRequestDto.ReceiverId,
-                        MessageId = messageId,
-                        Content = $"New Message Received from {messageRequestDto.SenderName} on {DateTime.UtcNow}.\nClick here to view message."
-                    };
-                    await _notificationRepository.InsertNotification(notification);
-                }
+                ////if user is online send message via SignalR
+                //if(connectionId is not null)
+                //{
+                //    await _hubContext.Clients.Client(connectionId)
+                //        .SendAsync("ReceiveMessage", messageRequestDto.SenderId, messageRequestDto.Text);
+                //}
+                //else
+                //{
+                //    var notification = new Notification()
+                //    {
+                //        SenderId = messageRequestDto.SenderId,
+                //        SenderName = messageRequestDto.SenderName,
+                //        ReceiverId = messageRequestDto.ReceiverId,
+                //        MessageId = messageId,
+                //        Content = $"New Message Received from {messageRequestDto.SenderName} on {DateTime.UtcNow}.\nClick here to view message."
+                //    };
+                //    await _notificationRepository.InsertNotification(notification);
+                //}
 
             }
             catch (Exception ex)
