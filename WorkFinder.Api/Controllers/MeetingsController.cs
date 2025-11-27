@@ -19,6 +19,11 @@ namespace WorkFinder.Api.Controllers
             _messageService = messageService;
         }
 
+        /// <summary>
+        /// Create a meeting for the given time and duration
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>Zoom Video Meeting link</returns>
         [HttpPost]
         public async Task<IActionResult> ScheduleMeeting([FromBody] MeetingRequestDto request)
         {

@@ -25,7 +25,7 @@ namespace WorkFinder.Services
             //message to sent
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("WorkFinder(No-Reply)", "nimrasajid8903@gmail.com"));
-            message.To.Add(new MailboxAddress("","bilalsajid5432@gmail.com"));
+            message.To.Add(new MailboxAddress("",to));
             message.Subject = "Reset Password";
 
             message.Body = new TextPart("html")
