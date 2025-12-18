@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WorkFinder.Common.Dtos.Applicants;
 using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.ServiceContracts.DTOs.Applicant;
+using WorkFinder.ServiceContracts.DTOs.Employer;
 
 namespace WorkFinder.ServiceContracts
 {
@@ -40,6 +41,15 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <returns></returns>
         Task UpdateApplicantResume(string resumeName, Guid applicantId);
+
+        /// <summary>
+        /// Gets an applicant by id
+        /// </summary>
+        /// <param name="applicantId"></param>
+        /// <returns></returns>
+        Task<ApplicantResponseDto> GetApplicantByIdAsync(Guid applicantId);
+
+        Task<string> UpdateApplicantAsync(UpdateApplicantRequestDto applicantRequest);
 
         /// <summary>
         /// Get applicants

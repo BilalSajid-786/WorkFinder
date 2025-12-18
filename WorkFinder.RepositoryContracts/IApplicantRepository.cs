@@ -30,6 +30,14 @@ namespace WorkFinder.RepositoryContracts
         Task AddApplicantSkillAsync(Skill skill, Guid applicantId);
 
         /// <summary>
+        /// Remove skill for an applicant
+        /// </summary>
+        /// <param name="skill"></param>
+        /// <param name="applicantId"></param>
+        /// <returns></returns>
+        Task RemoveSkillAsync(Skill skill, Guid applicantId);
+
+        /// <summary>
         /// Check is applicant exists in the system
         /// </summary>
         /// <param name="applicantId"></param>
@@ -44,11 +52,32 @@ namespace WorkFinder.RepositoryContracts
         Task<Guid?> GetApplicantIdAsync(Guid userId);
 
         /// <summary>
+        /// Get applicant skills from db
+        /// </summary>
+        /// <param name="applicantId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<Skill>> GetApplicantSkillsAsync(Guid applicantId);
+
+        /// <summary>
         /// Updates a resume for an applicant
         /// </summary>
         /// <param name="applicantId"></param>
         /// <returns></returns>
         Task UpdateApplicantResume(string resumeName, Guid applicantId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="applicant"></param>
+        /// <returns></returns>
+        Task<string> UpdateApplicantAsync(Applicant applicant);
+
+        /// <summary>
+        /// Get applicant by id from db
+        /// </summary>
+        /// <param name="applicantId"></param>
+        /// <returns></returns>
+        Task<Applicant> GetApplicantByIdAsync(Guid applicantId);
 
         /// <summary>
         /// Get Applicants

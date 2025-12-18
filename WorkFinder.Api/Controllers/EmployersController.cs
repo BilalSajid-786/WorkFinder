@@ -24,11 +24,11 @@ namespace WorkFinder.Api.Controllers
             return Ok(employers);
         }
 
-        [HttpPatch("{employerId:Guid}")]
-        public async Task<ActionResult<string>> EditEmployer(Guid employerId, [FromBody] EmployerRequestDto employerRequest)
+        [HttpPost("{employerId:Guid}")]
+        public async Task<ActionResult<string>> EditEmployer(Guid employerId,[FromBody] UpdateEmployerRequestDto employerRequest)
         {
             var result = await _employerService.EditEmployerAsync(employerId, employerRequest);
-            return Ok(result);
+            return Ok(new {result = "Success"});
         }
 
         [HttpGet("{employerId:Guid}")]

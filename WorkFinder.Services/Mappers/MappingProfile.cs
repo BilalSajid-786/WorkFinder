@@ -52,6 +52,8 @@ namespace WorkFinder.Services.Mappers
 
             //Employers
             CreateMap<EmployerRequestDto, Employer>();
+            CreateMap<UpdateEmployerRequestDto, User>();
+            CreateMap<UpdateEmployerRequestDto, Employer>();
             CreateMap<EmployerRequestDto, RegisterRequestDto>()
                 //.ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
                 //.ForMember(dest => dest.ConfirmPassword, opt => opt.MapFrom(src =>src.ConfirmPasswordHash))
@@ -73,6 +75,8 @@ namespace WorkFinder.Services.Mappers
 
             //Applicants
             CreateMap<ApplicantRequestDto, Applicant>();
+            CreateMap<UpdateApplicantRequestDto, Applicant>();
+            CreateMap<UpdateApplicantRequestDto, User>();
             CreateMap<ApplicantRequestDto, RegisterRequestDto>();
             CreateMap<SkillResponseDto, ApplicantSkill>();
             CreateMap<Applicant, ApplicantResponseDto>()
@@ -98,6 +102,8 @@ namespace WorkFinder.Services.Mappers
             CreateMap<SkillRequestDto, Skill>();
             CreateMap<Skill, SkillResponseDto>();
             CreateMap<SkillResponseDto, Skill>();
+            CreateMap<ApplicantSkill, Skill>();
+            CreateMap<UpdateSkillResponseDto, Skill>();
             CreateMap<string?, Skill>()
                 .ForMember(dest => dest.SkillName, opt => opt.MapFrom(src => src));
             CreateMap<JobSkill, string>()

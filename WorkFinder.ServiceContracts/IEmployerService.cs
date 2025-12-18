@@ -23,7 +23,7 @@ namespace WorkFinder.ServiceContracts
         /// <returns>All Employers</returns>
         Task<IEnumerable<EmployerResponseDto>> GetAllEmployers();
 
-        Task<string> EditEmployerAsync(Guid employerId, EmployerRequestDto employerRequest);
+        Task<string> EditEmployerAsync(Guid employerId, UpdateEmployerRequestDto employerRequest);
         Task<EmployerResponseDto?> GetEmployerByIdAsync(Guid employerId);
 
         /// <summary>

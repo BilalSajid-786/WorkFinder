@@ -38,14 +38,15 @@ namespace WorkFinder.Services
         //    return isDeleted;
         //}
 
-        public async Task<string> EditEmployerAsync(Guid employerId, EmployerRequestDto employerRequest)
+        public async Task<string> EditEmployerAsync(Guid employerId, UpdateEmployerRequestDto employerRequest)
         {
             var employer = _mapper.Map<Employer>(employerRequest);
             employer.EmployerId = employerId;
             var empStatus = await _employerRepository.EditEmployerAsync(employer);
             if (empStatus == "SUCCESS") {
                 var user = _mapper.Map<User>(employerRequest);
-                user.Password = _passwordHasher.HashPassword(null, employerRequest.Password);
+                if(user.Password.Length > 0)
+                     user.Password = _passwordHasher.HashPassword(null, employerRequest.Password);
                 var userStatus = await _userRepository.EditUserAsync(user);
                 if (userStatus == "SUCCESS")
                 {

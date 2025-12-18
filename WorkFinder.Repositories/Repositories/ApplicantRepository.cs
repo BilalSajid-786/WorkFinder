@@ -46,6 +46,55 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
+        /// Get applicant by id from db
+        /// </summary>
+        /// <param name="applicantId"></param>
+        /// <returns></returns>
+        public async Task<Applicant> GetApplicantByIdAsync(Guid applicantId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetApplicantById]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", applicantId);
+
+            
+            var applicants = (await connection.QueryAsync<Applicant, User, Applicant>(
+                sql,
+                (applicant,user) =>
+                {
+                    applicant.User = user;
+                    return applicant;
+                },
+                parameters,
+                commandType: CommandType.StoredProcedure,
+                splitOn: "UserId" // tell Dapper where the split happens
+            )).ToList();
+
+            var applicantIds = string.Join(",", applicants.Select(app => app.ApplicantId));
+
+            var skillParams = new DynamicParameters();
+            skillParams.Add("@ApplicantIds", applicantIds);
+
+            var aplicantSkills = (await connection.QueryAsync<ApplicantSkill, Skill, ApplicantSkill>(
+            "[GetApplicantSkills]",
+            (applicantSkill, skill) =>
+            {
+                applicantSkill.Skill = skill;
+                return applicantSkill;
+            },
+            skillParams,
+            commandType: CommandType.StoredProcedure,
+            splitOn: "SkillId"
+            )).ToList();
+
+            foreach (var applicant in applicants)
+            {
+                applicant.Skills = aplicantSkills.Where(apps => apps.ApplicantId == applicant.ApplicantId).ToList();
+            }
+            return applicants.FirstOrDefault();
+        }
+
+        /// <summary>
         /// Get ApplicantId from the system
         /// </summary>
         /// <param name="userId"></param>
@@ -138,6 +187,21 @@ namespace WorkFinder.Repositories.Repositories
         }
 
         /// <summary>
+        /// Get applicant skills from db
+        /// </summary>
+        /// <param name="applicantId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Skill>> GetApplicantSkillsAsync(Guid applicantId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetApplicantSkill]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", applicantId);
+            return await connection.QueryAsync<Skill>(sql, parameters, 
+                commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
         /// Insert applicants into the database
         /// </summary>
         /// <param name="applicant"></param>
@@ -174,6 +238,46 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@ApplicantId", applicantId);
 
             return await connection.ExecuteScalarAsync<bool>(sql,parameters,commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// remove skill for an applicant
+        /// </summary>
+        /// <param name="skill"></param>
+        /// <param name="applicantId"></param>
+        /// <returns></returns>
+        public async Task RemoveSkillAsync(Skill skill, Guid applicantId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+
+            //procedure name
+            var sql = "[RemoveSkillForApplicant]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", applicantId);
+            parameters.Add("@SkillId", skill.SkillId);
+
+            await connection.ExecuteAsync(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// Update Applicant in the db
+        /// </summary>
+        /// <param name="applicant"></param>
+        /// <returns></returns>
+        public async Task<string> UpdateApplicantAsync(Applicant applicant)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+
+            //procedure name
+            var sql = "[UpdateApplicant]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@ApplicantId", applicant.ApplicantId);
+            parameters.Add("@Gender", applicant.Gender);
+            parameters.Add("@QualificationId", applicant.QualificationId);
+            parameters.Add("@Resume", applicant.Resume);
+
+            return await connection.ExecuteScalarAsync<string>(sql, parameters,
+                commandType: System.Data.CommandType.StoredProcedure);
         }
 
         /// <summary>

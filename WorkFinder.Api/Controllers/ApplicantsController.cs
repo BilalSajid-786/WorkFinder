@@ -6,6 +6,7 @@ using WorkFinder.Common.Dtos.Applicants;
 using WorkFinder.Common.Dtos.Jobs;
 using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.ServiceContracts;
+using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Response;
 using WorkFinder.Services;
 
@@ -31,12 +32,49 @@ namespace WorkFinder.Api.Controllers
 
         [Authorize(Policy = "Applicant.Get")]
         [HttpPost("GetApplicants")]
-
         public async Task<ActionResult<ResponseDto>> GetApplicantsAsync(PaginationParameters<ApplicantsFilter> applicantsRequestDto)
         {
             try
             {
                 var applicants = await _applicantService.GetApplicantsAsync(applicantsRequestDto);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
+                _responseDto.Result = applicants;
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
+        [Authorize]
+        [HttpPost("UpdateApplicant")]
+        public async Task<ActionResult<ResponseDto>> UpdateApplicantAsync(UpdateApplicantRequestDto applicantRequestDto)
+        {
+            try
+            {
+                var applicant = await _applicantService.UpdateApplicantAsync(applicantRequestDto);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
+                _responseDto.Result = applicant;
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
+        [Authorize]
+        [HttpGet("GetApplicantById")]
+        public async Task<ActionResult<ResponseDto>> GetApplicantByIdAsync()
+        {
+            try
+            {
+                var applicants = await _applicantService.GetApplicantByIdAsync(CurrentUser.UserId);
                 _responseDto.IsSuccess = true;
                 _responseDto.Message = "Success";
                 _responseDto.Result = applicants;
