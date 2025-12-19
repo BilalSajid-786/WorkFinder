@@ -112,6 +112,8 @@ namespace WorkFinder.Services.Mappers
             //Jobs
             CreateMap<JobRequestDto, Job>()
                 .ForMember(dest => dest.Skills, opt => opt.Ignore());
+            CreateMap<JobEditRequestDto, Job>()
+                .ForMember(dest => dest.Skills, opt => opt.Ignore());
             CreateMap<Job, JobResponseDto>()
                 .ForMember(dest => dest.JobId, opt => opt.MapFrom(src => src.JobId))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))

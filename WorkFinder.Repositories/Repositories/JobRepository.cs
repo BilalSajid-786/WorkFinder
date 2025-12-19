@@ -5,6 +5,10 @@ using WorkFinder.Common.Dtos.Pagination;
 using WorkFinder.Entities.Entities;
 using WorkFinder.Repositories.DbContext;
 using WorkFinder.RepositoryContracts;
+using static WorkFinder.Entities.Entities.SystemSeeding.SystemPermissions;
+using Applicant = WorkFinder.Entities.Entities.Applicant;
+using Employer = WorkFinder.Entities.Entities.Employer;
+using Job = WorkFinder.Entities.Entities.Job;
 
 namespace WorkFinder.Repositories.Repositories
 {
@@ -222,6 +226,33 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@EmployerId", job.EmployerId);
             parameters.Add("@IndustryId", job.IndustryId);
             parameters.Add("@CreatedBy", job.CreatedBy);
+            job.JobId = await connection.ExecuteScalarAsync<int>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+            return job;
+        }
+
+        /// <summary>
+        /// Update a job in the db
+        /// </summary>
+        /// <param name="job"></param>
+        /// <returns></returns>
+
+        public async Task<Job> UpdateJobAsync(Job job)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            //procedure name
+            var sql = "[UpdateJob]";
+            //parameters
+            var parameters = new DynamicParameters();
+            parameters.Add("@Title", job.Title);
+            parameters.Add("@Description", job.Description);
+            parameters.Add("@City", job.City);
+            parameters.Add("@Country", job.Country);
+            parameters.Add("@JobType", job.JobType);
+            parameters.Add("@ExpiryDate", job.ExpiryDate);
+            parameters.Add("@EmployerId", job.EmployerId);
+            parameters.Add("@IndustryId", job.IndustryId);
+            parameters.Add("@UpdatedBy", job.UpdatedBy);
+            parameters.Add("@JobId", job.JobId);
             job.JobId = await connection.ExecuteScalarAsync<int>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
             return job;
         }
@@ -503,6 +534,69 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@ApplicantId", unsavedJob.ApplicantId);
             parameters.Add("@JobId", unsavedJob.JobId);
             return await connection.ExecuteScalarAsync<bool>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        public async Task<int?> DeleteJobAsync(int jobId, Guid employerId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[DeleteJob]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@JobId", jobId);
+            parameters.Add("@EmployerId", employerId);
+            var result = await connection.ExecuteScalarAsync<int?>(
+            sql, parameters, commandType: CommandType.StoredProcedure);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get a single job by its id.
+        /// </summary>
+        /// <param name="jobId">Job identifier</param>
+        /// <returns>The job if found; otherwise null</returns>
+        public async Task<Job?> GetJobByIdAsync(int jobId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+
+            // 1) Single job with Employer & Industry
+            var job = (await connection.QueryAsync<Job, Employer, Industry, Job>(
+                "[GetJobById]",
+                (j, employer, industry) =>
+                {
+                    j.Employer = employer;
+                    j.Industry = industry;
+                    return j;
+                },
+                new DynamicParameters(new { JobId = jobId }),
+                commandType: CommandType.StoredProcedure,
+                splitOn: "EmpSplit,IndSplit" // must match SP aliases
+            )).FirstOrDefault();
+
+            if (job is null) return null;
+
+            // 2) Skills for this job (materialize to List)
+            var jobSkills = (await connection.QueryAsync<JobSkill, Skill, JobSkill>(
+                "[GetJobSkills]",
+                (js, s) => { js.Skill = s; return js; },
+                new DynamicParameters(new { JobIds = job.JobId }), // OK if SP takes @JobId
+                commandType: CommandType.StoredProcedure,
+                splitOn: "SkillId"
+            )).ToList();
+
+            job.Skills = jobSkills ?? new List<JobSkill>(); // ensure non-null collection
+            return job;
+        }
+
+        public async Task<int> DeleteJobSkillsAsync(int jobId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[DeleteJobSkills]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@JobId", jobId);
+            var result = await connection.ExecuteScalarAsync<int>(
+            sql, parameters, commandType: CommandType.StoredProcedure);
+
+            return result;
         }
     }
 }

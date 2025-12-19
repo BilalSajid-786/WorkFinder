@@ -7,6 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureAppServices(builder.Configuration);
 
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("Job.ReadJob", policy =>
+        policy.RequireClaim("Permissions", "Job.ActiveJobs", "Job.AvailableJobs"));
+
 var app = builder.Build();
 
 //Seeding Data
@@ -59,7 +63,14 @@ if(app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();  //for strict https redirection
-app.UseStaticFiles();      // for serving static files
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "http://localhost:4200");
+        ctx.Context.Response.Headers.Append("Access-Control-Expose-Headers", "Content-Disposition");
+    }
+});      // for serving static files
 app.UseRouting();         // for routing
 
 app.UseCors("AllowAll");

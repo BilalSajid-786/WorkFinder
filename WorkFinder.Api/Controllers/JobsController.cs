@@ -62,6 +62,40 @@ namespace WorkFinder.Api.Controllers
         }
 
         /// <summary>
+        /// Edit a job with given details
+        /// </summary>
+        /// <param name="jobEditRequestDto"></param>
+        /// <returns>Edit Job Details</returns>
+
+        [Authorize(Policy = "Job.PostJob")]
+        [HttpPost("editJob")]
+        public async Task<ActionResult<ResponseDto>> EditJobAsync([FromBody] JobEditRequestDto jobEditRequestDto)
+        {
+            try
+            {
+                jobEditRequestDto.UpdatedBy = CurrentUser.BaseUserId;
+                var jobResponse = await _jobService.UpdateJobAsync(jobEditRequestDto);
+                if (jobResponse.JobId != 0)
+                {
+                    _responseDto.IsSuccess = true;
+                    _responseDto.Message = "Job updated successfully.";
+                    _responseDto.Result = jobResponse;
+                }
+                else
+                {
+                    _responseDto.IsSuccess = false;
+                    _responseDto.Message = "Failed to edit job.";
+                }
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
+        /// <summary>
         /// Get available JobTypes
         /// </summary>
         /// <returns></returns>
@@ -123,6 +157,30 @@ namespace WorkFinder.Api.Controllers
                 _responseDto.Result = await _jobService.UpdateJobStatusAsync(jobId, status, employerId);
                 _responseDto.IsSuccess = true;
                 _responseDto.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
+        /// <summary>
+        /// Delete job
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        [Authorize(Policy = "Job.ActiveJobs")]
+        [HttpPost("deleteJobAsync/{jobId:int}")]
+        public async Task<ActionResult<ResponseDto>> DeleteJobAsync([FromRoute] int jobId)
+        {
+            try
+            {
+                Guid employerId = base.CurrentUser.UserId;
+                _responseDto.Result = await _jobService.DeleteJobAsync(jobId, employerId);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Job deleted successfully";
             }
             catch (Exception ex)
             {
@@ -342,5 +400,31 @@ namespace WorkFinder.Api.Controllers
 
         #endregion
 
+        #region Share
+
+        /// <summary>
+        /// Get a single job by its id.
+        /// </summary>
+        /// <param name="jobId">Job identifier</param>
+        /// <returns>The job if found; otherwise null</returns>
+
+        [Authorize(Policy = "Job.ReadJob")]
+        [HttpGet("getJobById/{jobId:int}")]
+        public async Task<ActionResult<ResponseDto>> GetJobByIdAsync([FromRoute] int jobId)
+        {
+            try
+            {
+                _responseDto.Result = await _jobService.GetJobByIdAsync(jobId);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+        #endregion
     }
 }
