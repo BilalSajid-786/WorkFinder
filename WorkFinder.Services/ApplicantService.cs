@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,62 @@ namespace WorkFinder.Services
     public class ApplicantService : IApplicantService
     {
         private readonly IApplicantRepository _applicantRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public ApplicantService(IApplicantRepository applicantRepository,IMapper mapper)
+        private readonly PasswordHasher<object> _passwordHasher;
+        public ApplicantService(IApplicantRepository applicantRepository
+            ,IMapper mapper,
+            IUserRepository userRepository)
         {
             _applicantRepository = applicantRepository;
             _mapper = mapper;
+            _userRepository = userRepository;
+            _passwordHasher = new PasswordHasher<object>();
+        }
+
+        /// <summary>
+        /// Edit applicant information in the system
+        /// </summary>
+        /// <param name="applicantRequest"></param>
+        /// <returns></returns>
+        public async Task<string> UpdateApplicantAsync(UpdateApplicantRequestDto applicantRequest)
+        {
+            var applicant = _mapper.Map<Applicant>(applicantRequest);
+            var empStatus = await _applicantRepository.UpdateApplicantAsync(applicant);
+            if (empStatus == "SUCCESS")
+            {
+                var user = _mapper.Map<User>(applicantRequest);
+                if (user.Password.Length > 0)
+                    user.Password = _passwordHasher.HashPassword(null, applicantRequest.Password);
+                var userStatus = await _userRepository.EditUserAsync(user);
+                if (userStatus == "SUCCESS")
+                {
+                    var skills = await _applicantRepository.GetApplicantSkillsAsync(applicant.ApplicantId);
+                    var savedSkills = skills.Select(s => s.SkillId).ToList();
+                    var receivedSkills = applicant.Skills.Select(s => s.SkillId).ToList();
+
+                    var newSkills = receivedSkills
+                   .Where(s => !savedSkills.Contains(s))
+                   .Select(s => new Skill { SkillId = s });
+
+                    var removedSkills = savedSkills
+                        .Where(s => !receivedSkills.Contains(s))
+                        .Select(s => new Skill { SkillId = s });
+
+                    foreach (var skill in newSkills)
+                    {
+                        await _applicantRepository.AddApplicantSkillAsync(skill,applicant.ApplicantId);
+                    }
+
+                    foreach (var skill in removedSkills)
+                    {
+                        await _applicantRepository.RemoveSkillAsync(skill, applicant.ApplicantId);
+                    }
+
+                    return "Applicant updated.";
+                }
+            }
+            return "Applicant not updated."; // 0 
         }
 
         /// <summary>
@@ -84,6 +136,19 @@ namespace WorkFinder.Services
         public async Task UpdateApplicantResume(string resumeName, Guid applicantId)
         {
             await _applicantRepository.UpdateApplicantResume(resumeName, applicantId);
+        }
+
+        /// <summary>
+        /// Gets an applicant by id
+        /// </summary>
+        /// <param name="applicantId"></param>
+        /// <returns></returns>
+        public async Task<ApplicantResponseDto> GetApplicantByIdAsync(Guid applicantId)
+        {
+            var applicant = await _applicantRepository.GetApplicantByIdAsync(applicantId);
+            var applicantResponse = _mapper.Map<ApplicantResponseDto>(applicant);
+            applicantResponse.QualificationId = applicant.QualificationId;
+            return applicantResponse;
         }
     }
 }

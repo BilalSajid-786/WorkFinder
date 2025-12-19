@@ -40,7 +40,7 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@UserId", user.UserId);
             parameters.Add("@UserName", user.UserName);
             parameters.Add("@Email", user.Email);
-            parameters.Add("@PasswordHash", user.Password);
+            parameters.Add("@PasswordHash", user.Password.Length > 0 ? user.Password : null);
             parameters.Add("@City", user.City);
             parameters.Add("@Country", user.Country);
             parameters.Add("@Phone", user.Phone);

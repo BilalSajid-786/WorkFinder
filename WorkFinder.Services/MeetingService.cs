@@ -61,7 +61,7 @@ namespace WorkFinder.Services
 
             string joinUrl = doc.RootElement.GetProperty("join_url").GetString();
 
-            return joinUrl;
+            return $"Your meeting {topic} has been scheduled for date {startTime.ToString("yyyy-MM-ddTHH:mm:ss")}. Click below link to attend the meeting.\n {joinUrl}";
         }
     }
 }
