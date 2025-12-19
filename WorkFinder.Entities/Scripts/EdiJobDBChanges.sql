@@ -85,7 +85,7 @@ BEGIN
     INNER JOIN dbo.Employers  AS e ON e.EmployerId  = j.EmployerId
     INNER JOIN dbo.Industries AS i ON i.IndustryId  = j.IndustryId
     WHERE j.JobId = @JobId
-      AND j.IsDeleted = 0 AND j.IsActive = 1     
+      AND j.IsDeleted = 0     
     OPTION (RECOMPILE);
 END
 
