@@ -18,6 +18,7 @@ namespace WorkFinder.Entities.Entities
         public string Country { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;
+        public string ProfilePic { get; set; } = string.Empty;
         public Applicant? Applicant { get; set; }
         public Employer? Employer { get; set; }
         public PasswordResetRequest? PasswordResetRequest { get; set; }

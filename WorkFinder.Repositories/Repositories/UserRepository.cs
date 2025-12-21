@@ -146,6 +146,22 @@ namespace WorkFinder.Repositories.Repositories
                 commandType: System.Data.CommandType.StoredProcedure);
         }
 
+        /// <summary>
+        /// Update user profile pic in db
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="profilePicName"></param>
+        /// <returns></returns>
+        public async Task UpdateUserProfilePic(Guid userId, string profilePicName)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[UpdateUserProfilePic]";
+            var parameters = new DynamicParameters();
+            parameters.Add("@UserId",userId);
+            parameters.Add("@ProfilePicName", profilePicName);
+            await connection.ExecuteAsync(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
         public async Task<bool?> UpdateUserStatusAsync(Guid userId, bool isActive)
         {
             using var connection = _dapperDbContext.CreateConnection();

@@ -144,5 +144,16 @@ namespace WorkFinder.Services
         {
             await _userRepository.UpdateUserPassword(password, userId);
         }
+
+        /// <summary>
+        /// Update User profile pic name in the system
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="profilePicName"></param>
+        /// <returns></returns>
+        public async Task UpdateUserProfilePic(Guid userId, string profilePicName)
+        {
+            await _userRepository.UpdateUserProfilePic(userId, profilePicName);
+        }
     }
 }

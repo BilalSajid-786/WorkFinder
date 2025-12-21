@@ -15,6 +15,7 @@ namespace WorkFinder.ServiceContracts.DTOs.Applicant
         public Guid UserId { get; set; }
         public string? Resume { get; set; }
         public string Gender { get; set; } = string.Empty;         // applicant's gender
+        public string ProfilePic { get; set; } = string.Empty;
         public int QualificationId { get; set; }
         public string Qualification { get; set; } = string.Empty;
 

@@ -12,6 +12,14 @@ namespace WorkFinder.ServiceContracts
         Task<Guid> RegisterUserAsync(RegisterRequestDto registerRequestDto,string passwordHash);
 
         /// <summary>
+        /// Update User profile pic in the system
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="profilePicName"></param>
+        /// <returns></returns>
+        Task UpdateUserProfilePic(Guid userId, string profilePicName);
+
+        /// <summary>
         /// Gets a user by an email
         /// </summary>
         /// <param name="email"></param>

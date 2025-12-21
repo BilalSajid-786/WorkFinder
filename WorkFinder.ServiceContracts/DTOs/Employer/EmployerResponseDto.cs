@@ -12,6 +12,7 @@ namespace WorkFinder.ServiceContracts.DTOs.Employer
         public string UserName { get; set; } = string.Empty;
         public Guid EmployerId { get; set; }
         public string CompanyName { get; set; } = string.Empty;
+        public string ProfilePic { get; set; } = string.Empty;
         public Guid RoleId { get; set; }
         public string RoleName { get; set; } = string.Empty;
         public int IndustryId { get; set; }

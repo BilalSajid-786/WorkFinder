@@ -20,6 +20,14 @@ namespace WorkFinder.RepositoryContracts
         Task<Guid> RegisterUserAsync(User user);
 
         /// <summary>
+        /// Update User profile pic in the database
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="profilePicName"></param>
+        /// <returns></returns>
+        Task UpdateUserProfilePic(Guid userId, string profilePicName);
+
+        /// <summary>
         /// Update User Password
         /// </summary>
         /// <param name="password"></param>

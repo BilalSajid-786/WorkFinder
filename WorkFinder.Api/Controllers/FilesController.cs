@@ -18,12 +18,16 @@ namespace WorkFinder.Api.Controllers
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IApplicantService _applicantService;
+        private readonly IUserService _userService;
         private readonly ResponseDto _responseDto;
-        public FilesController(IWebHostEnvironment webHostEnvironment, IApplicantService applicantService)
+        public FilesController(IWebHostEnvironment webHostEnvironment, 
+            IApplicantService applicantService,
+            IUserService userService)
         {
             _webHostEnvironment = webHostEnvironment;
             _applicantService = applicantService;
             _responseDto = new();
+            _userService = userService;
         }
 
         /// <summary>
@@ -139,7 +143,7 @@ namespace WorkFinder.Api.Controllers
                 if (!Directory.Exists(folderPath))
                     Directory.CreateDirectory(folderPath);
 
-                    fileName = string.Concat(CurrentUser.UserId,
+                    fileName = string.Concat(CurrentUser.BaseUserId,
                         Path.GetExtension(formFile.FileName));
 
 
@@ -151,6 +155,7 @@ namespace WorkFinder.Api.Controllers
                 }
 
                 _responseDto.Result = fileName;
+                await _userService.UpdateUserProfilePic(CurrentUser.BaseUserId, formFile.FileName);
             }
             catch (Exception ex)
             {

@@ -58,6 +58,7 @@ namespace WorkFinder.Services.Mappers
                 //.ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
                 //.ForMember(dest => dest.ConfirmPassword, opt => opt.MapFrom(src =>src.ConfirmPasswordHash))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.CompanyName));
+            
             CreateMap<Employer, EmployerResponseDto>()
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.User.Role.RoleId))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.User.Role.RoleName))
@@ -69,7 +70,9 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.User.City))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.User.Country))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.User.Phone))
+                .ForMember(dest => dest.ProfilePic, opt => opt.MapFrom(src => src.User.ProfilePic))
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.User.IsActive));
+            
             CreateMap<EmployerRequestDto, User>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.CompanyName));
 
@@ -89,6 +92,7 @@ namespace WorkFinder.Services.Mappers
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.User.Phone))
+                .ForMember(dest => dest.ProfilePic, opt => opt.MapFrom(src => src.User.ProfilePic))
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.User.City))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.User.Country))
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.User.IsActive))
