@@ -27,6 +27,13 @@ namespace WorkFinder.ServiceContracts
         Task<JobResponseDto> InsertJobAsync(JobRequestDto job);
 
         /// <summary>
+        /// Update the given job into db
+        /// </summary>
+        /// <param name="job"></param>
+        /// <returns>Updated Job</returns>
+        Task<JobResponseDto> UpdateJobAsync(JobEditRequestDto job);
+
+        /// <summary>
         /// Get all jobs from the db
         /// </summary>
         /// <returns>All jobs</returns>
@@ -37,6 +44,13 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <returns>All jobs of a specific employer</returns>
         Task<IEnumerable<JobResponseDto>> GetEmployerJobsAsync(Guid employerId);
+
+        /// <summary>
+        /// Get a single job by its id.
+        /// </summary>
+        /// <param name="jobId">Job identifier</param>
+        /// <returns>The job if found; otherwise null</returns>
+        Task<JobResponseDto?> GetJobByIdAsync(int jobId);
 
         /// <summary>
         /// Get available jobs for an applicant
@@ -92,7 +106,21 @@ namespace WorkFinder.ServiceContracts
         /// <returns></returns>
         Task<bool> UnsaveJobAsync(ApplicantApplyJobDto applicantUnsaveJobDto);
 
+        /// <summary>
+        /// Update job status active or inactive
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="status"></param>
+        /// <param name="employerId"></param>
+        /// <returns></returns>
         Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId);
+
+        /// <summary>
+        /// Delete job
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        Task<int?> DeleteJobAsync(int jobId, Guid employerId);
         /// <summary>
         /// Get Job Applicants By Job Id
         /// </summary>

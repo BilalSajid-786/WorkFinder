@@ -22,6 +22,20 @@ namespace WorkFinder.RepositoryContracts
         Task<Job> InsertJobAsync(Job job);
 
         /// <summary>
+        /// Update the given job into db
+        /// </summary>
+        /// <param name="job"></param>
+        /// <returns>Newly updated Job</returns>
+        Task<Job> UpdateJobAsync(Job job);
+
+        /// <summary>
+        /// Delete the given job skills from db
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns>Row Count</returns>
+        Task<int> DeleteJobSkillsAsync(int jobId);
+
+        /// <summary>
         /// Insert the skill for job
         /// </summary>
         /// <param name="skill"></param>
@@ -40,6 +54,13 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <returns>All jobs of a specific employer</returns>
         Task<IEnumerable<Job>> GetEmployerJobsAsync(Guid employerId);
+
+        /// <summary>
+        /// Get a single job by its id.
+        /// </summary>
+        /// <param name="jobId">Job identifier</param>
+        /// <returns>The job if found; otherwise null</returns>
+        Task<Job?> GetJobByIdAsync(int jobId);
 
         /// <summary>
         /// Get available jobs for an applicant
@@ -91,6 +112,13 @@ namespace WorkFinder.RepositoryContracts
         /// </summary>
         /// <returns>Update jobs</returns>
         Task<int?> UpdateJobStatusAsync(int jobId, bool status, Guid employerId);
+
+        /// <summary>
+        /// Delete job
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        Task<int?> DeleteJobAsync(int jobId, Guid employerId);
 
         /// <summary>
         /// Insert a saved job for an applicant

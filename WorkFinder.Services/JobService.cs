@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,6 +149,46 @@ namespace WorkFinder.Services
         }
 
         /// <summary>
+        /// Update Job in the system
+        /// </summary>
+        /// <param name="job"></param>
+        /// <returns>Updated Job</returns>
+        public async Task<JobResponseDto> UpdateJobAsync(JobEditRequestDto job)
+        {
+            if (await _employerService.GetEmployerByIdAsync(job.EmployerId) is null)
+                throw new Exception($"Invalid Employer Id {job.EmployerId}");
+            if (await _industryService.GetIndustryByIdAsync(job.IndustryId) is null)
+                throw new Exception($"Invalid Industry Id {job.IndustryId}");
+
+            var updatedJob = await _jobRepository.UpdateJobAsync(_mapper.Map<Entities.Entities.Job>(job));
+            if(updatedJob.JobId != 0)
+            {
+                int deleteJobSkills = await _jobRepository.DeleteJobSkillsAsync(job.JobId);
+                if (job.Skills is not null)
+                {
+                    int skillId = 0;
+                    foreach (var skill in job.Skills)
+                    {
+                        if (skill.SkillId == 0)
+                        {
+                            skillId = await _skillService.InsertSkill(new()
+                            {
+                                SkillName = skill.SkillName
+                            });
+                        }
+                        else
+                        {
+                            skillId = skill.SkillId;
+                        }
+                        await _jobRepository.InsertJobSkill(skillId, updatedJob.JobId);
+                    }
+                }
+                return _mapper.Map<JobResponseDto>(updatedJob);
+            }
+            throw new Exception($"Invalid Job Id {job.JobId}");
+        }
+
+        /// <summary>
         /// Save job for an applicant
         /// </summary>
         /// <param name="applicantSaveJobDto"></param>
@@ -188,5 +229,29 @@ namespace WorkFinder.Services
         {
             return await _jobRepository.UnsaveJobAsync(_mapper.Map<SavedJob>(applicantUnsaveJobDto));
         }
+
+        /// <summary>
+        /// Delete job
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        public async Task<int?> DeleteJobAsync(int jobId, Guid employerId)
+        {
+            return await _jobRepository.DeleteJobAsync(jobId, employerId);
+        }
+
+        /// <summary>
+        /// Get a single job by its id.
+        /// </summary>
+        /// <param name="jobId">Job identifier</param>
+        /// <returns>The job if found; otherwise null</returns>
+
+        public async Task<JobResponseDto?> GetJobByIdAsync(int jobId)
+        {
+            var job = await _jobRepository.GetJobByIdAsync(jobId);
+            return _mapper.Map<JobResponseDto>(job);
+        }
+
+        
     }
 }
