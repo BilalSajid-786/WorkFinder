@@ -79,6 +79,38 @@ namespace WorkFinder.Services
                 throw new Exception($"Invalid Password {password}");
         }
 
+        public async Task<string> RefreshClaimsAsync(string email)
+        {
+            //Get User by email
+            var user = await _userService.GetUserByEmailAsync(email);
+
+            //return null if user doesn't exist
+            if (user is null)
+                throw new Exception($"Invalid Email {email}");
+
+            //if user is of role applicant populate the baseuserid and applicantid accordingly
+            if (user.RoleId == SystemRoles.ApplicantId)
+            {
+                var id = await _applicantService.GetApplicantIdAsync(user.UserId);
+                user.BaseUserId = user.UserId;
+                user.UserId = id.Value;
+            }
+            else if (user.RoleId == SystemRoles.EmployerId) //if user is of role employer populate the baseuserid and employerid accordingly
+            {
+                var id = await _employerService.GetEmployerIdAsync(user.UserId);
+                user.BaseUserId = user.UserId;
+                user.UserId = id.Value;
+                var employerDetails = await _employerService.GetEmployerByIdAsync(user.UserId);
+                user.CompanyName = employerDetails.CompanyName;
+            }
+            else // if user is an admin
+            {
+                user.BaseUserId = user.UserId;
+            }
+            return await _tokenService.GenerateToken(user);
+
+        }
+
         public async Task<ApplicantResponseDto> RegisterApplicantAsync(ApplicantRequestDto? applicantRequestDto)
         {
             //check if email exist already or not

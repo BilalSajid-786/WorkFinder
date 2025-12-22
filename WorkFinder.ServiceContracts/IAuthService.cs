@@ -23,6 +23,13 @@ namespace WorkFinder.ServiceContracts
         Task<string?> AuthenticateAsync(string email, string password);
 
         /// <summary>
+        /// Authenticates a user by email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>Jwt token</returns>
+        Task<string> RefreshClaimsAsync(string email);
+
+        /// <summary>
         /// Registers a user.
         /// </summary>
         /// <param name="loginRequestDto"></param>

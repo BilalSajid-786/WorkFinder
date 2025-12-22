@@ -38,7 +38,7 @@ namespace WorkFinder.Services
         /// </summary>
         /// <param name="applicantRequest"></param>
         /// <returns></returns>
-        public async Task<string> UpdateApplicantAsync(UpdateApplicantRequestDto applicantRequest)
+        public async Task<string> UpdateApplicantAsync(UpdateApplicantRequestDto applicantRequest, IAuthService authService)
         {
             var applicant = _mapper.Map<Applicant>(applicantRequest);
             var empStatus = await _applicantRepository.UpdateApplicantAsync(applicant);
@@ -72,7 +72,7 @@ namespace WorkFinder.Services
                         await _applicantRepository.RemoveSkillAsync(skill, applicant.ApplicantId);
                     }
 
-                    return "Applicant updated.";
+                    return await authService.RefreshClaimsAsync(user.Email);
                 }
             }
             return "Applicant not updated."; // 0 

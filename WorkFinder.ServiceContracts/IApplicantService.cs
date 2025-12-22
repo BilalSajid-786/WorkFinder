@@ -49,7 +49,7 @@ namespace WorkFinder.ServiceContracts
         /// <returns></returns>
         Task<ApplicantResponseDto> GetApplicantByIdAsync(Guid applicantId);
 
-        Task<string> UpdateApplicantAsync(UpdateApplicantRequestDto applicantRequest);
+        Task<string> UpdateApplicantAsync(UpdateApplicantRequestDto applicantRequest,IAuthService authService);
 
         /// <summary>
         /// Get applicants

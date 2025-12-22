@@ -20,7 +20,8 @@ namespace WorkFinder.Services
         private readonly PasswordHasher<object> _passwordHasher;
         private readonly IEmployerRepository _employerRepository;
         private readonly IUserRepository _userRepository;
-        public EmployerService(IMapper mapper, IEmployerRepository employerRepository, IUserRepository userRepository) 
+        public EmployerService(IMapper mapper, IEmployerRepository employerRepository, 
+            IUserRepository userRepository) 
         {
             _mapper = mapper;
             _passwordHasher = new PasswordHasher<object>();
@@ -28,17 +29,9 @@ namespace WorkFinder.Services
             _userRepository = userRepository;
         }
 
-        //public async Task<bool> DeleteEmployerAsync(Guid employerId)
-        //{
-        //    var isDeleted = await _employerRepository.DeleteEmployerAsync(employerId);
-        //    if (!isDeleted)
-        //    {
-        //        throw new Exception($"Employer not found.");
-        //    }
-        //    return isDeleted;
-        //}
-
-        public async Task<string> EditEmployerAsync(Guid employerId, UpdateEmployerRequestDto employerRequest)
+        public async Task<string> EditEmployerAsync(Guid employerId, 
+            UpdateEmployerRequestDto employerRequest,
+            IAuthService authService)
         {
             var employer = _mapper.Map<Employer>(employerRequest);
             employer.EmployerId = employerId;
@@ -50,7 +43,7 @@ namespace WorkFinder.Services
                 var userStatus = await _userRepository.EditUserAsync(user);
                 if (userStatus == "SUCCESS")
                 {
-                    return "Employer updated.";
+                  return await authService.RefreshClaimsAsync(user.Email);
                 }
             }
             return "Employer not updated."; // 0 in case of fail. 1 in case of success.

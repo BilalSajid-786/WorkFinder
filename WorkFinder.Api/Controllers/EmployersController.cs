@@ -12,9 +12,11 @@ namespace WorkFinder.Api.Controllers
     public class EmployersController : ControllerBase
     {
         private readonly IEmployerService _employerService;
-        public EmployersController(IEmployerService employerService)
+        private readonly IAuthService _authService;
+        public EmployersController(IEmployerService employerService, IAuthService authService)
         {
-                _employerService = employerService;
+            _employerService = employerService;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -27,8 +29,8 @@ namespace WorkFinder.Api.Controllers
         [HttpPost("{employerId:Guid}")]
         public async Task<ActionResult<string>> EditEmployer(Guid employerId,[FromBody] UpdateEmployerRequestDto employerRequest)
         {
-            var result = await _employerService.EditEmployerAsync(employerId, employerRequest);
-            return Ok(new {result = "Success"});
+            var result = await _employerService.EditEmployerAsync(employerId, employerRequest,_authService);
+            return Ok(new {result = result});
         }
 
         [HttpGet("{employerId:Guid}")]

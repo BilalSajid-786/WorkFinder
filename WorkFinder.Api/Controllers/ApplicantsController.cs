@@ -17,10 +17,12 @@ namespace WorkFinder.Api.Controllers
     public class ApplicantsController : BaseApiController
     {
         private readonly IApplicantService _applicantService;
+        private readonly IAuthService _authService;
         private readonly ResponseDto _responseDto;
-        public ApplicantsController(IApplicantService applicantService)
+        public ApplicantsController(IApplicantService applicantService, IAuthService authService)
         {
             _applicantService = applicantService;
+            _authService = authService;
             _responseDto = new();
         }
 
@@ -55,7 +57,7 @@ namespace WorkFinder.Api.Controllers
         {
             try
             {
-                var applicant = await _applicantService.UpdateApplicantAsync(applicantRequestDto);
+                var applicant = await _applicantService.UpdateApplicantAsync(applicantRequestDto,_authService);
                 _responseDto.IsSuccess = true;
                 _responseDto.Message = "Success";
                 _responseDto.Result = applicant;
