@@ -41,7 +41,6 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@CompanyName", employer.CompanyName);
             parameters.Add("@WebsiteUrl", employer.WebsiteUrl);
             parameters.Add("@CompanySize", employer.CompanySize);
-            parameters.Add("@ContactPerson", employer.ContactPerson);
             parameters.Add("@RegistrationNumber", employer.RegistrationNumber);
             parameters.Add("@IndustryId", employer.IndustryId);
 

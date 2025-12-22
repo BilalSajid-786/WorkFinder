@@ -53,7 +53,9 @@ namespace WorkFinder.Services.Mappers
             //Employers
             CreateMap<EmployerRequestDto, Employer>();
             CreateMap<UpdateEmployerRequestDto, User>();
-            CreateMap<UpdateEmployerRequestDto, Employer>();
+            CreateMap<UpdateEmployerRequestDto, Employer>()
+                        .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.UserName));
+
             CreateMap<EmployerRequestDto, RegisterRequestDto>()
                 //.ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
                 //.ForMember(dest => dest.ConfirmPassword, opt => opt.MapFrom(src =>src.ConfirmPasswordHash))
