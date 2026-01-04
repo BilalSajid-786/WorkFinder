@@ -73,7 +73,7 @@ namespace WorkFinder.Services
 
             string? baseUrl = _configuration.GetValue<string>("baseUrl");
             var link = $"{baseUrl}forgot-password?token={token}";
-            await _emailService.SendPasswordResetEmail("bilalsajid5432@gmail.com", link);
+            await _emailService.SendPasswordResetEmail(email, link);
         }
 
         private string GenerateToken()
