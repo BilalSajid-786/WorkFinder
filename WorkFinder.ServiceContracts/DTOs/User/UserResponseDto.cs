@@ -15,6 +15,7 @@ namespace WorkFinder.ServiceContracts.DTOs.User
         public string RoleName { get; set; } = string.Empty;
         public Guid RoleId { get; set; }
         public string Email { get; set; } = string.Empty;
+        public string ProfilePic { get; set; } = "NoImage.png";
 
         [JsonIgnore]
         public string? CompanyName { get; set; } = string.Empty;

@@ -52,11 +52,13 @@ namespace WorkFinder.Services
                 {
                     var skills = await _applicantRepository.GetApplicantSkillsAsync(applicant.ApplicantId);
                     var savedSkills = skills.Select(s => s.SkillId).ToList();
-                    var receivedSkills = applicant.Skills.Select(s => s.SkillId).ToList();
+                    var receivedSkills = applicantRequest.Skills.Select(s => s.SkillId).ToList();
 
-                    var newSkills = receivedSkills
-                   .Where(s => !savedSkills.Contains(s))
-                   .Select(s => new Skill { SkillId = s });
+                   // var newSkills = receivedSkills
+                   //.Where(s => !savedSkills.Contains(s))
+                   //.Select(s => new Skill { SkillId = s });
+                    var newSkills = applicantRequest.Skills
+                        .Where(s => s.SkillId == 0 || !savedSkills.Contains(s.SkillId));
 
                     var removedSkills = savedSkills
                         .Where(s => !receivedSkills.Contains(s))
@@ -64,7 +66,7 @@ namespace WorkFinder.Services
 
                     foreach (var skill in newSkills)
                     {
-                        await _applicantRepository.AddApplicantSkillAsync(skill,applicant.ApplicantId);
+                        await _applicantRepository.AddApplicantSkillAsync(_mapper.Map<Skill>(skill),applicant.ApplicantId);
                     }
 
                     foreach (var skill in removedSkills)
