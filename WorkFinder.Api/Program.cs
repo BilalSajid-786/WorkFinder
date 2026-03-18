@@ -43,6 +43,10 @@ using (var scope = app.Services.CreateScope())
     var qualificationService = scope.ServiceProvider.GetRequiredService<IQualificationService>();
     await qualificationService.SeedQualficationAsync();
 
+    //school degrees
+    var schoolDegreeService = scope.ServiceProvider.GetRequiredService<ISchoolDegreeService>();
+    await schoolDegreeService.SeedSchoolDegreesAsync();
+
     //countries
     var countries = scope.ServiceProvider.GetRequiredService<ICountryService>();
     await countries.SeedCountriesAsync();

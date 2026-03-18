@@ -19,13 +19,15 @@ namespace WorkFinder.Api.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IForgotPasswordService _forgotPasswordService;
+        private readonly ISubscriptionService _subscriptionService;
         private readonly ResponseDto _responseDto;
 
-        public AuthenticationController(IAuthService authService, IForgotPasswordService forgotPasswordService)
+        public AuthenticationController(IAuthService authService, IForgotPasswordService forgotPasswordService, ISubscriptionService subscriptionService)
         {
             _authService = authService;
             _responseDto = new();
             _forgotPasswordService = forgotPasswordService;
+            _subscriptionService = subscriptionService;
         }
 
         #region Auth
@@ -40,10 +42,19 @@ namespace WorkFinder.Api.Controllers
         {
             try
             {
-                var token = await _authService.AuthenticateAsync(loginRequestDto.Email, loginRequestDto.Password);
-                _responseDto.Result= token;
-                _responseDto.IsSuccess = true;
-                _responseDto.Message = "Token Generation Successfull";
+                var response = await _authService.AuthenticateAsync(loginRequestDto.Email, loginRequestDto.Password);
+                if (response.PaymentUrl != null)
+                {
+                    _responseDto.Result = response.PaymentUrl;
+                    _responseDto.IsSuccess = true;
+                    _responseDto.Message = "Payment required";
+                }
+                else
+                {
+                    _responseDto.Result = response.Token;
+                    _responseDto.IsSuccess = true;
+                    _responseDto.Message = "Token generation successfull";
+                }
                 return _responseDto;
             }
             catch (Exception ex)
@@ -142,12 +153,15 @@ namespace WorkFinder.Api.Controllers
             }
             catch (Exception ex)
             {
-                _responseDto.IsSuccess= false;
+                _responseDto.IsSuccess = false;
                 _responseDto.Message = ex.Message;
             }
             return _responseDto;
         }
 
+        #endregion
+
+        #region Subscription
         #endregion
     }
 }

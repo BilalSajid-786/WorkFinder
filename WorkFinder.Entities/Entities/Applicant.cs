@@ -18,6 +18,8 @@ namespace WorkFinder.Entities.Entities
         public IEnumerable<SavedJob>? SavedJobs { get; set; }
         public int QualificationId { get; set; }
         public Qualification? Qualification { get; set; }
+        public int SchoolDegreeId { get; set; }
+        public SchoolDegree? SchoolDegree { get; set; }
 
     }
 }

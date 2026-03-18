@@ -11,6 +11,7 @@ using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
 using WorkFinder.ServiceContracts.DTOs.Employer;
+using WorkFinder.ServiceContracts.DTOs.Subscription;
 
 namespace WorkFinder.Services
 {
@@ -22,9 +23,10 @@ namespace WorkFinder.Services
         private readonly IMapper _mapper;
         private readonly IEmployerService _employerService;
         private readonly IApplicantService _applicantService;
+        private readonly ISubscriptionService _subscriptionService;
 
         public AuthService(ITokenService tokenService, IUserService userService, IMapper mapper,
-            IEmployerService employerService, IApplicantService applicantService)
+            IEmployerService employerService, IApplicantService applicantService,ISubscriptionService subscriptionService)
         {
 
             _tokenService = tokenService;
@@ -33,8 +35,9 @@ namespace WorkFinder.Services
             _mapper = mapper;
             _employerService = employerService;
             _applicantService = applicantService;
+            _subscriptionService = subscriptionService;
         }
-        public async Task<string?> AuthenticateAsync(string email, string password)
+        public async Task<(string? Token, string? PaymentUrl)> AuthenticateAsync(string email, string password)
         {
             //Get User by email
             var user = await _userService.GetUserByEmailAsync(email);
@@ -54,26 +57,42 @@ namespace WorkFinder.Services
             //return token if valid email and password
             if (isValidPassword == PasswordVerificationResult.Success)
             {
-                //if user is of role applicant populate the baseuserid and applicantid accordingly
-                if (user.RoleId == SystemRoles.ApplicantId)
+                if(user.AccessStatus == "denied" && user.SubscriptionStatus == "past_due")
                 {
-                    var id = await _applicantService.GetApplicantIdAsync(user.UserId);
-                    user.BaseUserId = user.UserId;
-                    user.UserId = id.Value;
+                    var paymentUrl =  await _subscriptionService.GetOpenInvoicePaymentUrl(user.StripeCustomerId);
+                    return (null, paymentUrl);
                 }
-                else if (user.RoleId == SystemRoles.EmployerId) //if user is of role employer populate the baseuserid and employerid accordingly
+
+                if(user.AccessStatus == "denied" && user.SubscriptionStatus == "canceled")
                 {
-                    var id = await _employerService.GetEmployerIdAsync(user.UserId);
-                    user.BaseUserId = user.UserId;
-                    user.UserId = id.Value;
-                    var employerDetails = await _employerService.GetEmployerByIdAsync(user.UserId);
-                    user.CompanyName = employerDetails.CompanyName;
+                    CreateSubscriptionRequestDto createSubscriptionRequestDto  = new CreateSubscriptionRequestDto()
+                    {
+                        UserId = user.UserId
+                    };
+                    var checkoutUrl = await _subscriptionService.CreateCheckoutSubscriptionAsync(createSubscriptionRequestDto,user.StripeCustomerId);
+                    return (null, checkoutUrl.CheckoutUrl);
                 }
-                else // if user is an admin
-                {
-                    user.BaseUserId = user.UserId;
-                }
-                return await _tokenService.GenerateToken(user);
+
+                    //if user is of role applicant populate the baseuserid and applicantid accordingly
+                    if (user.RoleId == SystemRoles.ApplicantId)
+                    {
+                        var id = await _applicantService.GetApplicantIdAsync(user.UserId);
+                        user.BaseUserId = user.UserId;
+                        user.UserId = id.Value;
+                    }
+                    else if (user.RoleId == SystemRoles.EmployerId) //if user is of role employer populate the baseuserid and employerid accordingly
+                    {
+                        var id = await _employerService.GetEmployerIdAsync(user.UserId);
+                        user.BaseUserId = user.UserId;
+                        user.UserId = id.Value;
+                        var employerDetails = await _employerService.GetEmployerByIdAsync(user.UserId);
+                        user.CompanyName = employerDetails.CompanyName;
+                    }
+                    else // if user is an admin
+                    {
+                        user.BaseUserId = user.UserId;
+                    }
+                    return (await _tokenService.GenerateToken(user),null);
             }
             else
                 throw new Exception($"Invalid Password {password}");
@@ -157,7 +176,8 @@ namespace WorkFinder.Services
             return new EmployerResponseDto
             {
                 UserId = userId,
-                EmployerId = employerId
+                EmployerId = employerId,
+                Email = registerRequestDto.Email
             };
         }
 

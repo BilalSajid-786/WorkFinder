@@ -155,5 +155,10 @@ namespace WorkFinder.Services
         {
             await _userRepository.UpdateUserProfilePic(userId, profilePicName);
         }
+
+        public async Task<string> GetUserStripeId(Guid userId)
+        {
+            return await _userRepository.GetUserStripeId(userId);
+        }
     }
 }

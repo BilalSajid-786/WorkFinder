@@ -18,6 +18,7 @@ using WorkFinder.ServiceContracts.DTOs.Notifications;
 using WorkFinder.ServiceContracts.DTOs.Pagination;
 using WorkFinder.ServiceContracts.DTOs.Qualification;
 using WorkFinder.ServiceContracts.DTOs.Role;
+using WorkFinder.ServiceContracts.DTOs.SchoolDegree;
 using WorkFinder.ServiceContracts.DTOs.Skill;
 using WorkFinder.ServiceContracts.DTOs.User;
 
@@ -31,7 +32,11 @@ namespace WorkFinder.Services.Mappers
             CreateMap<UserRequestDto, User>();
             CreateMap<User, UserResponseDto>()
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role.RoleId))
-                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName));
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
+                .ForMember(dest => dest.SubscriptionStatus, opt => opt.MapFrom(src => src.UserSubscription.SubscriptionStatus))
+                .ForMember(dest => dest.AccessStatus, opt => opt.MapFrom(src => src.UserSubscription.AccessStatus))
+                .ForMember(dest => dest.StripeCustomerId, opt => opt.MapFrom(src => src.UserSubscription.StripeCustomerId));
+
 
             //CreateMap<Employer, EmployerResponseDto>()
             //    .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.RoleName))
@@ -189,6 +194,9 @@ namespace WorkFinder.Services.Mappers
 
             //Qualifications
             CreateMap<Qualification, QualificationResponseDto>();
+
+            //SchoolDegrees
+            CreateMap<SchoolDegree, SchoolDegreeResponseDto>();
 
             //Countries
             CreateMap<Country, CountryResponseDto>();

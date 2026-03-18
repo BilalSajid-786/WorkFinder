@@ -35,6 +35,13 @@ namespace WorkFinder.RepositoryContracts
         Task UpdateUserPassword(string password, Guid userId);
 
         /// <summary>
+        /// Get User Stripe Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<string> GetUserStripeId(Guid userId);
+
+        /// <summary>
         /// Gets a user by email
         /// </summary>
         /// <param name="email"></param>

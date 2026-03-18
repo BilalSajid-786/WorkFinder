@@ -32,6 +32,13 @@ namespace WorkFinder.ServiceContracts
         /// <returns>All Users</returns>
         Task<IEnumerable<UserResponseDto>> GetAllUsers();
 
+        /// <summary>
+        /// Get user stripe id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<string> GetUserStripeId(Guid userId);
+
         Task UpdateUserPassword(string password, Guid userId);
 
         /// <summary>

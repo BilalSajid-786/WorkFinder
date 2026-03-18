@@ -24,6 +24,9 @@ namespace WorkFinder.ServiceContracts.DTOs.Applicant
         public int QualificationId { get; set; }
 
         [Required]
+        public int SchoolDegreeId { get; set; }
+
+        [Required]
         [EnumValidation(typeof(Gender))]
         public string Gender { get; set; } = string.Empty;
 

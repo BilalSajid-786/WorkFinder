@@ -80,14 +80,15 @@ namespace WorkFinder.Repositories.Repositories
             var sql = "[GetUserByEmail]";
             var parameters = new DynamicParameters();
             parameters.Add("@Email", email);
-            var user = await connection.QueryAsync<User,Role,User>(sql,
-                (user, role) =>
+            var user = await connection.QueryAsync<User,Role,UserSubscription,User>(sql,
+                (user, role,sub) =>
                 {
                     user.Role = role;
+                    user.UserSubscription = sub;
                     return user;
                 },
                 parameters,
-                splitOn: "RoleId",
+                splitOn: "RoleId,StripeCustomerId",
                 commandType: System.Data.CommandType.StoredProcedure);
             return user.SingleOrDefault();
         }
@@ -174,6 +175,23 @@ namespace WorkFinder.Repositories.Repositories
             );
 
             return updatedStatus; // true = Active, false = Inactive, null = User not found
+        }
+
+        /// <summary>
+        /// Get user stripe id from database
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<string> GetUserStripeId(Guid userId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetUserStripeId]";
+
+           var parameters = new DynamicParameters();
+            parameters.Add("@UserId", userId);
+
+            return await connection.ExecuteScalarAsync<string>(sql,parameters,
+                commandType: System.Data.CommandType.StoredProcedure);
         }
     }
 }

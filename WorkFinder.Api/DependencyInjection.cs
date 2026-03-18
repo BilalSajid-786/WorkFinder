@@ -100,11 +100,13 @@ namespace WorkFinder.Api
             services.AddTransient<IModuleRepository, ModuleRepository>();
             services.AddTransient<IJobRepository, JobRepository>();
             services.AddTransient<IQualificationRepository, QualificationRepository>();
+            services.AddTransient<ISchoolDegreeRepository, SchoolDegreeRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<ICityRepository, CityRepository>();
             services.AddTransient<IMessageRepository, MessageRepository>();
             services.AddTransient<INotificationRepository,NotificationRepository>();
             services.AddTransient<IPasswordResetRepository, PasswordResetRepository>();
+            services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();
@@ -119,12 +121,14 @@ namespace WorkFinder.Api
             services.AddTransient<IModuleService, ModuleService>();
             services.AddTransient<IJobService, JobService>();
             services.AddTransient<IQualificationService, QualificationService>();
+            services.AddTransient<ISchoolDegreeService, SchoolDegreeService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<ICityService, CityService>();
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IForgotPasswordService, ForgotPasswordService>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<ISubscriptionService, SubscriptionService>();
 
 
             //SingalR

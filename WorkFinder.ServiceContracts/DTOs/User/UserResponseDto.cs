@@ -16,6 +16,10 @@ namespace WorkFinder.ServiceContracts.DTOs.User
         public Guid RoleId { get; set; }
         public string Email { get; set; } = string.Empty;
         public string ProfilePic { get; set; } = "NoImage.png";
+        public string SubscriptionStatus { get; set; } = string.Empty;
+        public string AccessStatus { get; set; } = string.Empty;
+        public string StripeCustomerId { get; set; } = string.Empty;
+
 
         [JsonIgnore]
         public string? CompanyName { get; set; } = string.Empty;

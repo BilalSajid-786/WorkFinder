@@ -20,7 +20,7 @@ namespace WorkFinder.ServiceContracts
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns>Jwt token</returns>
-        Task<string?> AuthenticateAsync(string email, string password);
+        Task<(string? Token, string? PaymentUrl)> AuthenticateAsync(string email, string password);
 
         /// <summary>
         /// Authenticates a user by email
