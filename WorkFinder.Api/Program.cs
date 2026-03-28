@@ -54,6 +54,10 @@ using (var scope = app.Services.CreateScope())
     //cities
     var cities = scope.ServiceProvider.GetRequiredService<ICityService>();
     await cities.SeedCitiesAsync();
+
+    //countryCodes
+    var countryCodes = scope.ServiceProvider.GetRequiredService<ICountryCodeService>();
+    await countryCodes.SeedCountryCode();
 }
 
 if(app.Environment.IsDevelopment())

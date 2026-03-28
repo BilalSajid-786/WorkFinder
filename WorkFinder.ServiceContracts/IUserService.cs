@@ -9,7 +9,7 @@ namespace WorkFinder.ServiceContracts
         /// Registers a user
         /// </summary>
         /// <returns></returns>
-        Task<Guid> RegisterUserAsync(RegisterRequestDto registerRequestDto,string passwordHash);
+        Task<Guid> RegisterUserAsync(RegisterRequestDto registerRequestDto, string passwordHash);
 
         /// <summary>
         /// Update User profile pic in the system
@@ -49,5 +49,8 @@ namespace WorkFinder.ServiceContracts
         Task<string?> GetUserPasswordHashById(Guid userId);
         Task<bool> DeleteUserAsync(Guid userId);
         Task<bool?> UpdateUserStatusAsync(Guid userId, bool isActive);
+
+        Task InsertUserVerificationToken(Guid userId, Guid verificationToken);
+        Task<UserResponseDto?> GetUserByVerificationToken(Guid verificationToken);
     }
 }

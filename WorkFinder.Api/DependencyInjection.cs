@@ -107,6 +107,7 @@ namespace WorkFinder.Api
             services.AddTransient<INotificationRepository,NotificationRepository>();
             services.AddTransient<IPasswordResetRepository, PasswordResetRepository>();
             services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
+            services.AddTransient<ICountryCodeRepository,CountryCodeRepository>();
 
             //Services
             services.AddTransient<ITokenService, TokenService>();
@@ -129,6 +130,7 @@ namespace WorkFinder.Api
             services.AddTransient<IForgotPasswordService, ForgotPasswordService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<ISubscriptionService, SubscriptionService>();
+            services.AddTransient<ICountryCodeService, CountryCodeService>();
 
 
             //SingalR

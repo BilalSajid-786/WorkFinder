@@ -19,6 +19,7 @@ namespace WorkFinder.ServiceContracts.DTOs.User
         public string SubscriptionStatus { get; set; } = string.Empty;
         public string AccessStatus { get; set; } = string.Empty;
         public string StripeCustomerId { get; set; } = string.Empty;
+        public string? Country { get; set; }
 
 
         [JsonIgnore]

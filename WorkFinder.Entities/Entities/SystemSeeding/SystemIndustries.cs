@@ -13,6 +13,7 @@ namespace WorkFinder.Entities.Entities.SystemSeeding
         {
             Industries = new List<string>()
             {
+               "Others",
                "Renewable Energy/Environmental Technology",
                "Aerospace",
                "Finance/Insurance/Real Estate",

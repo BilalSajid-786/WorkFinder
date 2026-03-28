@@ -160,5 +160,16 @@ namespace WorkFinder.Services
         {
             return await _userRepository.GetUserStripeId(userId);
         }
+
+        public async Task InsertUserVerificationToken(Guid userId, Guid verificationToken)
+        {
+            await _userRepository.InsertUserVerificationToken(userId, verificationToken);
+        }
+
+        public async Task<UserResponseDto?> GetUserByVerificationToken(Guid verificationToken)
+        {
+            var user = await _userRepository.GetUserByVerificationToken(verificationToken);
+            return _mapper.Map<UserResponseDto>(user);
+        }
     }
 }

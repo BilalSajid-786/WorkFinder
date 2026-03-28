@@ -18,5 +18,13 @@ namespace WorkFinder.ServiceContracts
         /// <param name="link"></param>
         /// <returns></returns>
         Task SendPasswordResetEmail(string to, string link);
+
+        /// <summary>
+        /// Send verification email to the users
+        /// </summary>
+        /// <param name="to"></param>
+        /// <param name="link"></param>
+        /// <returns></returns>
+        Task SendVerificationEmail(string to, string link);
     }
 }

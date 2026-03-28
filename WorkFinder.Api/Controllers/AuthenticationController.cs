@@ -20,14 +20,17 @@ namespace WorkFinder.Api.Controllers
         private readonly IAuthService _authService;
         private readonly IForgotPasswordService _forgotPasswordService;
         private readonly ISubscriptionService _subscriptionService;
+        private readonly IUserService _userService;
         private readonly ResponseDto _responseDto;
 
-        public AuthenticationController(IAuthService authService, IForgotPasswordService forgotPasswordService, ISubscriptionService subscriptionService)
+        public AuthenticationController(IAuthService authService, IForgotPasswordService forgotPasswordService,
+            ISubscriptionService subscriptionService, IUserService userService)
         {
             _authService = authService;
             _responseDto = new();
             _forgotPasswordService = forgotPasswordService;
             _subscriptionService = subscriptionService;
+            _userService = userService;
         }
 
         #region Auth
@@ -105,6 +108,7 @@ namespace WorkFinder.Api.Controllers
             try
             {
                 response = await _authService.RegisterApplicantAsync(applicantRequestDto);
+                //_subscriptionService.CreateCheckoutSubscriptionAsync();
                 _responseDto.Result = response;
                 _responseDto.IsSuccess = true;
                 _responseDto.Message = "Applicant Registered Successfully";
@@ -162,6 +166,25 @@ namespace WorkFinder.Api.Controllers
         #endregion
 
         #region Subscription
+
+        [HttpGet("{token}")]
+        public async Task<ActionResult<ResponseDto>> ValidateVerificationToken([FromRoute]string token)
+        {
+            try
+            {
+                var userDetails = await _userService.GetUserByVerificationToken(Guid.Parse(token));
+                _responseDto.Result = userDetails;
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Token is valid";
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+
         #endregion
     }
 }

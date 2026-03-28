@@ -10,6 +10,7 @@ using WorkFinder.ServiceContracts.DTOs.Applicant;
 using WorkFinder.ServiceContracts.DTOs.Authentication;
 using WorkFinder.ServiceContracts.DTOs.City;
 using WorkFinder.ServiceContracts.DTOs.Country;
+using WorkFinder.ServiceContracts.DTOs.CountryCode;
 using WorkFinder.ServiceContracts.DTOs.Employer;
 using WorkFinder.ServiceContracts.DTOs.Industry;
 using WorkFinder.ServiceContracts.DTOs.Job;
@@ -46,6 +47,9 @@ namespace WorkFinder.Services.Mappers
             CreateMap<RolePermission, RolePermissionResponseDto>()
                 .ForMember(dest => dest.PermissionId, opt => opt.MapFrom(src => src.Permission.PermissionId))
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.Permission.Action));
+
+            //CountryCodes
+            CreateMap<CountryCode, CountryCodeResponseDto>();
 
             //Modules
             CreateMap<Module, ModuleResponseDto>();

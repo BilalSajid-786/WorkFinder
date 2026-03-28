@@ -20,11 +20,16 @@ namespace WorkFinder.Services
     {
         private readonly IConfiguration _configuration;
         private readonly ISubscriptionRepository _subscriptionRepository;
+        private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
 
-        public SubscriptionService(IConfiguration configuration, ISubscriptionRepository subscriptionRepository)
+        public SubscriptionService(IConfiguration configuration, ISubscriptionRepository subscriptionRepository, IUserService userService,
+            IEmailService emailService)
         {
             _configuration = configuration;
             _subscriptionRepository = subscriptionRepository;
+            _userService = userService;
+            _emailService = emailService;
         }
         /// <summary>
         /// Create Subscription for the given request. 

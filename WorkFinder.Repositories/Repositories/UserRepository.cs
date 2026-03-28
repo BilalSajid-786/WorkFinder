@@ -193,5 +193,28 @@ namespace WorkFinder.Repositories.Repositories
             return await connection.ExecuteScalarAsync<string>(sql,parameters,
                 commandType: System.Data.CommandType.StoredProcedure);
         }
+
+        public async Task InsertUserVerificationToken(Guid userId, Guid verificationToken)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[AddUserVerificationToken]";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@UserId", userId);
+            parameters.Add("@VerificationToken", verificationToken);
+
+            await connection.ExecuteAsync(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        public async Task<User?> GetUserByVerificationToken(Guid verificationToken)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetUserByVerificationToken]";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@VerificationToken", verificationToken);
+
+            return await connection.QueryFirstOrDefaultAsync<User?>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
     }
 }
