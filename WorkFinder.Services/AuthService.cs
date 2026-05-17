@@ -74,7 +74,7 @@ namespace WorkFinder.Services
                     }
                 }
 
-                if ((user.AccessStatus == "denied" && user.SubscriptionStatus == "canceled") || (user.AccessStatus is null))
+                if (user.AccessStatus == "denied" && user.SubscriptionStatus == "canceled")
                 {
                     if (user.RoleName == SystemRoles.Employer || (user.RoleName == SystemRoles.Applicant && user.Country != "Germany"))
                     {
@@ -86,6 +86,19 @@ namespace WorkFinder.Services
                         var checkoutUrl = await _subscriptionService.CreateCheckoutSubscriptionAsync(createSubscriptionRequestDto, user.StripeCustomerId);
                         await _emailService.SendVerificationEmail(user.Email, checkoutUrl.CheckoutUrl);
                         return (null, checkoutUrl.CheckoutUrl);
+                    }
+                }
+
+                if(user.AccessStatus is null)
+                {
+                    var isGermanApplicant = user.RoleName == SystemRoles.Applicant && user.Country == "Germany";
+                    if(!isGermanApplicant)
+                    {
+                        var verificationToken = await _userService.GetUserVerificationToken(user.UserId);
+                        if (verificationToken != Guid.Empty)
+                        {
+                            return (null, $"{_configuration["BaseUrl"]}subscription/{verificationToken}");
+                        }
                     }
                 }
 
@@ -165,10 +178,13 @@ namespace WorkFinder.Services
             applicantRequestDto.UserId = userId;
             var applicantId = await _applicantService.InsertApplicantAsync(applicantRequestDto);
 
-            //User Verification details
-            var verificationToken = Guid.NewGuid();
-            await _userService.InsertUserVerificationToken(applicantRequestDto.UserId, verificationToken);
-            await _emailService.SendVerificationEmail(applicantRequestDto.Email, $"{_configuration["BaseUrl"]}subscription/{verificationToken}");
+            if(applicantRequestDto.Country.ToLower() != "germany")
+            {
+                //User Verification details
+                var verificationToken = Guid.NewGuid();
+                await _userService.InsertUserVerificationToken(applicantRequestDto.UserId, verificationToken);
+                await _emailService.SendVerificationEmail(applicantRequestDto.Email, $"{_configuration["BaseUrl"]}subscription/{verificationToken}");
+            }
 
             return new ApplicantResponseDto()
             {

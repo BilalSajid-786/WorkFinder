@@ -41,6 +41,10 @@ namespace WorkFinder.Services
         public async Task<string> UpdateApplicantAsync(UpdateApplicantRequestDto applicantRequest, IAuthService authService)
         {
             var applicant = _mapper.Map<Applicant>(applicantRequest);
+            applicant.User = new()
+            {
+                Country = applicantRequest.Country,
+            };
             var empStatus = await _applicantRepository.UpdateApplicantAsync(applicant);
             if (empStatus == "SUCCESS")
             {

@@ -60,7 +60,9 @@ using (var scope = app.Services.CreateScope())
     await countryCodes.SeedCountryCode();
 }
 
-if(app.Environment.IsDevelopment())
+//app.UsePathBase("/inittiapi");
+
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(swg =>

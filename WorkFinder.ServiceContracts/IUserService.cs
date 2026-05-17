@@ -51,6 +51,7 @@ namespace WorkFinder.ServiceContracts
         Task<bool?> UpdateUserStatusAsync(Guid userId, bool isActive);
 
         Task InsertUserVerificationToken(Guid userId, Guid verificationToken);
+        Task<Guid> GetUserVerificationToken(Guid userId);
         Task<UserResponseDto?> GetUserByVerificationToken(Guid verificationToken);
     }
 }

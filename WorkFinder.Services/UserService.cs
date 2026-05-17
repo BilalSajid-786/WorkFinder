@@ -166,10 +166,18 @@ namespace WorkFinder.Services
             await _userRepository.InsertUserVerificationToken(userId, verificationToken);
         }
 
+        public async Task<Guid> GetUserVerificationToken(Guid userId)
+        {
+            return await _userRepository.GetUserVerificationToken(userId);
+        }
+
         public async Task<UserResponseDto?> GetUserByVerificationToken(Guid verificationToken)
         {
             var user = await _userRepository.GetUserByVerificationToken(verificationToken);
-            return _mapper.Map<UserResponseDto>(user);
+            var userSubDetails = await GetUserByEmailAsync(user.Email);
+            var userResponse = _mapper.Map<UserResponseDto>(user);
+            userResponse.AccessStatus = userSubDetails?.AccessStatus ?? null;
+            return userResponse;
         }
     }
 }

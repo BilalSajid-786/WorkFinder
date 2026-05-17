@@ -64,6 +64,7 @@ namespace WorkFinder.RepositoryContracts
         Task<bool> DeleteUserAsync(Guid userId);
         Task<bool?> UpdateUserStatusAsync(Guid userId, bool isActive);
         Task InsertUserVerificationToken(Guid userId, Guid verificationToken);
+        Task<Guid> GetUserVerificationToken(Guid userId);
         Task<User?> GetUserByVerificationToken(Guid verificationToken);
     }
 }

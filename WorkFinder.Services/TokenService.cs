@@ -47,19 +47,20 @@ namespace WorkFinder.Services
                 new Claim("RoleId",user.RoleId.ToString()),
                 new Claim("UserRole",user.RoleName),
                 new Claim("BaseUserId",user.BaseUserId.ToString()),
+                new Claim("UserEmail",user.Email),
                 new Claim("UserName",user.UserName),
                 new Claim("ProfilePic",
                 user.ProfilePic.Equals("NoImage.png")? user.ProfilePic : user.BaseUserId.ToString() +"."+
                 user.ProfilePic.Split(".")[1]
                 )
             };
-            if(user.RoleId == SystemRoles.EmployerId)
+            if (user.RoleId == SystemRoles.EmployerId)
             {
                 claims.Add(new Claim("CompanyName", user.CompanyName));
             }
 
             //permissions
-            foreach (var permission in permissions) 
+            foreach (var permission in permissions)
             {
                 claims.Add(new Claim("Permissions", permission.Action));
             }

@@ -24,7 +24,7 @@ namespace WorkFinder.Services
         {
             //message to sent
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Initti(No-Reply)", "nimrasajid8903@gmail.com"));
+            message.From.Add(new MailboxAddress("Initti(No-Reply)", "aliamjad.dev1@gmail.com"));
             message.To.Add(new MailboxAddress("", to));
             message.Subject = "Reset Your Password - Initti";
 
@@ -57,7 +57,7 @@ namespace WorkFinder.Services
             //connecting with smtp and sending email
             using var smtp = new SmtpClient();
             await smtp.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-            await smtp.AuthenticateAsync("nimrasajid8903@gmail.com", "msahhivtkurcaqxk");
+            await smtp.AuthenticateAsync("aliamjad.dev1@gmail.com", "kjsnuaigkpldykig");
             await smtp.SendAsync(message);
             await smtp.DisconnectAsync(true);
         }
@@ -65,7 +65,7 @@ namespace WorkFinder.Services
         public async Task SendVerificationEmail(string to, string link)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Initti(No-Reply)", "nimrasajid8903@gmail.com"));
+            message.From.Add(new MailboxAddress("Initti(No-Reply)", "aliamjad.dev1@gmail.com"));
             message.To.Add(new MailboxAddress("", to));
             message.Subject = "Verify Account - Initti";
 
@@ -112,7 +112,7 @@ namespace WorkFinder.Services
             //connecting with smtp and sending email
             using var smtp = new SmtpClient();
             await smtp.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-            await smtp.AuthenticateAsync("nimrasajid8903@gmail.com", "msahhivtkurcaqxk");
+            await smtp.AuthenticateAsync("aliamjad.dev1@gmail.com", "kjsnuaigkpldykig");
             await smtp.SendAsync(message);
             await smtp.DisconnectAsync(true);
         }

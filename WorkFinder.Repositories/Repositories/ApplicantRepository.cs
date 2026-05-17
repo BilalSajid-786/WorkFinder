@@ -276,6 +276,7 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@Gender", applicant.Gender);
             parameters.Add("@QualificationId", applicant.QualificationId);
             parameters.Add("@Resume", applicant.Resume);
+            parameters.Add("@Country", applicant.User?.Country);
 
             return await connection.ExecuteScalarAsync<string>(sql, parameters,
                 commandType: System.Data.CommandType.StoredProcedure);

@@ -42,7 +42,7 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@Email", user.Email);
             parameters.Add("@PasswordHash", user.Password.Length > 0 ? user.Password : null);
             parameters.Add("@City", user.City);
-            parameters.Add("@Country", user.Country);
+            //parameters.Add("@Country", user.Country);
             parameters.Add("@Phone", user.Phone);
 
             var status = await connection.ExecuteScalarAsync<string?>(
@@ -215,6 +215,17 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@VerificationToken", verificationToken);
 
             return await connection.QueryFirstOrDefaultAsync<User?>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        public async Task<Guid> GetUserVerificationToken(Guid userId)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql = "[GetUserVerificationToken]";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@UserId", userId);
+
+            return await connection.ExecuteScalarAsync<Guid>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
         }
     }
 }
