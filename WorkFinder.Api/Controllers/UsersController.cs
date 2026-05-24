@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WorkFinder.Api.Controllers.Base;
 using WorkFinder.Entities.Entities;
@@ -8,7 +9,7 @@ using WorkFinder.Services;
 
 namespace WorkFinder.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     public class UsersController : BaseApiController
     {
         private readonly IUserService _userService;
@@ -28,6 +29,17 @@ namespace WorkFinder.Api.Controllers
         {
             var users = await _userService.GetAllUsers();
             return Ok(users);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<UserResponseDto>> GetUserDetails()
+        {
+            var user = await _userService.GetUserByEmailAsync(CurrentUser.UserEmail);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
 
         [HttpDelete("{userId:Guid}")]

@@ -12,7 +12,7 @@ namespace WorkFinder.Api.Controllers
     /// <summary>
     /// File Controller to handle requests related to file uploads
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class FilesController : BaseApiController
     {

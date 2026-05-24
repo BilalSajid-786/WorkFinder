@@ -7,7 +7,7 @@ using WorkFinder.ServiceContracts.DTOs.Messages;
 
 namespace WorkFinder.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class MeetingsController : BaseApiController
     {

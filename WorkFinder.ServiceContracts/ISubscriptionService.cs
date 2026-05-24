@@ -24,7 +24,7 @@ namespace WorkFinder.ServiceContracts
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        Task<SubscriptionResponseDto> CreateCheckoutSubscriptionAsync(CreateSubscriptionRequestDto request, string? customerId = null);
+        Task<SubscriptionResponseDto> CreateCheckoutSubscriptionAsync(CreateSubscriptionRequestDto request, string? customerId = null, string? roleName = null);
 
         /// <summary>
         /// Update the subscription by Id

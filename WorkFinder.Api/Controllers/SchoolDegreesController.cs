@@ -7,7 +7,7 @@ using WorkFinder.Services;
 
 namespace WorkFinder.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class SchoolDegreesController : ControllerBase
     {

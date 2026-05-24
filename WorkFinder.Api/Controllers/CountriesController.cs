@@ -5,7 +5,7 @@ using WorkFinder.ServiceContracts.DTOs.Response;
 
 namespace WorkFinder.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CountriesController : ControllerBase
     {

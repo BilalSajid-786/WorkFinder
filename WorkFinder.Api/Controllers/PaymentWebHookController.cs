@@ -9,7 +9,7 @@ using WorkFinder.RepositoryContracts;
 
 namespace WorkFinder.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class PaymentWebHookController : ControllerBase
     {

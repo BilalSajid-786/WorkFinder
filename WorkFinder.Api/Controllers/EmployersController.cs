@@ -7,7 +7,7 @@ using WorkFinder.Services;
 
 namespace WorkFinder.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class EmployersController : ControllerBase
     {

@@ -8,7 +8,7 @@ using WorkFinder.ServiceContracts.DTOs.Subscription;
 
 namespace WorkFinder.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class PaymentController : ControllerBase
     {

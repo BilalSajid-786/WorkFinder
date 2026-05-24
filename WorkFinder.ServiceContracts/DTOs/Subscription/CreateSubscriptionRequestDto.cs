@@ -12,6 +12,7 @@ namespace WorkFinder.ServiceContracts.DTOs.Subscription
         public string Email { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string PaymentMethodId { get; set; } = string.Empty;
+        public string RoleName { get; set; } = string.Empty;
         public string? PromoCode { get; set; }
         public bool ChargeImmediately { get; set; }
     }

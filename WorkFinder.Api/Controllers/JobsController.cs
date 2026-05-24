@@ -14,7 +14,7 @@ using static WorkFinder.Entities.Entities.SystemSeeding.SystemPermissions;
 
 namespace WorkFinder.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class JobsController : BaseApiController
     {

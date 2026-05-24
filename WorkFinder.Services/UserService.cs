@@ -175,9 +175,11 @@ namespace WorkFinder.Services
         {
             var user = await _userRepository.GetUserByVerificationToken(verificationToken);
             var userSubDetails = await GetUserByEmailAsync(user.Email);
-            var userResponse = _mapper.Map<UserResponseDto>(user);
-            userResponse.AccessStatus = userSubDetails?.AccessStatus ?? null;
-            return userResponse;
+            userSubDetails.AccessStatus = userSubDetails?.AccessStatus ?? null;
+            return userSubDetails;
+            //var userResponse = _mapper.Map<UserResponseDto>(user);
+            //userResponse.AccessStatus = userSubDetails?.AccessStatus ?? null;
+            //return userResponse;
         }
     }
 }

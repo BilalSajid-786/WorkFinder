@@ -13,7 +13,7 @@ using WorkFinder.ServiceContracts.DTOs.Response;
 
 namespace WorkFinder.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {

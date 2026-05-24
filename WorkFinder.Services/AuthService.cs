@@ -83,7 +83,8 @@ namespace WorkFinder.Services
                             UserId = user.UserId,
                             Email = user.AccessStatus is null ? user.Email : null
                         };
-                        var checkoutUrl = await _subscriptionService.CreateCheckoutSubscriptionAsync(createSubscriptionRequestDto, user.StripeCustomerId);
+                        var checkoutUrl = await _subscriptionService.CreateCheckoutSubscriptionAsync(createSubscriptionRequestDto, user.StripeCustomerId
+                            ,user.RoleName);
                         await _emailService.SendVerificationEmail(user.Email, checkoutUrl.CheckoutUrl);
                         return (null, checkoutUrl.CheckoutUrl);
                     }

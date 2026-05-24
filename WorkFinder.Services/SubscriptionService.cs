@@ -125,25 +125,33 @@ namespace WorkFinder.Services
             };
         }
 
-        public async Task<SubscriptionResponseDto> CreateCheckoutSubscriptionAsync(CreateSubscriptionRequestDto request, string? customerId = null)
+        public async Task<SubscriptionResponseDto> CreateCheckoutSubscriptionAsync(CreateSubscriptionRequestDto request, string? customerId = null, string? roleName = null)
         {
             StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
 
-            bool giveTrial = request.PromoCode == "xyz";
+            bool giveTrial = request.PromoCode == "1290initti1290*DzwqP";
+
+            bool isEmployer = request.RoleName?.Equals("Employer", StringComparison.OrdinalIgnoreCase) == true;
+            bool isApplicant = request.RoleName?.Equals("Applicant", StringComparison.OrdinalIgnoreCase) == true;
+
+            string? priceId = isApplicant
+               ? _configuration["Stripe:AnnualPriceId"]
+               : _configuration["Stripe:MonthlyPriceId"];
 
             var subscriptionData = new SessionSubscriptionDataOptions
             {
                 Metadata = new Dictionary<string, string>
                     {
                         { "UserId", request.UserId.ToString() },
-                        { "PromoCode", request.PromoCode ?? "" }
+                        { "PromoCode", request.PromoCode ?? "" },
+                        { "Role", roleName ?? "" }
                     },
             };
 
             // Add trial if applicable
-            if (giveTrial)
+            if (giveTrial && isEmployer)
             {
-                subscriptionData.TrialEnd = DateTime.UtcNow.AddDays(3);
+                subscriptionData.TrialEnd = DateTime.UtcNow.AddDays(365);
             }
 
             var sessionOptions = new SessionCreateOptions
@@ -156,27 +164,28 @@ namespace WorkFinder.Services
             {
                 new SessionLineItemOptions
                 {
-                    Price = _configuration["Stripe:MonthlyPriceId"],
+                    Price = priceId,
                     Quantity = 1
                 }
             },
 
-                SuccessUrl = "https://bilalsajid.xyz",
-                CancelUrl = "https://yourdomain.com/cancel",
+                SuccessUrl = "https://initti.com?nocache=" + DateTime.UtcNow.Ticks,
+                CancelUrl = "https://initti.com/fail-subscription",
 
                 Metadata = new Dictionary<string, string>
                 {
                     { "UserId", request.UserId.ToString() },
-                    { "PromoCode", request.PromoCode ?? "" }
+                    { "PromoCode", request.PromoCode ?? "" },
+                    { "Role", roleName ?? "" }
                 },
-                 SubscriptionData = subscriptionData,
+                SubscriptionData = subscriptionData,
             };
 
 
-            if (giveTrial)
-            {
-                sessionOptions.Metadata.Add("TrialEndDate", DateTime.UtcNow.AddDays(3).ToString());
-            }
+            //if (giveTrial)
+            //{
+            //    sessionOptions.Metadata.Add("TrialEndDate", DateTime.UtcNow.AddDays(3).ToString());
+            //}
 
             if (customerId != null)
             {
@@ -185,7 +194,7 @@ namespace WorkFinder.Services
             if (customerId == null)
             {
                 sessionOptions.CustomerEmail = request.Email;
-               // sessionOptions.Customer = "cus_U6cczJxv2oQVi8";
+                // sessionOptions.Customer = "cus_U6cczJxv2oQVi8";
             }
 
 
@@ -235,19 +244,19 @@ namespace WorkFinder.Services
         public async Task<string> GetOpenInvoicePaymentUrl(string customerId)
         {
             StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
-           
-                var invoiceService = new InvoiceService();
 
-                var invoices = await invoiceService.ListAsync(new InvoiceListOptions
-                {
-                    Customer = customerId,
-                    Status = "open",
-                    Limit = 1
-                });
+            var invoiceService = new InvoiceService();
 
-                var invoice = invoices.Data.FirstOrDefault();
-                return invoice.HostedInvoiceUrl;
-            
+            var invoices = await invoiceService.ListAsync(new InvoiceListOptions
+            {
+                Customer = customerId,
+                Status = "open",
+                Limit = 1
+            });
+
+            var invoice = invoices.Data.FirstOrDefault();
+            return invoice.HostedInvoiceUrl;
+
         }
     }
 }

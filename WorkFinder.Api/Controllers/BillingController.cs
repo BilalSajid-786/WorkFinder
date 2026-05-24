@@ -9,7 +9,7 @@ namespace WorkFinder.Api.Controllers
     using WorkFinder.ServiceContracts;
 
     [ApiController]
-    [Route("api/billing")]
+    [Route("billing")]
     public class BillingController : BaseApiController
     {
         private readonly IUserService _userService;

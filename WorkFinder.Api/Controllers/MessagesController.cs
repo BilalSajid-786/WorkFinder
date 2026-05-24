@@ -16,7 +16,7 @@ namespace WorkFinder.Api.Controllers
     /// <summary>
     /// Messages controller to send messages to users
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class MessagesController : BaseApiController
     {
