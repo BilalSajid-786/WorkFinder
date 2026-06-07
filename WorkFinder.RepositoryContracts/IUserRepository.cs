@@ -66,5 +66,6 @@ namespace WorkFinder.RepositoryContracts
         Task InsertUserVerificationToken(Guid userId, Guid verificationToken);
         Task<Guid> GetUserVerificationToken(Guid userId);
         Task<User?> GetUserByVerificationToken(Guid verificationToken);
+        Task<bool> IsEmailExistForOtherUser(Guid userId, string email);
     }
 }

@@ -53,5 +53,13 @@ namespace WorkFinder.ServiceContracts
         Task InsertUserVerificationToken(Guid userId, Guid verificationToken);
         Task<Guid> GetUserVerificationToken(Guid userId);
         Task<UserResponseDto?> GetUserByVerificationToken(Guid verificationToken);
+
+        /// <summary>
+        /// Check if any other user exist with this email
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        Task<bool> IsEmailExistForOtherUser(Guid userId, string email);
     }
 }

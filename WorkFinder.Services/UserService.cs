@@ -181,5 +181,16 @@ namespace WorkFinder.Services
             //userResponse.AccessStatus = userSubDetails?.AccessStatus ?? null;
             //return userResponse;
         }
+
+        /// <summary>
+        /// Check if email already exists for other users
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<bool> IsEmailExistForOtherUser(Guid userId, string email)
+        {
+            return await _userRepository.IsEmailExistForOtherUser(userId, email);
+        }
     }
 }

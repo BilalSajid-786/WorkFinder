@@ -80,8 +80,8 @@ namespace WorkFinder.Repositories.Repositories
             var sql = "[GetUserByEmail]";
             var parameters = new DynamicParameters();
             parameters.Add("@Email", email);
-            var user = await connection.QueryAsync<User,Role,UserSubscription,User>(sql,
-                (user, role,sub) =>
+            var user = await connection.QueryAsync<User, Role, UserSubscription, User>(sql,
+                (user, role, sub) =>
                 {
                     user.Role = role;
                     user.UserSubscription = sub;
@@ -127,8 +127,8 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@Phone", user.Phone);
             parameters.Add("@CreatedAt", user.CreatedAt);
 
-            return await connection.ExecuteScalarAsync<Guid>("InsertUser",parameters,
-                commandType:System.Data.CommandType.StoredProcedure);
+            return await connection.ExecuteScalarAsync<Guid>("InsertUser", parameters,
+                commandType: System.Data.CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace WorkFinder.Repositories.Repositories
             using var connection = _dapperDbContext.CreateConnection();
             var sql = "[UpdateUserProfilePic]";
             var parameters = new DynamicParameters();
-            parameters.Add("@UserId",userId);
+            parameters.Add("@UserId", userId);
             parameters.Add("@ProfilePicName", profilePicName);
             await connection.ExecuteAsync(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
         }
@@ -187,10 +187,10 @@ namespace WorkFinder.Repositories.Repositories
             using var connection = _dapperDbContext.CreateConnection();
             var sql = "[GetUserStripeId]";
 
-           var parameters = new DynamicParameters();
+            var parameters = new DynamicParameters();
             parameters.Add("@UserId", userId);
 
-            return await connection.ExecuteScalarAsync<string>(sql,parameters,
+            return await connection.ExecuteScalarAsync<string>(sql, parameters,
                 commandType: System.Data.CommandType.StoredProcedure);
         }
 
@@ -226,6 +226,24 @@ namespace WorkFinder.Repositories.Repositories
             parameters.Add("@UserId", userId);
 
             return await connection.ExecuteScalarAsync<Guid>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// Check if email exist for any other user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<bool> IsEmailExistForOtherUser(Guid userId, string email)
+        {
+            using var connection = _dapperDbContext.CreateConnection();
+            var sql ="[IsEmailExistForOtherUser]";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@UserId",userId);
+            parameters.Add("@Email",email);
+
+            return await connection.ExecuteScalarAsync<bool>(sql, parameters, commandType: System.Data.CommandType.StoredProcedure);
         }
     }
 }

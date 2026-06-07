@@ -21,16 +21,18 @@ namespace WorkFinder.Services
     {
         private readonly IApplicantRepository _applicantRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly PasswordHasher<object> _passwordHasher;
         public ApplicantService(IApplicantRepository applicantRepository
             ,IMapper mapper,
-            IUserRepository userRepository)
+            IUserRepository userRepository, IUserService userService)
         {
             _applicantRepository = applicantRepository;
             _mapper = mapper;
             _userRepository = userRepository;
             _passwordHasher = new PasswordHasher<object>();
+            _userService = userService;
         }
 
         /// <summary>
@@ -40,6 +42,9 @@ namespace WorkFinder.Services
         /// <returns></returns>
         public async Task<string> UpdateApplicantAsync(UpdateApplicantRequestDto applicantRequest, IAuthService authService)
         {
+            //check if email exist already or not
+            if (await _userService.IsEmailExistForOtherUser(applicantRequest.UserId,applicantRequest?.Email))
+                throw new Exception($"User with the email {applicantRequest?.Email} already exists");
             var applicant = _mapper.Map<Applicant>(applicantRequest);
             applicant.User = new()
             {

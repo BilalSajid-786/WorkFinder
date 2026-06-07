@@ -19,7 +19,7 @@ namespace WorkFinder.Entities.Entities.SystemSeeding
         public static class Applicant
         {
             public static readonly Permission Create = new() { PermissionId = 5, ModuleId = 3, Action = "Applicant.Create" };
-            public static readonly Permission Get = new() { PermissionId = 6, ModuleId = 3, Action = "Applicant.Get" };
+            public static readonly Permission Get = new() { PermissionId = 6, ModuleId = 3, Action = "Applicant.Get",  Route = "/viewaplicants"  };
             public static readonly Permission Update = new() { PermissionId = 7, ModuleId = 3, Action = "Applicant.Update" };
             public static readonly Permission Delete = new() { PermissionId = 8, ModuleId = 3, Action = "Applicant.Delete" };
         }

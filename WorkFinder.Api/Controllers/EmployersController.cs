@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WorkFinder.ServiceContracts;
 using WorkFinder.ServiceContracts.DTOs.Employer;
+using WorkFinder.ServiceContracts.DTOs.Response;
 using WorkFinder.ServiceContracts.DTOs.User;
 using WorkFinder.Services;
 
@@ -13,10 +14,12 @@ namespace WorkFinder.Api.Controllers
     {
         private readonly IEmployerService _employerService;
         private readonly IAuthService _authService;
+        private readonly ResponseDto _responseDto;
         public EmployersController(IEmployerService employerService, IAuthService authService)
         {
             _employerService = employerService;
             _authService = authService;
+            _responseDto = new();
         }
 
         [HttpGet]
@@ -27,10 +30,21 @@ namespace WorkFinder.Api.Controllers
         }
 
         [HttpPost("{employerId:Guid}")]
-        public async Task<ActionResult<string>> EditEmployer(Guid employerId,[FromBody] UpdateEmployerRequestDto employerRequest)
+        public async Task<ActionResult<ResponseDto>> EditEmployer(Guid employerId,[FromBody] UpdateEmployerRequestDto employerRequest)
         {
-            var result = await _employerService.EditEmployerAsync(employerId, employerRequest,_authService);
-            return Ok(new {result = result});
+            try
+            {
+                var employer = await _employerService.EditEmployerAsync(employerId, employerRequest,_authService);
+                _responseDto.IsSuccess = true;
+                _responseDto.Message = "Success";
+                _responseDto.Result = employer;
+            }
+            catch(Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
         }
 
         [HttpGet("{employerId:Guid}")]

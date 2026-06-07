@@ -19,20 +19,24 @@ namespace WorkFinder.Services
         private readonly IMapper _mapper;
         private readonly PasswordHasher<object> _passwordHasher;
         private readonly IEmployerRepository _employerRepository;
+        private readonly IUserService _userService;
         private readonly IUserRepository _userRepository;
         public EmployerService(IMapper mapper, IEmployerRepository employerRepository, 
-            IUserRepository userRepository) 
+            IUserRepository userRepository, IUserService userService) 
         {
             _mapper = mapper;
             _passwordHasher = new PasswordHasher<object>();
             _employerRepository = employerRepository;
             _userRepository = userRepository;
+            _userService = userService;
         }
 
         public async Task<string> EditEmployerAsync(Guid employerId, 
             UpdateEmployerRequestDto employerRequest,
             IAuthService authService)
         {
+            if (await _userService.IsEmailExistForOtherUser(employerRequest.UserId,employerRequest?.Email))
+            throw new Exception($"User with the email {employerRequest?.Email} already exists");
             var employer = _mapper.Map<Employer>(employerRequest);
             employer.EmployerId = employerId;
             var empStatus = await _employerRepository.EditEmployerAsync(employer);
